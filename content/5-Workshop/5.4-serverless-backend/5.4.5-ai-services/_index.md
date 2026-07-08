@@ -74,7 +74,7 @@ The flagship feature is a document Q&A endpoint, `POST /files/{id}/ask`. It take
 
 ```python
 MODEL_ID = os.environ.get("BEDROCK_MODEL_ID",
-                          "anthropic.claude-haiku-4-5-20251001-v1:0")
+                          "global.anthropic.claude-haiku-4-5-20251001-v1:0")
 bedrock = boto3.client("bedrock-runtime", region_name=REGION)
 
 # ask_document(event, file_id):
@@ -93,7 +93,7 @@ out = bedrock.invoke_model(modelId=MODEL_ID, body=json.dumps(payload))
 answer = json.loads(out["body"].read())["content"][0]["text"]
 ```
 
-The model id lives in the `BEDROCK_MODEL_ID` environment variable (default `anthropic.claude-haiku-4-5-20251001-v1:0`), so the model can change without editing code. The document text is capped at 20,000 characters before it goes into the prompt.
+The model id lives in the `BEDROCK_MODEL_ID` environment variable (default `global.anthropic.claude-haiku-4-5-20251001-v1:0`), so the model can change without editing code. The document text is capped at 20,000 characters before it goes into the prompt.
 
 {{% notice warning %}}
 **Limitation.** Like Textract, Bedrock can fail on a credit-based account, here with `AccessDeniedException` when Model access for the Claude model is not enabled in the Bedrock console. The `ask` handler catches this and returns HTTP 200 with a short Vietnamese message ("Bedrock chua duoc bat tren tai khoan nay, can Model access") instead of a 500, so a demo never crashes. Once Model access is granted the same call returns a real answer.
