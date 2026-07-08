@@ -38,13 +38,6 @@ Design notes:
 
 AWS services used: S3, CloudFront, API Gateway, Lambda, DynamoDB, Textract, Rekognition, Bedrock, CloudWatch, IAM.
 
-## Links
-
-- Report site (GitHub Pages): https://xeminol.github.io/InsightShare/
-- Live app demo: https://insightshare.dangthaikhang34.workers.dev
-
-Note: the backend (Lambda functions and API Gateway) may be torn down after grading to avoid ongoing cost. If the demo link does not respond, the frontend is still up but the API has been removed.
-
 ## Repo layout
 
 This repository holds the Hugo report site, not the application code. The report is bilingual (English and Vietnamese) and lives under `content/`:
