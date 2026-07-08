@@ -77,9 +77,9 @@ aws cloudfront create-distribution \
 
 Distribution đã ở trạng thái `Deployed` và phục vụ trang qua HTTPS tại:
 
-`https://d1to3a23j7tkdp.cloudfront.net`
+`https://<distribution>.cloudfront.net`
 
-Trang chạy được qua cả hai lối vào: endpoint website S3 qua HTTP, và domain CloudFront qua HTTPS.
+CloudFront phục vụ trang qua HTTPS, đặt trước origin S3.
 
 Trang web đang chạy, có dải thống kê, nhãn AI, ảnh thu nhỏ và bộ lọc theo nhãn:
 
@@ -97,4 +97,4 @@ Toàn bộ luồng được kiểm chứng từ trang web đã deploy qua API Ga
 
 #### Tóm tắt
 
-InsightShare chạy đầu-cuối: frontend tĩnh gọi API Gateway → Lambda → S3 (presigned URL) + DynamoDB (metadata) + lớp AI. CloudFront là lớp phân phối đặt trước web tĩnh, đã deploy tại `https://d1to3a23j7tkdp.cloudfront.net`.
+InsightShare chạy đầu-cuối: frontend tĩnh gọi API Gateway → Lambda → S3 (presigned URL) + DynamoDB (metadata) + lớp AI. CloudFront là lớp phân phối đặt trước web tĩnh, đã deploy tại `https://<distribution>.cloudfront.net`.

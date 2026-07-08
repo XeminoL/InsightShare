@@ -77,9 +77,9 @@ aws cloudfront create-distribution \
 
 The distribution reached the `Deployed` state and serves the page over HTTPS at:
 
-`https://d1to3a23j7tkdp.cloudfront.net`
+`https://<distribution>.cloudfront.net`
 
-The page runs through both entry points: the S3 website endpoint over HTTP, and the CloudFront domain over HTTPS.
+CloudFront serves the site over HTTPS in front of the S3 origin.
 
 The live site, showing the stats bar, AI labels, thumbnails and label filter:
 
@@ -97,4 +97,4 @@ The full flow was verified from the deployed web page through API Gateway:
 
 #### Summary
 
-InsightShare runs end to end: the static frontend calls API Gateway → Lambda → S3 (presigned URL) + DynamoDB (metadata) + the AI layer. CloudFront is the delivery layer in front of the static site, deployed at `https://d1to3a23j7tkdp.cloudfront.net`.
+InsightShare runs end to end: the static frontend calls API Gateway → Lambda → S3 (presigned URL) + DynamoDB (metadata) + the AI layer. CloudFront is the delivery layer in front of the static site, deployed at `https://<distribution>.cloudfront.net`.
