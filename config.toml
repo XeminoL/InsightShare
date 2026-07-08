@@ -1,7 +1,9 @@
 # Deploy: GitHub Pages tại XeminoL/InsightShare.
 baseURL = "https://xeminol.github.io/InsightShare/"
 relativeURLs = false
-canonifyURLs = false
+# canonifyURLs=true: Hugo tự thêm baseURL vào đường dẫn tuyệt đối (/images/...),
+# cần thiết vì site đặt trong subpath /InsightShare/ trên GitHub Pages.
+canonifyURLs = true
 defaultContentLanguage = "en"
 # Build cả trang có ngày trong tương lai (worklog theo kế hoạch tuần) — nếu không, các tuần có date tương lai sẽ bị ẩn
 buildFuture = true
