@@ -101,6 +101,6 @@ curl "$API/files/search?q=diagram"
 # -> the uploaded image is returned
 ```
 
-This confirms the core InsightShare feature: files are found by **content** (AI labels and extracted text), not only by name.
+The search returned the image by an AI label that is not in its filename.
 
 > Reference FCJ lab on AI services (Rekognition/Polly/Lex): https://000056.awsstudygroup.com

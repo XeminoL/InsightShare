@@ -46,7 +46,7 @@ The Lambda uses a dedicated least-privilege execution role, `insightshare-lambda
 
 ![IAM execution role](/images/5-Workshop/5.5-Policy/iam-role.png)
 
-The attached policy grants only what each service needs. S3 and DynamoDB are scoped to the specific bucket and table ARNs (not `"Resource": "*"`); the AI actions use `"*"` because Rekognition, Textract and Polly do not support resource-level permissions:
+The attached policy grants only what each service needs. S3 and DynamoDB are scoped to the specific bucket and table ARNs (not `"Resource": "*"`); the AI actions use `"*"` because Rekognition, Textract and Bedrock do not support resource-level permissions (Bedrock can optionally be scoped to the Claude foundation-model ARN):
 
 ```json
 {
@@ -74,8 +74,8 @@ The attached policy grants only what each service needs. S3 and DynamoDB are sco
     {
       "Sid": "AIServices",
       "Effect": "Allow",
-      "Action": ["rekognition:DetectLabels", "rekognition:DetectModerationLabels",
-                 "textract:DetectDocumentText", "polly:SynthesizeSpeech"],
+      "Action": ["rekognition:DetectLabels",
+                 "textract:DetectDocumentText", "bedrock:InvokeModel"],
       "Resource": "*"
     },
     {

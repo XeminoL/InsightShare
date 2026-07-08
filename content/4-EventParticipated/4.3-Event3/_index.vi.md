@@ -6,10 +6,6 @@ chapter: false
 pre: " <b> 4.3. </b> "
 ---
 
-{{% notice note %}}
-Thay các chỗ trong ngoặc bằng thông tin sự kiện thật và thêm ảnh.
-{{% /notice %}}
-
 | Trường | Chi tiết |
 | --- | --- |
 | Tên sự kiện | [TÊN SỰ KIỆN] |

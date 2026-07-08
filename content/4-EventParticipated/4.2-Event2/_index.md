@@ -6,10 +6,6 @@ chapter: false
 pre: " <b> 4.2. </b> "
 ---
 
-{{% notice note %}}
-Replace the bracketed placeholders with your real event details and add photos.
-{{% /notice %}}
-
 | Field | Detail |
 | --- | --- |
 | Event name | [EVENT NAME] |

@@ -72,11 +72,11 @@ Trình duyệt tải giao diện tĩnh từ **S3 + CloudFront (HTTPS)** → gọ
 | 2. Ứng dụng cơ bản | Dựng web app (FastAPI + frontend) chạy local, tách lớp lưu trữ và lớp AI. |
 | 3. Đưa lên cloud | S3 + presigned URL, Lambda + API Gateway, tích hợp DynamoDB và tính năng chia sẻ link. |
 | 4. Lớp AI & tìm kiếm | Tích hợp Rekognition/Textract/Polly, lưu kết quả vào DynamoDB, xây tìm kiếm thông minh. |
-| 5. Hoàn thiện & vận hành | CloudFront + HTTPS, CloudWatch log/alarm, tối ưu chi phí/bảo mật, IaC bằng AWS SAM, CI/CD. |
+| 5. Hoàn thiện & vận hành | CloudFront + HTTPS, CloudWatch log/alarm, tối ưu chi phí/bảo mật, một script deploy/dọn dẹp lặp lại được. |
 
 *Yêu cầu kỹ thuật*
 - Tài khoản AWS (Free Tier), region `ap-southeast-1` (Singapore).
-- Công cụ: AWS CLI, Python 3, boto3, (tùy chọn) AWS SAM.
+- Công cụ: AWS CLI, Python 3, boto3.
 - Kiến thức: S3, Lambda, API Gateway, DynamoDB, IAM, CloudWatch và các dịch vụ AI (Rekognition, Textract, Polly).
 
 ### 5. Lộ trình & Mốc triển khai
@@ -86,7 +86,7 @@ Trình duyệt tải giao diện tĩnh từ **S3 + CloudFront (HTTPS)** → gọ
 | Chuẩn bị | Chốt kiến trúc, thiết kế DynamoDB, thiết lập tài khoản AWS, viết Proposal |
 | Phát triển lõi | Lưu trữ S3 + presigned URL, back-end Lambda + API Gateway, DynamoDB + chia sẻ link |
 | Tích hợp AI | Rekognition + Textract + Polly; tìm kiếm thông minh theo nội dung |
-| Hoàn thiện | CloudFront, CloudWatch, tối ưu chi phí/bảo mật, SAM, CI/CD |
+| Hoàn thiện | CloudFront, CloudWatch, tối ưu chi phí/bảo mật, script deploy/dọn dẹp |
 | Vận hành | Giám sát, kiểm thử, rà bảo mật và dọn dẹp tài nguyên |
 
 Mốc chính: hoàn thành MVP chia sẻ (upload + link) trước; tích hợp lớp AI và tìm kiếm tiếp theo; sau đó hoàn thiện, tối ưu và vận hành.
@@ -131,7 +131,7 @@ Chi phí ước tính thấp do mô hình serverless tính theo lượt dùng, v
 | File lớn gây timeout Lambda/API Gateway | Trung bình | Thấp | Presigned URL upload trực tiếp S3; gọi AI bất đồng bộ qua S3 event |
 | Dịch vụ AI chậm hoặc kết quả chưa chính xác | Thấp | Trung bình | Phân tích AI bất đồng bộ, file vẫn chia sẻ được kể cả khi chưa phân tích xong |
 
-*Kế hoạch dự phòng:* dùng Infrastructure-as-Code (AWS SAM) để tái tạo/xóa hạ tầng nhanh chóng.
+*Kế hoạch dự phòng:* giữ một script dọn dẹp (cleanup-aws.ps1) để xóa toàn bộ tài nguyên nhanh chóng.
 
 ### 8. Kết quả kỳ vọng
 

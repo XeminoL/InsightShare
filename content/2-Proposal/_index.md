@@ -72,11 +72,11 @@ The browser loads the static frontend from **S3 + CloudFront (HTTPS)** → calls
 | 2. Basic application | Build the web app (FastAPI + frontend) locally, separate the storage and AI layers. |
 | 3. Move to the cloud | S3 + presigned URLs, Lambda + API Gateway, DynamoDB integration and the share-link feature. |
 | 4. AI layer & search | Integrate Rekognition/Textract/Polly, store results in DynamoDB, build smart search. |
-| 5. Finalize & operate | CloudFront + HTTPS, CloudWatch logs/alarms, cost/security optimization, IaC with AWS SAM, CI/CD. |
+| 5. Finalize & operate | CloudFront + HTTPS, CloudWatch logs/alarms, cost/security optimization, a repeatable deploy/cleanup script. |
 
 *Technical Requirements*
 - An AWS account (Free Tier), region `ap-southeast-1` (Singapore).
-- Tools: AWS CLI, Python 3, boto3, (optional) AWS SAM.
+- Tools: AWS CLI, Python 3, boto3.
 - Knowledge: S3, Lambda, API Gateway, DynamoDB, IAM, CloudWatch and AI services (Rekognition, Textract, Polly).
 
 ### 5. Timeline & Milestones
@@ -86,7 +86,7 @@ The browser loads the static frontend from **S3 + CloudFront (HTTPS)** → calls
 | Preparation | Finalize the architecture, design DynamoDB, set up the AWS account, write the Proposal |
 | Core development | S3 storage + presigned URLs, Lambda + API Gateway back-end, DynamoDB + share link |
 | AI integration | Rekognition + Textract + Polly; smart content-based search |
-| Finalization | CloudFront, CloudWatch, cost/security optimization, SAM, CI/CD |
+| Finalization | CloudFront, CloudWatch, cost/security optimization, deploy/cleanup script |
 | Operation | Monitoring, testing, security review and resource clean-up |
 
 Key milestones: complete the sharing MVP (upload + link) first; add the AI layer and search next; then finalize, optimize and operate.
@@ -131,7 +131,7 @@ The AI services (Rekognition, Polly) dominate the cost at scale, which is the tr
 | Large files causing Lambda/API Gateway timeouts | Medium | Low | Presigned URLs upload directly to S3; call AI asynchronously via S3 events |
 | AI services slow or results not yet accurate | Low | Medium | Asynchronous AI analysis, so files remain shareable even before analysis completes |
 
-*Contingency plan:* use Infrastructure-as-Code (AWS SAM) to recreate/delete infrastructure quickly.
+*Contingency plan:* keep a scripted teardown (cleanup-aws.ps1) to remove all resources quickly.
 
 ### 8. Expected Outcomes
 

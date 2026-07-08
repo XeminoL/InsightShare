@@ -101,6 +101,6 @@ curl "$API/files/search?q=diagram"
 # -> trả về đúng ảnh vừa upload
 ```
 
-Điều này xác nhận tính năng cốt lõi của InsightShare: file được tìm theo **nội dung** (nhãn AI và văn bản trích), không chỉ theo tên.
+Tìm kiếm trả về đúng ảnh nhờ một nhãn AI không nằm trong tên file.
 
 > Tham khảo lab FCJ về AI services (Rekognition/Polly/Lex): https://000056.awsstudygroup.com

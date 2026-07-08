@@ -24,8 +24,8 @@ Weekly log of the First Cloud AI Journey internship.
 
 **Week 8**: [AI layer: Rekognition, Textract, Polly for file content analysis](1.8-week8/)
 
-**Week 9**: [Smart search, CloudFront/CloudWatch & cost/security optimization + SAM](1.9-week9/)
+**Week 9**: [Smart search, CloudFront/CloudWatch & cost/security optimization](1.9-week9/)
 
-**Week 10**: [CI/CD, full testing, performance measurement & optimization](1.10-week10/)
+**Week 10**: [Repeatable deploy, full testing, performance measurement & optimization](1.10-week10/)
 
 **Week 11**: [Advanced features, UX polish & studying Cognito, Step Functions](1.11-week11/)

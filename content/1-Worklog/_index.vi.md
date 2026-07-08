@@ -24,8 +24,8 @@ Nhật ký thực tập theo tuần của chương trình First Cloud AI Journey
 
 **Tuần 8**: [Lớp AI: Rekognition, Textract, Polly phân tích nội dung file](1.8-week8/)
 
-**Tuần 9**: [Tìm kiếm thông minh, CloudFront/CloudWatch & tối ưu chi phí/bảo mật + SAM](1.9-week9/)
+**Tuần 9**: [Tìm kiếm thông minh, CloudFront/CloudWatch & tối ưu chi phí/bảo mật](1.9-week9/)
 
-**Tuần 10**: [CI/CD, kiểm thử end-to-end, đo lường & tối ưu hiệu năng](1.10-week10/)
+**Tuần 10**: [Deploy lặp lại được, kiểm thử end-to-end, đo lường & tối ưu hiệu năng](1.10-week10/)
 
 **Tuần 11**: [Tính năng nâng cao, tối ưu trải nghiệm & học thêm Cognito, Step Functions](1.11-week11/)

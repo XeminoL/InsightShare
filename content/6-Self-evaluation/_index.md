@@ -14,14 +14,14 @@ The table below is a self-assessment against eight criteria, one rating each: Go
 
 | No. | Criteria | Good | Fair | Average | Comment |
 | --- | --- | --- | --- | --- | --- |
-| 1 | **Professional knowledge & skills** | x | | | Applied many AWS services in an end-to-end project. |
-| 2 | **Ability to learn** | x | | | Picked up new services (Lambda, presigned URLs, SAM) from docs and labs. |
+| 1 | **Professional knowledge & skills** | x | | | Applied core AWS services in one end-to-end project. |
+| 2 | **Ability to learn** | x | | | Picked up new services (Lambda, presigned URLs, CloudFront) from docs and labs. |
 | 3 | **Proactiveness** | | x | | Took initiative and self-studied; sometimes needed extra direction. |
 | 4 | **Discipline** | | | x | Was reminded about dress code. |
 | 5 | **Communication** | | x | | Reported work clearly in writing; reserved in face-to-face discussion. |
 | 6 | **Teamwork** | | x | | Integrated and helped when asked; rarely opened team discussions. |
 | 7 | **Problem-solving** | | x | | Resolved integration issues (CORS, IAM, cold start) mostly by trial-and-error. |
-| 8 | **Contribution to the project** | x | | | Built the whole of InsightShare, with features beyond the basic requirements. |
+| 8 | **Contribution to the project** | x | | | Implemented InsightShare end-to-end and added a few extra features (delete, expiring links, upload limits). |
 
 ### Needs Improvement
 
