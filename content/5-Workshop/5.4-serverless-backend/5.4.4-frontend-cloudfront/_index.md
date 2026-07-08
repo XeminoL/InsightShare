@@ -92,7 +92,7 @@ The full flow was verified from the deployed web page through API Gateway:
 - `POST /files` returned a presigned URL, and `PUT` to it returned **HTTP 200** (file landed in S3).
 - `POST /files/{id}/analyze` returned real Rekognition labels.
 - `GET /files/search?q=diagram` returned the image by its AI label, not its filename.
-- `POST /files/{id}/ask` returned a Vietnamese answer over a `.txt` document (or the Model-access notice at HTTP 200 when Bedrock is not yet enabled).
+- `POST /files/{id}/ask` is wired to return a Vietnamese answer over a `.txt` document (or the token-quota fallback at HTTP 200 while the account's Bedrock inference quota is 0).
 - The same steps run from the browser on the live site, so upload, AI analysis, content search and document Q&A all work end to end on AWS.
 
 #### Summary

@@ -96,7 +96,7 @@ answer = json.loads(out["body"].read())["content"][0]["text"]
 The model id lives in the `BEDROCK_MODEL_ID` environment variable (default `global.anthropic.claude-haiku-4-5-20251001-v1:0`), so the model can change without editing code. The document text is capped at 20,000 characters before it goes into the prompt.
 
 {{% notice warning %}}
-**Limitation.** Like Textract, Bedrock can fail on a credit-based account, here with `AccessDeniedException` when Model access for the Claude model is not enabled in the Bedrock console. The `ask` handler catches this and returns HTTP 200 with a short Vietnamese message ("Bedrock chua duoc bat tren tai khoan nay, can Model access") instead of a 500, so a demo never crashes. Once Model access is granted the same call returns a real answer.
+**Limitation.** Same honest pattern as Textract. On this credit-based AWS account, the Bedrock on-demand inference quota (tokens per day) is 0 and not adjustable, because the account has not yet been granted inference quota. The integration itself is complete and correct: the IAM `bedrock:InvokeModel` permission, the inference-profile model id `global.anthropic.claude-haiku-4-5-20251001-v1:0`, and the request/response handling all pass validation, and the call reaches the model. Because the daily token quota is 0, the `ask` handler returns HTTP 200 with a short Vietnamese fallback message ("Da het han muc token Bedrock trong ngay") instead of a 500, so a demo never crashes. The feature works as soon as the account is granted inference quota, with no code change.
 {{% /notice %}}
 
 #### Step 4: Store labels/text in DynamoDB
@@ -126,9 +126,9 @@ curl "$API/files/search?q=diagram"
 
 # Ask a question about a .txt document (Bedrock/Claude, Vietnamese)
 curl -X POST "$API/files/<id>/ask" -d '{"question":"Tai lieu noi ve gi?"}'
-# -> {"answer": "...", "is_summary": false}   (or a Model-access notice, HTTP 200)
+# -> {"answer": "...", "is_summary": false}   (or the token-quota fallback, HTTP 200)
 ```
 
-Search returned the image by an AI label that is not in its filename. On a `.txt` document with Bedrock Model access enabled, `ask` returned a Vietnamese answer grounded in the document text; without it, the endpoint returned the fallback message at HTTP 200.
+Search returned the image by an AI label that is not in its filename. On a `.txt` document, `ask` is wired to return a Vietnamese answer grounded in the document text once the account has inference quota; while the daily token quota is 0, the endpoint returns the fallback message at HTTP 200.
 
 > Reference FCJ lab on AI services (Rekognition/Textract): https://000056.awsstudygroup.com

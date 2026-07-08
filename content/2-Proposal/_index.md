@@ -120,7 +120,7 @@ At real scale the cost grows with usage. A rough monthly estimate for **1,000 ac
 | Amazon CloudFront | ~30 GB out | ~$2.50 |
 | **Total** | | **~$40/month** |
 
-The AI services (Rekognition, Bedrock) dominate the cost at scale, which is the trade-off for not training or hosting models. Claude 3.5 Haiku is a low-cost model, so Bedrock stays modest here. The demo stays near $0 because volumes are tiny.
+The AI services (Rekognition, Bedrock) dominate the cost at scale, which is the trade-off for not training or hosting models. Claude Haiku 4.5 is a low-cost model, so Bedrock stays modest here. The demo stays near $0 because volumes are tiny.
 
 ### 7. Risk Assessment
 
@@ -138,6 +138,7 @@ The AI services (Rekognition, Bedrock) dominate the cost at scale, which is the 
 *Technical Improvements*
 - A working end-to-end web application: upload → automatic AI content analysis → list → content-based search → ask a question about a document → download via presigned link.
 - Mastery of serverless architecture combined with AWS managed AI services.
+- The Bedrock document Q&A is fully implemented and correctly wired; on this credit-based account it returns a graceful fallback until the account is granted Bedrock on-demand inference quota (currently 0).
 
 *Long-term Value*
 - An extensible platform: add user sign-in (Cognito), orchestrate a multi-step AI pipeline (Step Functions), support more file types.

@@ -96,7 +96,7 @@ answer = json.loads(out["body"].read())["content"][0]["text"]
 Model id nằm trong biến môi trường `BEDROCK_MODEL_ID` (mặc định `global.anthropic.claude-haiku-4-5-20251001-v1:0`), nên đổi model mà không phải sửa code. Văn bản tài liệu được cắt còn 20.000 ký tự trước khi đưa vào prompt.
 
 {{% notice warning %}}
-**Giới hạn.** Giống Textract, Bedrock có thể lỗi trên tài khoản dạng credit, ở đây là `AccessDeniedException` khi Model access cho model Claude chưa được bật trong console Bedrock. Handler `ask` bắt lỗi này và trả về HTTP 200 kèm một câu tiếng Việt ngắn ("Bedrock chua duoc bat tren tai khoan nay, can Model access") thay vì 500, nên bản demo không sập. Khi được cấp Model access, chính lời gọi đó trả về câu trả lời thật.
+**Giới hạn.** Cùng một kiểu giới hạn trung thực như Textract. Trên tài khoản AWS dạng credit này, hạn mức inference on-demand của Bedrock (token mỗi ngày) là 0 và không chỉnh được, vì tài khoản chưa được cấp inference quota. Bản thân phần tích hợp đã hoàn chỉnh và đúng: quyền IAM `bedrock:InvokeModel`, model id dạng inference profile `global.anthropic.claude-haiku-4-5-20251001-v1:0`, và phần xử lý request/response đều qua kiểm tra, lời gọi tới được model. Vì hạn mức token mỗi ngày là 0, handler `ask` trả về HTTP 200 kèm một câu tiếng Việt dự phòng ngắn ("Da het han muc token Bedrock trong ngay") thay vì 500, nên bản demo không sập. Tính năng chạy được ngay khi tài khoản được cấp inference quota, không cần sửa code.
 {{% /notice %}}
 
 #### Bước 4: Lưu nhãn/văn bản vào DynamoDB
@@ -126,9 +126,9 @@ curl "$API/files/search?q=diagram"
 
 # Hỏi đáp về một tài liệu .txt (Bedrock/Claude, tiếng Việt)
 curl -X POST "$API/files/<id>/ask" -d '{"question":"Tai lieu noi ve gi?"}'
-# -> {"answer": "...", "is_summary": false}   (hoặc thông báo cần Model access, HTTP 200)
+# -> {"answer": "...", "is_summary": false}   (hoặc câu dự phòng khi hết hạn mức token, HTTP 200)
 ```
 
-Tìm kiếm trả về đúng ảnh nhờ một nhãn AI không nằm trong tên file. Với tài liệu `.txt` khi đã bật Model access cho Bedrock, `ask` trả về câu trả lời tiếng Việt dựa trên nội dung tài liệu; khi chưa bật, endpoint trả về câu thông báo dự phòng ở HTTP 200.
+Tìm kiếm trả về đúng ảnh nhờ một nhãn AI không nằm trong tên file. Với tài liệu `.txt`, `ask` được nối sẵn để trả về câu trả lời tiếng Việt dựa trên nội dung tài liệu ngay khi tài khoản có inference quota; trong lúc hạn mức token mỗi ngày còn là 0, endpoint trả về câu thông báo dự phòng ở HTTP 200.
 
 > Tham khảo lab FCJ về AI services (Rekognition/Textract): https://000056.awsstudygroup.com

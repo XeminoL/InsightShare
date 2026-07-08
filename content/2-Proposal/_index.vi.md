@@ -120,7 +120,7 @@ Chi phí ước tính thấp do mô hình serverless tính theo lượt dùng, v
 | Amazon CloudFront | ~30 GB ra | ~2,50 USD |
 | **Tổng** | | **~40 USD/tháng** |
 
-Ở quy mô lớn, chi phí chủ yếu đến từ các dịch vụ AI (Rekognition, Bedrock), đây là đánh đổi cho việc không phải huấn luyện hay tự vận hành mô hình. Claude 3.5 Haiku là model chi phí thấp nên Bedrock ở đây vẫn ở mức vừa phải. Ở mức demo, chi phí gần 0 vì lượng dùng rất ít.
+Ở quy mô lớn, chi phí chủ yếu đến từ các dịch vụ AI (Rekognition, Bedrock), đây là đánh đổi cho việc không phải huấn luyện hay tự vận hành mô hình. Claude Haiku 4.5 là model chi phí thấp nên Bedrock ở đây vẫn ở mức vừa phải. Ở mức demo, chi phí gần 0 vì lượng dùng rất ít.
 
 ### 7. Đánh giá rủi ro
 
@@ -138,6 +138,7 @@ Chi phí ước tính thấp do mô hình serverless tính theo lượt dùng, v
 *Cải tiến kỹ thuật*
 - Ứng dụng web hoạt động end-to-end: upload → tự động phân tích nội dung bằng AI → liệt kê → tìm kiếm theo nội dung → hỏi đáp về một tài liệu → tải qua presigned link.
 - Làm chủ kiến trúc serverless kết hợp các dịch vụ AI managed trên AWS.
+- Hỏi đáp tài liệu bằng Bedrock đã được triển khai đầy đủ và nối đúng; trên tài khoản dạng credit này nó trả về câu dự phòng cho tới khi tài khoản được cấp inference quota on-demand của Bedrock (hiện là 0).
 
 *Giá trị dài hạn*
 - Nền tảng có thể mở rộng: thêm đăng nhập người dùng (Cognito), điều phối pipeline AI nhiều bước (Step Functions), hỗ trợ thêm loại file.

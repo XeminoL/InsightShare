@@ -33,6 +33,8 @@ Design notes:
 
 ## Architecture
 
+![InsightShare architecture](architecture.png)
+
 AWS services used: S3, CloudFront, API Gateway, Lambda, DynamoDB, Textract, Rekognition, Bedrock, CloudWatch, IAM.
 
 ## Links
