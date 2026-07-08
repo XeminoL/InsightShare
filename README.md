@@ -3,21 +3,7 @@
 Báo cáo cuối khóa chương trình First Cloud AI Journey (FCAJ), AWS Việt Nam.
 Đề tài 3: Application Development on AWS. Web app upload và chia sẻ ảnh/file trên nền serverless.
 
-## Chạy thử trên máy
-
-```powershell
-hugo server
-```
-
-Mở http://localhost:1313/ . Đổi ngôn ngữ EN/VI ở menu góc trên bên trái.
-
-## Build
-
-```powershell
-hugo
-```
-
-Kết quả nằm trong `public/`.
+Trang: https://xeminol.github.io/InsightShare/ (mỗi lần push nhánh main, GitHub Actions tự build và deploy lại).
 
 ## Cấu trúc nội dung
 

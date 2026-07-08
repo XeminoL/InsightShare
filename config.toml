@@ -1,5 +1,4 @@
-# Deploy: GitHub Pages tại XeminoL/InsightShare (username github.io luôn là chữ thường).
-# Khi preview local thì chạy: hugo server (Hugo tự override baseURL = localhost).
+# Deploy: GitHub Pages tại XeminoL/InsightShare.
 baseURL = "https://xeminol.github.io/InsightShare/"
 relativeURLs = false
 canonifyURLs = false
