@@ -33,7 +33,8 @@ Design notes:
 
 ## Architecture
 
-![InsightShare architecture](architecture.png)
+<img src="https://raw.githubusercontent.com/XeminoL/InsightShare/main/architecture.png" alt="InsightShare architecture" width="520">
+
 
 AWS services used: S3, CloudFront, API Gateway, Lambda, DynamoDB, Textract, Rekognition, Bedrock, CloudWatch, IAM.
 
