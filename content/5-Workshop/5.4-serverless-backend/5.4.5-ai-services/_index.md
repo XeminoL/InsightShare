@@ -72,6 +72,8 @@ elif fname.endswith(DOC_EXTS):
 
 The flagship feature is a document Q&A endpoint, `POST /files/{id}/ask`. It takes the text already extracted into DynamoDB, wraps it with the question in a prompt, and calls a Claude model on Amazon Bedrock. Answers come back in Vietnamese. With no `question` in the body, the same handler summarizes the document instead.
 
+There is also a library-wide endpoint, `POST /ask`. It scans every file in DynamoDB, ranks them by keyword overlap with the question, joins the text of the relevant files (each numbered so it can be cited), and calls Bedrock. The answer comes back with the list of files it came from, so you find the right file without opening each one.
+
 ```python
 MODEL_ID = os.environ.get("BEDROCK_MODEL_ID",
                           "global.anthropic.claude-haiku-4-5-20251001-v1:0")

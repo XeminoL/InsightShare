@@ -72,6 +72,8 @@ elif fname.endswith(DOC_EXTS):
 
 Tính năng AI chính là endpoint hỏi đáp tài liệu, `POST /files/{id}/ask`. Nó lấy phần văn bản đã trích sẵn trong DynamoDB, ghép cùng câu hỏi thành một prompt, rồi gọi một model Claude trên Amazon Bedrock. Câu trả lời trả về bằng tiếng Việt. Nếu body không có `question`, chính handler đó tóm tắt tài liệu.
 
+Ngoài ra có endpoint hỏi đáp toàn thư viện, `POST /ask`. Nó quét mọi tệp trong DynamoDB, xếp hạng theo độ trùng từ khóa với câu hỏi, ghép văn bản các tệp liên quan (mỗi tệp đánh số để trích nguồn) rồi gọi Bedrock. Câu trả lời kèm danh sách tệp chứa thông tin, giúp tìm đúng tệp mà không phải mở từng cái.
+
 ```python
 MODEL_ID = os.environ.get("BEDROCK_MODEL_ID",
                           "global.anthropic.claude-haiku-4-5-20251001-v1:0")
