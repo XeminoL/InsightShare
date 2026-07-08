@@ -83,7 +83,7 @@ Trang chạy được qua cả hai lối vào: endpoint website S3 qua HTTP, và
 
 Trang web đang chạy, có dải thống kê, nhãn AI, ảnh thu nhỏ và bộ lọc theo nhãn:
 
-![Trang web InsightShare đang chạy](/images/5-Workshop/5.4-serverless-backend/web-live.png)
+![Trang web InsightShare đang chạy](/images/5-Workshop/5.4-serverless-backend/web-live-v2.png)
 
 #### Test end-to-end
 

@@ -83,7 +83,7 @@ The page runs through both entry points: the S3 website endpoint over HTTP, and 
 
 The live site, showing the stats bar, AI labels, thumbnails and label filter:
 
-![InsightShare live site](/images/5-Workshop/5.4-serverless-backend/web-live.png)
+![InsightShare live site](/images/5-Workshop/5.4-serverless-backend/web-live-v2.png)
 
 #### End-to-end test
 
