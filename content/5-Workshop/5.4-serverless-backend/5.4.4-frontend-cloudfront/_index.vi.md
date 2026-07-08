@@ -83,7 +83,7 @@ CloudFront phục vụ trang qua HTTPS, đặt trước origin S3.
 
 Trang web đang chạy, có dải thống kê, nhãn AI, ảnh thu nhỏ và bộ lọc theo nhãn:
 
-![Trang web InsightShare đang chạy](/images/5-Workshop/5.4-serverless-backend/web-live-v2.png)
+![Trang web InsightShare đang chạy](/images/5-Workshop/5.4-serverless-backend/web-live-v3.png)
 
 #### Test end-to-end
 

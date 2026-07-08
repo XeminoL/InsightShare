@@ -83,7 +83,7 @@ CloudFront serves the site over HTTPS in front of the S3 origin.
 
 The live site, showing the stats bar, AI labels, thumbnails and label filter:
 
-![InsightShare live site](/images/5-Workshop/5.4-serverless-backend/web-live-v2.png)
+![InsightShare live site](/images/5-Workshop/5.4-serverless-backend/web-live-v3.png)
 
 #### End-to-end test
 
