@@ -74,7 +74,7 @@ Tính năng AI chính là endpoint hỏi đáp tài liệu, `POST /files/{id}/as
 
 ```python
 MODEL_ID = os.environ.get("BEDROCK_MODEL_ID",
-                          "anthropic.claude-3-5-haiku-20241022-v1:0")
+                          "anthropic.claude-haiku-4-5-20251001-v1:0")
 bedrock = boto3.client("bedrock-runtime", region_name=REGION)
 
 # ask_document(event, file_id):
@@ -93,7 +93,7 @@ out = bedrock.invoke_model(modelId=MODEL_ID, body=json.dumps(payload))
 answer = json.loads(out["body"].read())["content"][0]["text"]
 ```
 
-Model id nằm trong biến môi trường `BEDROCK_MODEL_ID` (mặc định `anthropic.claude-3-5-haiku-20241022-v1:0`), nên đổi model mà không phải sửa code. Văn bản tài liệu được cắt còn 20.000 ký tự trước khi đưa vào prompt.
+Model id nằm trong biến môi trường `BEDROCK_MODEL_ID` (mặc định `anthropic.claude-haiku-4-5-20251001-v1:0`), nên đổi model mà không phải sửa code. Văn bản tài liệu được cắt còn 20.000 ký tự trước khi đưa vào prompt.
 
 {{% notice warning %}}
 **Giới hạn.** Giống Textract, Bedrock có thể lỗi trên tài khoản dạng credit, ở đây là `AccessDeniedException` khi Model access cho model Claude chưa được bật trong console Bedrock. Handler `ask` bắt lỗi này và trả về HTTP 200 kèm một câu tiếng Việt ngắn ("Bedrock chua duoc bat tren tai khoan nay, can Model access") thay vì 500, nên bản demo không sập. Khi được cấp Model access, chính lời gọi đó trả về câu trả lời thật.
