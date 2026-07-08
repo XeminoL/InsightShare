@@ -49,11 +49,10 @@ Lambda uses the `boto3` DynamoDB resource. `put_item` on upload, `update_item` a
 ddb = boto3.resource("dynamodb", region_name="ap-southeast-1")
 table = ddb.Table("insightshare-files")
 
-# after AI analysis, store labels + text and rebuild the search blob
 table.update_item(
     Key={"id": file_id},
     UpdateExpression="SET labels=:l, #t=:t, search_blob=:s",
-    ExpressionAttributeNames={"#t": "text"},   # 'text' is a reserved word
+    ExpressionAttributeNames={"#t": "text"},
     ExpressionAttributeValues={
         ":l": labels, ":t": text,
         ":s": (" ".join(labels) + " " + text).lower(),
@@ -69,7 +68,6 @@ Call the upload API, then confirm a new item appears:
 
 ```bash
 aws dynamodb scan --table-name insightshare-files --select COUNT
-# -> "Count": 1
 ```
 
 {{% notice info %}}

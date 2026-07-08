@@ -45,18 +45,18 @@ The handler reads the HTTP method and path from the API Gateway event (payload f
 def handler(event, context):
     method = event["requestContext"]["http"]["method"]
     path = event.get("rawPath", "/")
-    parts = [p for p in path.split("/") if p]   # e.g. ["files","<id>","analyze"]
+    parts = [p for p in path.split("/") if p]
 
     if parts == ["files"] and method == "POST":
-        return create_upload(event)      # -> presigned PUT URL + metadata row
+        return create_upload(event)
     if parts == ["files"] and method == "GET":
         return list_files(event)
     if parts == ["files", "search"] and method == "GET":
         return search_files(event)
     if len(parts) == 3 and parts[2] == "analyze" and method == "POST":
-        return analyze(event, parts[1])  # -> Rekognition/Textract (section 5.4.5)
+        return analyze(event, parts[1])
     if len(parts) == 3 and parts[2] == "ask" and method == "POST":
-        return ask_document(event, parts[1])  # -> Bedrock/Claude Q&A (section 5.4.5)
+        return ask_document(event, parts[1])
     if len(parts) == 2 and parts[0] == "files" and method == "GET":
         return get_file(event, parts[1])
     if len(parts) == 2 and parts[0] == "files" and method == "DELETE":
@@ -94,7 +94,6 @@ zip function.zip lambda_function.py
 aws lambda invoke --function-name insightshare-api \
   --payload file://event.json --cli-binary-format raw-in-base64-out out.json
 cat out.json
-# -> statusCode 200, body has "upload_url" and "key"
 ```
 
 The first invoke returned HTTP 200 with a real presigned URL and a matching DynamoDB row, confirming both the S3 and DynamoDB permissions work.

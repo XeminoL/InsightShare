@@ -59,7 +59,7 @@ elif fname.endswith(DOC_EXTS):
             text = "\n".join(b["Text"] for b in det.get("Blocks", [])
                              if b["BlockType"] == "LINE")
         except ClientError:
-            text = rec["filename"]      # fail soft if Textract is not available
+            text = rec["filename"]
             labels = ["Document"]
             notice = "Textract chua duoc bat tren tai khoan nay."
 ```
@@ -79,7 +79,6 @@ MODEL_ID = os.environ.get("BEDROCK_MODEL_ID",
                           "global.anthropic.claude-haiku-4-5-20251001-v1:0")
 bedrock = boto3.client("bedrock-runtime", region_name=REGION)
 
-# ask_document(event, file_id):
 doc_text = (rec.get("text") or "").strip()[:20000]
 prompt = (
     "Ban la tro ly tai lieu. Chi tra loi DUA TREN noi dung tai lieu duoi day, "
@@ -118,17 +117,11 @@ table.update_item(
 #### Test
 
 ```bash
-# Upload an image, then analyze -> real Rekognition labels
 curl -X POST "$API/files/<id>/analyze"
-# -> {"labels": ["Diagram","Text","Network","Chart", ...], "notice": ""}
 
-# Search by an AI label (not in the filename)
 curl "$API/files/search?q=diagram"
-# -> the uploaded image is returned
 
-# Ask a question about a .txt document (Bedrock/Claude, Vietnamese)
 curl -X POST "$API/files/<id>/ask" -d '{"question":"Tai lieu noi ve gi?"}'
-# -> {"answer": "...", "is_summary": false}   (or the token-quota fallback, HTTP 200)
 ```
 
 Search returned the image by an AI label that is not in its filename. On a `.txt` document, `ask` is wired to return a Vietnamese answer grounded in the document text once the account has inference quota; while the daily token quota is 0, the endpoint returns the fallback message at HTTP 200.

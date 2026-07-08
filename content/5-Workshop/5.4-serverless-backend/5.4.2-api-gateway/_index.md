@@ -20,7 +20,6 @@ aws apigatewayv2 create-api \
   --protocol-type HTTP \
   --target arn:aws:lambda:ap-southeast-1:<account-id>:function:insightshare-api \
   --cors-configuration "AllowOrigins=*,AllowMethods=GET,POST,DELETE,OPTIONS,AllowHeaders=*"
-# -> returns ApiId and ApiEndpoint (the invoke URL)
 ```
 
 Using `--target` auto-creates the Lambda integration, the `$default` route and the `$default` stage (auto-deploy). Then grant API Gateway permission to invoke the Lambda:
@@ -56,11 +55,9 @@ The Routes view shows the single `$default` route managed by API Gateway, integr
 ```bash
 API="https://<api-id>.execute-api.ap-southeast-1.amazonaws.com"
 
-# POST /files -> presigned URL
 curl -X POST "$API/files" -H "Content-Type: application/json" \
   -d '{"filename":"hello.txt","content_type":"text/plain"}'
 
-# GET /files -> list
 curl "$API/files"
 ```
 
@@ -73,7 +70,6 @@ class _DecimalEncoder(json.JSONEncoder):
         if isinstance(o, decimal.Decimal):
             return int(o) if o % 1 == 0 else float(o)
         return super().default(o)
-# ... json.dumps(body, cls=_DecimalEncoder)
 ```
 {{% /notice %}}
 

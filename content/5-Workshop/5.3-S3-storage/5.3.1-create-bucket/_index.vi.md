@@ -23,14 +23,10 @@ Có thể kiểm tra lại cấu hình bằng CLI:
 
 ```bash
 aws s3api get-bucket-location --bucket insightshare-files-khang-2352464
-# -> "LocationConstraint": "ap-southeast-1"
 
 aws s3api get-public-access-block --bucket insightshare-files-khang-2352464
-# -> cả bốn giá trị đều true (BlockPublicAcls, IgnorePublicAcls,
-#    BlockPublicPolicy, RestrictPublicBuckets)
 
 aws s3api get-bucket-versioning --bucket insightshare-files-khang-2352464
-# -> "Status": "Enabled"
 ```
 
 #### Cấu hình CORS

@@ -17,7 +17,6 @@ The interface is a single static `index.html` (vanilla HTML/CSS/JS): it uploads 
 The upload flow in the browser is a two-step call: ask the API for a presigned URL, then PUT the file straight to S3.
 
 ```javascript
-// 1) ask the API for a presigned upload URL + metadata id
 const r = await fetch(`${API}/files`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
@@ -25,11 +24,9 @@ const r = await fetch(`${API}/files`, {
 });
 const { id, upload_url } = await r.json();
 
-// 2) upload the file directly to S3 through the presigned URL
 await fetch(upload_url, { method: "PUT",
   headers: { "Content-Type": file.type }, body: file });
 
-// 3) trigger AI analysis
 await fetch(`${API}/files/${id}/analyze`, { method: "POST" });
 ```
 
@@ -37,7 +34,7 @@ Content search is a single call to the search route:
 
 ```javascript
 const res = await fetch(`${API}/files/search?q=` + encodeURIComponent(query));
-render(await res.json());   // matches on AI labels + extracted text
+render(await res.json());
 ```
 
 Asking a question about a document is one more call to the `ask` route (Bedrock/Claude answers in Vietnamese; an empty question returns a summary):
@@ -45,9 +42,9 @@ Asking a question about a document is one more call to the `ask` route (Bedrock/
 ```javascript
 const res = await fetch(`${API}/files/${id}/ask`, {
   method: "POST", headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ question }),      // empty question -> document summary
+  body: JSON.stringify({ question }),
 });
-const { answer } = await res.json();       // shown under the file
+const { answer } = await res.json();
 ```
 
 #### Host the frontend on S3
@@ -77,7 +74,7 @@ aws cloudfront create-distribution \
 
 The distribution reached the `Deployed` state and serves the page over HTTPS at:
 
-`https://<distribution>.cloudfront.net`
+`https://insightshare.dangthaikhang34.workers.dev`
 
 CloudFront serves the site over HTTPS in front of the S3 origin.
 
@@ -97,4 +94,4 @@ The full flow was verified from the deployed web page through API Gateway:
 
 #### Summary
 
-InsightShare runs end to end: the static frontend calls API Gateway → Lambda → S3 (presigned URL) + DynamoDB (metadata) + the AI layer. CloudFront is the delivery layer in front of the static site, deployed at `https://<distribution>.cloudfront.net`.
+InsightShare runs end to end: the static frontend calls API Gateway → Lambda → S3 (presigned URL) + DynamoDB (metadata) + the AI layer. The frontend was built to sit behind CloudFront, and the running demo is hosted at `https://insightshare.dangthaikhang34.workers.dev`.

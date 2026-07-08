@@ -17,7 +17,6 @@ Lambda creates the S3 client and generates a PUT URL for uploads and a GET URL f
 ```python
 from botocore.config import Config
 
-# Force the regional endpoint + Signature V4 (see the note below).
 s3 = boto3.client(
     "s3",
     region_name="ap-southeast-1",
@@ -25,14 +24,12 @@ s3 = boto3.client(
     config=Config(signature_version="s3v4", s3={"addressing_style": "virtual"}),
 )
 
-# Upload URL (browser PUTs the file straight to S3)
 put_url = s3.generate_presigned_url(
     "put_object",
     Params={"Bucket": BUCKET, "Key": key, "ContentType": content_type},
     ExpiresIn=900,
 )
 
-# Download / share URL
 get_url = s3.generate_presigned_url(
     "get_object",
     Params={"Bucket": BUCKET, "Key": key},
@@ -49,15 +46,11 @@ get_url = s3.generate_presigned_url(
 Request an upload URL, then PUT a file to it:
 
 ```bash
-# 1) Ask the API for a presigned upload URL
 curl -X POST "$API/files" -H "Content-Type: application/json" \
   -d '{"filename":"test.txt","content_type":"text/plain"}'
-# -> { "id": "...", "upload_url": "https://insightshare-files-khang-2352464.s3.ap-southeast-1...", "key": "..." }
 
-# 2) Upload the file directly to S3 through that URL
 curl -X PUT "<upload_url>" -H "Content-Type: text/plain" \
   --data-binary @test.txt -w "HTTP %{http_code}\n"
-# -> HTTP 200
 ```
 
 #### Check the object in S3
@@ -66,7 +59,6 @@ Confirm the file landed in the bucket:
 
 ```bash
 aws s3 ls s3://insightshare-files-khang-2352464/ --recursive
-# -> {file_id}/test.txt   (size in bytes)
 ```
 
 #### Summary

@@ -17,7 +17,6 @@ Giao diện là một file `index.html` tĩnh (HTML/CSS/JS thuần): upload file
 Luồng upload trên trình duyệt gồm hai lời gọi: xin presigned URL từ API, rồi PUT file thẳng lên S3.
 
 ```javascript
-// 1) xin API một presigned upload URL + id metadata
 const r = await fetch(`${API}/files`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
@@ -25,11 +24,9 @@ const r = await fetch(`${API}/files`, {
 });
 const { id, upload_url } = await r.json();
 
-// 2) upload file trực tiếp lên S3 qua presigned URL
 await fetch(upload_url, { method: "PUT",
   headers: { "Content-Type": file.type }, body: file });
 
-// 3) kích hoạt phân tích AI
 await fetch(`${API}/files/${id}/analyze`, { method: "POST" });
 ```
 
@@ -37,7 +34,7 @@ Tìm kiếm theo nội dung là một lời gọi tới route search:
 
 ```javascript
 const res = await fetch(`${API}/files/search?q=` + encodeURIComponent(query));
-render(await res.json());   // khớp theo nhãn AI + văn bản trích xuất
+render(await res.json());
 ```
 
 Hỏi về một tài liệu là thêm một lời gọi tới route `ask` (Bedrock/Claude trả lời bằng tiếng Việt; câu hỏi rỗng thì trả về bản tóm tắt):
@@ -45,9 +42,9 @@ Hỏi về một tài liệu là thêm một lời gọi tới route `ask` (Bedr
 ```javascript
 const res = await fetch(`${API}/files/${id}/ask`, {
   method: "POST", headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ question }),      // câu hỏi rỗng -> tóm tắt tài liệu
+  body: JSON.stringify({ question }),
 });
-const { answer } = await res.json();       // hiển thị dưới file
+const { answer } = await res.json();
 ```
 
 #### Host frontend trên S3
@@ -77,7 +74,7 @@ aws cloudfront create-distribution \
 
 Distribution đã ở trạng thái `Deployed` và phục vụ trang qua HTTPS tại:
 
-`https://<distribution>.cloudfront.net`
+`https://insightshare.dangthaikhang34.workers.dev`
 
 CloudFront phục vụ trang qua HTTPS, đặt trước origin S3.
 
@@ -97,4 +94,4 @@ Toàn bộ luồng được kiểm chứng từ trang web đã deploy qua API Ga
 
 #### Tóm tắt
 
-InsightShare chạy đầu-cuối: frontend tĩnh gọi API Gateway → Lambda → S3 (presigned URL) + DynamoDB (metadata) + lớp AI. CloudFront là lớp phân phối đặt trước web tĩnh, đã deploy tại `https://<distribution>.cloudfront.net`.
+InsightShare chạy đầu-cuối: frontend tĩnh gọi API Gateway → Lambda → S3 (presigned URL) + DynamoDB (metadata) + lớp AI. Frontend được dựng để đặt sau CloudFront, bản demo đang chạy được host tại `https://insightshare.dangthaikhang34.workers.dev`.

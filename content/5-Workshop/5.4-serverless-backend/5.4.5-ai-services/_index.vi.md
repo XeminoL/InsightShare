@@ -59,7 +59,7 @@ elif fname.endswith(DOC_EXTS):
             text = "\n".join(b["Text"] for b in det.get("Blocks", [])
                              if b["BlockType"] == "LINE")
         except ClientError:
-            text = rec["filename"]      # fail soft nếu Textract chưa dùng được
+            text = rec["filename"]
             labels = ["Document"]
             notice = "Textract chua duoc bat tren tai khoan nay."
 ```
@@ -79,7 +79,6 @@ MODEL_ID = os.environ.get("BEDROCK_MODEL_ID",
                           "global.anthropic.claude-haiku-4-5-20251001-v1:0")
 bedrock = boto3.client("bedrock-runtime", region_name=REGION)
 
-# ask_document(event, file_id):
 doc_text = (rec.get("text") or "").strip()[:20000]
 prompt = (
     "Ban la tro ly tai lieu. Chi tra loi DUA TREN noi dung tai lieu duoi day, "
@@ -118,17 +117,11 @@ table.update_item(
 #### Kiểm thử
 
 ```bash
-# Upload một ảnh, rồi analyze -> nhãn Rekognition thật
 curl -X POST "$API/files/<id>/analyze"
-# -> {"labels": ["Diagram","Text","Network","Chart", ...], "notice": ""}
 
-# Tìm theo một nhãn AI (không nằm trong tên file)
 curl "$API/files/search?q=diagram"
-# -> trả về đúng ảnh vừa upload
 
-# Hỏi đáp về một tài liệu .txt (Bedrock/Claude, tiếng Việt)
 curl -X POST "$API/files/<id>/ask" -d '{"question":"Tai lieu noi ve gi?"}'
-# -> {"answer": "...", "is_summary": false}   (hoặc câu dự phòng khi hết hạn mức token, HTTP 200)
 ```
 
 Tìm kiếm trả về đúng ảnh nhờ một nhãn AI không nằm trong tên file. Với tài liệu `.txt`, `ask` được nối sẵn để trả về câu trả lời tiếng Việt dựa trên nội dung tài liệu ngay khi tài khoản có inference quota; trong lúc hạn mức token mỗi ngày còn là 0, endpoint trả về câu thông báo dự phòng ở HTTP 200.

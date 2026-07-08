@@ -45,18 +45,18 @@ Handler đọc HTTP method và path từ sự kiện API Gateway (payload format
 def handler(event, context):
     method = event["requestContext"]["http"]["method"]
     path = event.get("rawPath", "/")
-    parts = [p for p in path.split("/") if p]   # vd: ["files","<id>","analyze"]
+    parts = [p for p in path.split("/") if p]
 
     if parts == ["files"] and method == "POST":
-        return create_upload(event)      # -> presigned PUT URL + tạo metadata
+        return create_upload(event)
     if parts == ["files"] and method == "GET":
         return list_files(event)
     if parts == ["files", "search"] and method == "GET":
         return search_files(event)
     if len(parts) == 3 and parts[2] == "analyze" and method == "POST":
-        return analyze(event, parts[1])  # -> Rekognition/Textract (phần 5.4.5)
+        return analyze(event, parts[1])
     if len(parts) == 3 and parts[2] == "ask" and method == "POST":
-        return ask_document(event, parts[1])  # -> hỏi đáp Bedrock/Claude (phần 5.4.5)
+        return ask_document(event, parts[1])
     if len(parts) == 2 and parts[0] == "files" and method == "GET":
         return get_file(event, parts[1])
     if len(parts) == 2 and parts[0] == "files" and method == "DELETE":
@@ -94,7 +94,6 @@ zip function.zip lambda_function.py
 aws lambda invoke --function-name insightshare-api \
   --payload file://event.json --cli-binary-format raw-in-base64-out out.json
 cat out.json
-# -> statusCode 200, body có "upload_url" và "key"
 ```
 
 Lần invoke đầu trả về HTTP 200 kèm presigned URL thật và một dòng tương ứng trong DynamoDB, xác nhận cả quyền S3 lẫn DynamoDB đều hoạt động.

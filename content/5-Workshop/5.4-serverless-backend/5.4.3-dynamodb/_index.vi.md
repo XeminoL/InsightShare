@@ -49,11 +49,10 @@ Lambda dùng DynamoDB resource của `boto3`. `put_item` khi upload, `update_ite
 ddb = boto3.resource("dynamodb", region_name="ap-southeast-1")
 table = ddb.Table("insightshare-files")
 
-# sau khi phân tích AI, lưu nhãn + văn bản và dựng lại search blob
 table.update_item(
     Key={"id": file_id},
     UpdateExpression="SET labels=:l, #t=:t, search_blob=:s",
-    ExpressionAttributeNames={"#t": "text"},   # 'text' là từ khóa dành riêng
+    ExpressionAttributeNames={"#t": "text"},
     ExpressionAttributeValues={
         ":l": labels, ":t": text,
         ":s": (" ".join(labels) + " " + text).lower(),
@@ -69,7 +68,6 @@ Gọi API upload, rồi xác nhận item mới xuất hiện:
 
 ```bash
 aws dynamodb scan --table-name insightshare-files --select COUNT
-# -> "Count": 1
 ```
 
 {{% notice info %}}

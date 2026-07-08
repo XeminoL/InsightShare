@@ -23,14 +23,10 @@ You can verify the same settings from the CLI:
 
 ```bash
 aws s3api get-bucket-location --bucket insightshare-files-khang-2352464
-# -> "LocationConstraint": "ap-southeast-1"
 
 aws s3api get-public-access-block --bucket insightshare-files-khang-2352464
-# -> all four values true (BlockPublicAcls, IgnorePublicAcls,
-#    BlockPublicPolicy, RestrictPublicBuckets)
 
 aws s3api get-bucket-versioning --bucket insightshare-files-khang-2352464
-# -> "Status": "Enabled"
 ```
 
 #### Configure CORS
