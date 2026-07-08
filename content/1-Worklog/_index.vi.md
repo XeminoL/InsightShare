@@ -20,9 +20,9 @@ Nhật ký thực tập theo tuần của chương trình First Cloud AI Journey
 
 **Tuần 6**: [API Gateway, CORS & hoàn thiện luồng end-to-end trên cloud](1.6-week6/)
 
-**Tuần 7**: [DynamoDB, mô hình NoSQL & tính năng chia sẻ link](1.7-week7/)
+**Tuần 7**: [DynamoDB, mô hình NoSQL & link tải bằng presigned URL](1.7-week7/)
 
-**Tuần 8**: [Lớp AI: Rekognition, Textract, Polly phân tích nội dung file](1.8-week8/)
+**Tuần 8**: [Lớp AI: Rekognition, Textract, Bedrock/Claude phân tích nội dung file](1.8-week8/)
 
 **Tuần 9**: [Tìm kiếm thông minh, CloudFront/CloudWatch & tối ưu chi phí/bảo mật](1.9-week9/)
 

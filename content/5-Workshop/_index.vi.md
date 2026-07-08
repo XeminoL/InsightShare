@@ -17,14 +17,14 @@ Phạm vi triển khai:
 - Lưu file trong **Amazon S3**, chia sẻ qua **presigned URL** có thời hạn
 - Back-end serverless trên **AWS Lambda** (Python) sau **Amazon API Gateway**
 - Metadata, nhãn AI và văn bản trích xuất trong **Amazon DynamoDB** để tìm kiếm theo nội dung
-- Lớp hiểu nội dung dùng **Amazon Rekognition**, **Amazon Textract** và **Amazon Polly**
+- Lớp hiểu nội dung dùng **Amazon Rekognition**, **Amazon Textract** và **Amazon Bedrock** (Claude)
 - Frontend tĩnh phân phối qua **Amazon CloudFront** (HTTPS), giám sát bằng **Amazon CloudWatch**
 - Quyền truy cập tối thiểu (least-privilege) bằng **AWS IAM** trên mọi dịch vụ
 
-Dự án minh họa một kiến trúc serverless hiện đại gồm:
+Dự án dùng kiến trúc serverless gồm:
 - **Lưu trữ & chia sẻ**: Amazon S3 lưu file riêng tư với presigned URL; metadata trong Amazon DynamoDB
 - **Back-end serverless**: AWS Lambda (Python) sau Amazon API Gateway xử lý toàn bộ nghiệp vụ
-- **Hiểu nội dung bằng AI**: Amazon Rekognition (gắn nhãn & kiểm duyệt ảnh), Amazon Textract (trích văn bản), Amazon Polly (đọc thành audio), đều gọi sẵn được, không cần huấn luyện mô hình
+- **Hiểu nội dung bằng AI**: Amazon Rekognition (gắn nhãn ảnh), Amazon Textract (trích văn bản), Amazon Bedrock/Claude (hỏi đáp và tóm tắt tài liệu bằng tiếng Việt), đều gọi sẵn được, không cần huấn luyện mô hình
 - **Tìm kiếm thông minh**: nhãn và văn bản trích xuất được lưu trong DynamoDB để tìm file theo nội dung
 - **Phân phối & giám sát**: Amazon CloudFront phân phối HTTPS, Amazon CloudWatch ghi log và số liệu
 - **Bảo mật**: IAM Role theo nguyên tắc tối thiểu quyền

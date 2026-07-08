@@ -39,7 +39,7 @@ Mỗi item lưu thông tin một file:
 - `labels` : danh sách nhãn AI (từ Rekognition)
 - `text` : văn bản trích xuất (từ Textract, hoặc nội dung file với `.txt`)
 - `search_blob` : nhãn + văn bản viết thường, dùng để tìm kiếm theo nội dung
-- `share_token`, `uploaded_at` : token link chia sẻ và thời gian
+- `size`, `uploaded_at` : kích thước object (từ `head_object` của S3) và thời điểm upload
 
 #### Nối Lambda với DynamoDB
 

@@ -39,7 +39,7 @@ Each item stores one file's information:
 - `labels` : list of AI labels (from Rekognition)
 - `text` : extracted text (from Textract, or the file content for `.txt`)
 - `search_blob` : lowercase labels + text, used for content search
-- `share_token`, `uploaded_at` : share link token and timestamp
+- `size`, `uploaded_at` : object size (from the S3 `head_object`) and upload timestamp
 
 #### Wire Lambda to DynamoDB
 

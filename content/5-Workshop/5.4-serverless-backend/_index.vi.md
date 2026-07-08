@@ -12,8 +12,8 @@ Phần này gồm phần lõi của InsightShare: back-end serverless và fronte
 
 + **Lambda (Python)** xử lý nghiệp vụ: nhận yêu cầu, sinh presigned URL, ghi metadata.
 + **API Gateway** expose các API để frontend gọi.
-+ **DynamoDB** lưu metadata của từng file (tên, thời gian, kích thước, link chia sẻ, nhãn AI, text trích...).
-+ **Lớp AI** (Rekognition, Textract, Polly) phân tích nội dung file để gắn nhãn, kiểm duyệt, trích text và đọc audio.
++ **DynamoDB** lưu metadata của từng file (tên, thời gian, kích thước, nhãn AI, text trích...).
++ **Lớp AI** (Rekognition, Textract, Bedrock/Claude) gắn nhãn ảnh, trích văn bản tài liệu, và trả lời câu hỏi về một tài liệu.
 + **Frontend** (web tĩnh) được host trên **S3 + CloudFront**.
 
 Sau khi hoàn thành phần này, toàn bộ luồng từ trình duyệt → API Gateway → Lambda → S3/DynamoDB → lớp AI sẽ hoạt động end-to-end.
@@ -24,4 +24,4 @@ Sau khi hoàn thành phần này, toàn bộ luồng từ trình duyệt → API
 - [Tạo API Gateway](5.4.2-api-gateway/)
 - [Tích hợp DynamoDB metadata](5.4.3-dynamodb/)
 - [Frontend S3 + CloudFront](5.4.4-frontend-cloudfront/)
-- [Thêm AI: Rekognition, Textract, Polly](5.4.5-ai-services/)
+- [Thêm AI: Rekognition, Textract, Bedrock (Claude)](5.4.5-ai-services/)

@@ -1,27 +1,19 @@
-# Deploy: GitHub Pages tại XeminoL/InsightShare.
 baseURL = "https://xeminol.github.io/InsightShare/"
 relativeURLs = false
-# canonifyURLs=true: Hugo tự thêm baseURL vào đường dẫn tuyệt đối (/images/...),
-# cần thiết vì site đặt trong subpath /InsightShare/ trên GitHub Pages.
 canonifyURLs = true
 defaultContentLanguage = "en"
-# Build cả trang có ngày trong tương lai (worklog theo kế hoạch tuần) — nếu không, các tuần có date tương lai sẽ bị ẩn
 buildFuture = true
 
-# Change the default theme to be use when building the site with Hugo
 theme = "hugo-theme-learn"
 
-# For search functionality
 [outputs]
 home = [ "HTML", "RSS", "JSON"]
 
 [params]
-  # Change default color scheme with a variant one. Can be "red", "blue", "green".
   themeVariant = "workshop"
-  # Git hub repo link
   editURL = ""
-  description = ""
-  author = "dangthaikhang34@gmail.com"
+  description = "InsightShare: a serverless AI document assistant on AWS (Textract, Rekognition, Bedrock). FCAJ internship report."
+  author = "Dang Thai Khang"
   showVisitedLinks = true
   disableBreadcrumb = false
   disableNextPrev = false

@@ -12,8 +12,8 @@ This section covers the core of InsightShare: the serverless back-end and the fr
 
 + **Lambda (Python)** handles the business logic: receive requests, generate presigned URLs, write metadata.
 + **API Gateway** exposes the APIs the frontend calls.
-+ **DynamoDB** stores the metadata of each file (name, timestamp, size, share link, AI labels, extracted text, etc.).
-+ The **AI layer** (Rekognition, Textract, Polly) analyzes file content to label, moderate, extract text, and read audio.
++ **DynamoDB** stores the metadata of each file (name, timestamp, size, AI labels, extracted text, etc.).
++ The **AI layer** (Rekognition, Textract, Bedrock/Claude) labels images, extracts document text, and answers questions about a document.
 + The **frontend** (static web) is hosted on **S3 + CloudFront**.
 
 After completing this section, the whole flow from browser → API Gateway → Lambda → S3/DynamoDB → AI layer will work end-to-end.
@@ -24,4 +24,4 @@ After completing this section, the whole flow from browser → API Gateway → L
 - [Create the API Gateway](5.4.2-api-gateway/)
 - [Integrate DynamoDB metadata](5.4.3-dynamodb/)
 - [Frontend S3 + CloudFront](5.4.4-frontend-cloudfront/)
-- [Add AI: Rekognition, Textract, Polly](5.4.5-ai-services/)
+- [Add AI: Rekognition, Textract, Bedrock (Claude)](5.4.5-ai-services/)

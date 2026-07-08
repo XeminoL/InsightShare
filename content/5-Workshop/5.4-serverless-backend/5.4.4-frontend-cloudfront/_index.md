@@ -12,7 +12,7 @@ Serve InsightShare's static web interface from **Amazon S3** and deliver it over
 
 #### The frontend
 
-The interface is a single static `index.html` (vanilla HTML/CSS/JS): it uploads a file, shows the list with AI labels, offers a content-search box, and produces share links. It talks only to the API Gateway endpoint, so the same page works locally or on CloudFront.
+The interface is a single static `index.html` (vanilla HTML/CSS/JS): it uploads a file, shows the list with AI labels, offers a content-search box, a per-file download link (a presigned GET URL), and a box to ask a question about a document. It talks only to the API Gateway endpoint, so the same page works locally or on CloudFront.
 
 The upload flow in the browser is a two-step call: ask the API for a presigned URL, then PUT the file straight to S3.
 
@@ -38,6 +38,16 @@ Content search is a single call to the search route:
 ```javascript
 const res = await fetch(`${API}/files/search?q=` + encodeURIComponent(query));
 render(await res.json());   // matches on AI labels + extracted text
+```
+
+Asking a question about a document is one more call to the `ask` route (Bedrock/Claude answers in Vietnamese; an empty question returns a summary):
+
+```javascript
+const res = await fetch(`${API}/files/${id}/ask`, {
+  method: "POST", headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ question }),      // empty question -> document summary
+});
+const { answer } = await res.json();       // shown under the file
 ```
 
 #### Host the frontend on S3
@@ -75,10 +85,6 @@ The live site, showing the stats bar, AI labels, thumbnails and label filter:
 
 ![InsightShare live site](/images/5-Workshop/5.4-serverless-backend/web-live.png)
 
-A shared file opened through its public share link:
-
-![Public share page](/images/5-Workshop/5.4-serverless-backend/web-share.png)
-
 #### End-to-end test
 
 The full flow was verified from the deployed web page through API Gateway:
@@ -86,7 +92,8 @@ The full flow was verified from the deployed web page through API Gateway:
 - `POST /files` returned a presigned URL, and `PUT` to it returned **HTTP 200** (file landed in S3).
 - `POST /files/{id}/analyze` returned real Rekognition labels.
 - `GET /files/search?q=diagram` returned the image by its AI label, not its filename.
-- The same steps run from the browser on the live site, so upload, AI analysis and content search all work end to end on AWS.
+- `POST /files/{id}/ask` returned a Vietnamese answer over a `.txt` document (or the Model-access notice at HTTP 200 when Bedrock is not yet enabled).
+- The same steps run from the browser on the live site, so upload, AI analysis, content search and document Q&A all work end to end on AWS.
 
 #### Summary
 

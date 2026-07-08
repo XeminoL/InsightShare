@@ -17,14 +17,14 @@ The build covers:
 - File storage in **Amazon S3** with sharing through time-limited **presigned URLs**
 - A serverless back-end on **AWS Lambda** (Python) behind **Amazon API Gateway**
 - File metadata, AI labels and extracted text in **Amazon DynamoDB** for content-based search
-- A content-understanding layer using **Amazon Rekognition**, **Amazon Textract** and **Amazon Polly**
+- A content-understanding layer using **Amazon Rekognition**, **Amazon Textract** and **Amazon Bedrock** (Claude)
 - The static frontend served over **Amazon CloudFront** (HTTPS), with monitoring in **Amazon CloudWatch**
 - Least-privilege access through **AWS IAM** across every service
 
-The project demonstrates a modern serverless architecture using:
+The project uses a serverless architecture built from:
 - **Storage & sharing**: Amazon S3 for private file storage with presigned URLs; metadata in Amazon DynamoDB
 - **Serverless back-end**: AWS Lambda (Python) behind Amazon API Gateway for all business logic
-- **Content understanding with AI**: Amazon Rekognition (image labels & moderation), Amazon Textract (text extraction), Amazon Polly (text to speech), all ready-to-call with no model training
+- **Content understanding with AI**: Amazon Rekognition (image labels), Amazon Textract (text extraction), Amazon Bedrock/Claude (Vietnamese Q&A and summary over documents), all ready-to-call with no model training
 - **Smart search**: labels and extracted text indexed in DynamoDB to find files by content
 - **Delivery & monitoring**: Amazon CloudFront for HTTPS delivery, Amazon CloudWatch for logs and metrics
 - **Security**: AWS IAM roles following the least-privilege principle

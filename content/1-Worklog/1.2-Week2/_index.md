@@ -17,10 +17,10 @@ pre: " <b> 1.2. </b> "
 | Day | Task | Start | End | Reference |
 | --- | --- | --- | --- | --- |
 | Mon | Study IAM: users, groups, roles, the difference between identity and resource policies, and the least-privilege principle to apply per service later. | 08/06/2026 | 08/06/2026 | [AWS IAM](https://000002.awsstudygroup.com) |
-| Tue | Draw the InsightShare serverless architecture in draw.io: browser → CloudFront/S3 → API Gateway → Lambda → S3/DynamoDB and the Rekognition/Textract/Polly branch. | 09/06/2026 | 09/06/2026 | [draw.io](https://draw.io/) |
+| Tue | Draw the InsightShare serverless architecture in draw.io: browser → CloudFront/S3 → API Gateway → Lambda → S3/DynamoDB and the Rekognition/Textract/Bedrock branch. | 09/06/2026 | 09/06/2026 | [draw.io](https://draw.io/) |
 | Wed | Write the Proposal: problem, solution, the AWS services table (10 services) and the rationale for each, all in region ap-southeast-1. | 10/06/2026 | 10/06/2026 |  |
 | Thu | Create the AWS account, enable root MFA, create a dedicated IAM user with admin off-root, configure the AWS CLI with `aws configure`, and set a monthly Budget alert. | 11/06/2026 | 11/06/2026 |  |
-| Fri | Design the DynamoDB metadata table (partition key fileId, attributes for owner, timestamp, AI labels and extracted text); study presigned URLs and the AI APIs detect_labels, detect_document_text and synthesize_speech. | 12/06/2026 | 12/06/2026 | [AI services](https://000056.awsstudygroup.com) |
+| Fri | Design the DynamoDB metadata table (partition key fileId, attributes for owner, timestamp, AI labels and extracted text); study presigned URLs and the AI APIs detect_labels, detect_document_text and Bedrock invoke_model. | 12/06/2026 | 12/06/2026 | [AI services](https://000056.awsstudygroup.com) |
 
 ### Results achieved
 

@@ -43,7 +43,8 @@ The Routes view shows the single `$default` route managed by API Gateway, integr
 | Method | Path | Purpose |
 |---|---|---|
 | POST | `/files` | Request a presigned upload URL + create metadata |
-| POST | `/files/{id}/analyze` | Run the AI layer on the uploaded object |
+| POST | `/files/{id}/analyze` | Run Rekognition/Textract on the uploaded object |
+| POST | `/files/{id}/ask` | Ask a question about the document (Bedrock/Claude, Vietnamese) |
 | GET | `/files` | List all files |
 | GET | `/files/search?q=` | Content search over labels + extracted text |
 | GET | `/files/{id}` | One file's metadata + presigned download URL |

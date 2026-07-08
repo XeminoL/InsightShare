@@ -12,7 +12,7 @@ Việc xây dựng và triển khai InsightShare cần các công cụ, tài kho
 
 #### 1. Môi trường phát triển
 - **Python 3** (3.10 trở lên): ngôn ngữ dùng cho app FastAPI chạy local và cho Lambda function.
-- **boto3**: thư viện AWS SDK cho Python (`pip install boto3`), dùng để sinh presigned URL và gọi S3, DynamoDB, Rekognition, Textract, Polly.
+- **boto3**: thư viện AWS SDK cho Python (`pip install boto3`), dùng để sinh presigned URL và gọi S3, DynamoDB, Rekognition, Textract, Bedrock.
 - **AWS CLI**: đã cấu hình bằng `aws configure` (access key, region `ap-southeast-1`) để thao tác tài nguyên từ dòng lệnh.
 - **Node.js (v18 trở lên)**: tùy chọn, để build frontend tĩnh nếu dùng bundler.
 - **Git**: để clone và quản lý mã nguồn.
@@ -22,7 +22,7 @@ Việc xây dựng và triển khai InsightShare cần các công cụ, tài kho
 Vì InsightShare chạy trên các dịch vụ được quản lý của AWS, bạn cần:
 - **Một tài khoản AWS** có quyền tạo và xóa các tài nguyên dùng trong workshop.
 - Region triển khai: **Asia Pacific (Singapore), `ap-southeast-1`**.
-- Một **S3 bucket** cho file người dùng tải lên và audio do Polly tạo, cùng một bucket S3 để host frontend tĩnh.
+- Một **S3 bucket** cho file người dùng tải lên, cùng một bucket S3 để host frontend tĩnh.
 - Đã cấu hình AWS CLI, kiểm tra bằng `aws sts get-caller-identity` trỏ đúng IAM user (không dùng tài khoản root).
 
 #### 3. Quyền IAM cần thiết
@@ -32,9 +32,9 @@ Tài khoản dùng để triển khai cần quyền tạo và xóa các dịch v
 - **AWS Lambda**: tạo, cập nhật, gọi function
 - **Amazon API Gateway**: tạo và deploy API
 - **Amazon DynamoDB**: tạo bảng, đọc/ghi item
-- **Amazon Rekognition**: `DetectLabels`, `DetectModerationLabels`
+- **Amazon Rekognition**: `DetectLabels`
 - **Amazon Textract**: `DetectDocumentText`
-- **Amazon Polly**: `SynthesizeSpeech`
+- **Amazon Bedrock**: `InvokeModel` (một model Claude)
 - **Amazon CloudFront**: tạo distribution
 - **Amazon CloudWatch và CloudWatch Logs**: xem log, tạo alarm
 - **AWS IAM**: tạo execution role cho Lambda
@@ -62,9 +62,8 @@ Execution role của Lambda chỉ được cấp đúng các action cần khi ch
       "Effect": "Allow",
       "Action": [
         "rekognition:DetectLabels",
-        "rekognition:DetectModerationLabels",
         "textract:DetectDocumentText",
-        "polly:SynthesizeSpeech"
+        "bedrock:InvokeModel"
       ],
       "Resource": "*"
     },

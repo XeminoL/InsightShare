@@ -8,7 +8,7 @@ pre: " <b> 5.4.1 </b> "
 
 #### Mục tiêu
 
-Một **Lambda function Python** cho back-end của InsightShare. Một function duy nhất điều hướng mọi route theo HTTP method và path: upload, list, search, analyze, get, delete.
+Một **Lambda function Python** cho back-end của InsightShare. Một function duy nhất điều hướng mọi route theo HTTP method và path: upload, list, search, analyze, ask, get, delete.
 
 #### Tạo function
 
@@ -54,7 +54,9 @@ def handler(event, context):
     if parts == ["files", "search"] and method == "GET":
         return search_files(event)
     if len(parts) == 3 and parts[2] == "analyze" and method == "POST":
-        return analyze(event, parts[1])  # -> lớp AI (phần 5.4.5)
+        return analyze(event, parts[1])  # -> Rekognition/Textract (phần 5.4.5)
+    if len(parts) == 3 and parts[2] == "ask" and method == "POST":
+        return ask_document(event, parts[1])  # -> hỏi đáp Bedrock/Claude (phần 5.4.5)
     if len(parts) == 2 and parts[0] == "files" and method == "GET":
         return get_file(event, parts[1])
     if len(parts) == 2 and parts[0] == "files" and method == "DELETE":
@@ -75,8 +77,9 @@ def create_upload(event):
         ExpiresIn=900,
     )
     table.put_item(Item={
-        "id": file_id, "filename": body["filename"], "s3_key": key,
-        "labels": [], "text": "", "share_token": uuid.uuid4().hex[:12],
+        "id": file_id, "filename": body["filename"],
+        "content_type": body["content_type"], "s3_key": key,
+        "labels": [], "text": "", "search_blob": body["filename"].lower(),
         "uploaded_at": int(time.time()),
     })
     return _resp(200, {"id": file_id, "upload_url": put_url, "key": key})

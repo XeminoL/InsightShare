@@ -12,7 +12,7 @@ Building and deploying InsightShare requires the following tools, accounts and p
 
 #### 1. Developer Environment
 - **Python 3** (3.10 or higher): the language used for the FastAPI local app and the Lambda function.
-- **boto3**: the AWS SDK for Python (`pip install boto3`), used to generate presigned URLs and call S3, DynamoDB, Rekognition, Textract and Polly.
+- **boto3**: the AWS SDK for Python (`pip install boto3`), used to generate presigned URLs and call S3, DynamoDB, Rekognition, Textract and Bedrock.
 - **AWS CLI**: configured with `aws configure` (access key, region `ap-southeast-1`) to manage resources from the command line.
 - **Node.js (v18 or higher)**: optional, to build the static frontend if you use a bundler.
 - **Git**: to clone and manage the codebase.
@@ -22,7 +22,7 @@ Building and deploying InsightShare requires the following tools, accounts and p
 Because InsightShare runs on AWS managed services, you need:
 - **An AWS account** with permission to create and delete the resources used in this workshop.
 - Deployment region: **Asia Pacific (Singapore), `ap-southeast-1`**.
-- An **S3 bucket** for uploaded files and Polly-generated audio, and a second use of S3 to host the static frontend.
+- An **S3 bucket** for uploaded files, and a second use of S3 to host the static frontend.
 - Access configured for the AWS CLI, verified with `aws sts get-caller-identity` pointing to your IAM user (not the root account).
 
 #### 3. Required IAM permissions
@@ -32,9 +32,9 @@ The account used for deployment needs permission to create and delete the follow
 - **AWS Lambda**: create, update, invoke functions
 - **Amazon API Gateway**: create and deploy APIs
 - **Amazon DynamoDB**: create tables, read/write items
-- **Amazon Rekognition**: `DetectLabels`, `DetectModerationLabels`
+- **Amazon Rekognition**: `DetectLabels`
 - **Amazon Textract**: `DetectDocumentText`
-- **Amazon Polly**: `SynthesizeSpeech`
+- **Amazon Bedrock**: `InvokeModel` (a Claude model)
 - **Amazon CloudFront**: create distributions
 - **Amazon CloudWatch and CloudWatch Logs**: view logs, create alarms
 - **AWS IAM**: create the Lambda execution role
@@ -62,9 +62,8 @@ The Lambda execution role is granted only the runtime actions it needs (detailed
       "Effect": "Allow",
       "Action": [
         "rekognition:DetectLabels",
-        "rekognition:DetectModerationLabels",
         "textract:DetectDocumentText",
-        "polly:SynthesizeSpeech"
+        "bedrock:InvokeModel"
       ],
       "Resource": "*"
     },

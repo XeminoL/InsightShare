@@ -20,9 +20,9 @@ Weekly log of the First Cloud AI Journey internship.
 
 **Week 6**: [API Gateway, CORS & completing the end-to-end flow on the cloud](1.6-week6/)
 
-**Week 7**: [DynamoDB, the NoSQL model & the share-link feature](1.7-week7/)
+**Week 7**: [DynamoDB, the NoSQL model & presigned download links](1.7-week7/)
 
-**Week 8**: [AI layer: Rekognition, Textract, Polly for file content analysis](1.8-week8/)
+**Week 8**: [AI layer: Rekognition, Textract, Bedrock/Claude for file content analysis](1.8-week8/)
 
 **Week 9**: [Smart search, CloudFront/CloudWatch & cost/security optimization](1.9-week9/)
 

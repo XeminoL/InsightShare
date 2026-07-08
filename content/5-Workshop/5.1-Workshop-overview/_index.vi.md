@@ -14,7 +14,7 @@ Nền tảng được xây trên:
 - **Amazon S3 + presigned URL**: lưu trữ file riêng tư; trình duyệt tải lên/tải xuống trực tiếp qua link ký có thời hạn ngắn.
 - **AWS Lambda + Amazon API Gateway**: back-end Python không phải quản lý máy chủ, expose thành API HTTP.
 - **Amazon DynamoDB**: metadata của file cùng nhãn AI và văn bản trích, phục vụ tìm kiếm theo nội dung.
-- **Amazon Rekognition, Textract và Polly**: lớp AI gắn nhãn & kiểm duyệt ảnh, trích văn bản tài liệu, đọc văn bản thành audio, không cần train model.
+- **Amazon Rekognition, Textract và Bedrock (Claude)**: lớp AI gắn nhãn ảnh, trích văn bản tài liệu, và trả lời câu hỏi hoặc tóm tắt tài liệu bằng tiếng Việt, không cần train model.
 - **Amazon CloudFront + CloudWatch + IAM**: phân phối frontend tĩnh qua HTTPS, giám sát và kiểm soát quyền theo nguyên tắc tối thiểu.
 
 #### Tổng quan workshop
@@ -23,7 +23,7 @@ InsightShare được xây dựng từ đầu tới cuối gồm các phần sau
 
 - Tầng lưu trữ file an toàn trên **Amazon S3** với **presigned URL**.
 - Back-end trên **AWS Lambda** (Python) sau **Amazon API Gateway**, metadata lưu trong **Amazon DynamoDB**.
-- **Lớp AI** đọc nội dung file tự động: gắn nhãn & kiểm duyệt ảnh bằng **Amazon Rekognition**, trích văn bản bằng **Amazon Textract**, đọc văn bản thành audio bằng **Amazon Polly**.
+- **Lớp AI** đọc nội dung file tự động: gắn nhãn ảnh bằng **Amazon Rekognition**, trích văn bản bằng **Amazon Textract**, và hỏi đáp / tóm tắt tài liệu bằng tiếng Việt bằng **Amazon Bedrock** (Claude).
 - **Tìm kiếm theo nội dung** dựa trên nhãn ảnh và văn bản trích từ tài liệu.
 - Frontend tĩnh trên **Amazon S3 + CloudFront** (HTTPS).
 - Giám sát và bảo mật bằng **Amazon CloudWatch** và **IAM Role** theo nguyên tắc tối thiểu quyền.
@@ -35,10 +35,10 @@ InsightShare hoạt động theo luồng serverless hoàn toàn:
 1. **Phân phối frontend**: trình duyệt tải giao diện web tĩnh từ **Amazon S3**, phân phối qua HTTPS bằng **Amazon CloudFront**.
 2. **Gọi API**: trình duyệt gọi **Amazon API Gateway**, cổng này chuyển yêu cầu đến **AWS Lambda** (Python) để xử lý nghiệp vụ.
 3. **Tải trực tiếp**: Lambda trả về **presigned URL** để trình duyệt tải file trực tiếp lên **Amazon S3**, đồng thời ghi metadata vào **Amazon DynamoDB**.
-4. **Phân tích AI**: sau khi upload, Lambda gọi lớp AI, **Rekognition** gắn nhãn & kiểm duyệt ảnh, **Textract** trích văn bản tài liệu, **Polly** đọc văn bản thành audio; nhãn và văn bản được lưu vào **DynamoDB** để tìm kiếm theo nội dung.
+4. **Phân tích AI**: sau khi upload, Lambda gọi lớp AI, **Rekognition** gắn nhãn ảnh và **Textract** trích văn bản tài liệu; nhãn và văn bản được lưu vào **DynamoDB** để tìm kiếm theo nội dung. Một endpoint `ask` riêng gửi phần văn bản đã lưu tới **Amazon Bedrock** (Claude) để trả lời câu hỏi hoặc tóm tắt tài liệu bằng tiếng Việt.
 5. **Giám sát & bảo mật**: **Amazon CloudWatch** thu thập log và số liệu; **IAM Role** cấp quyền tối thiểu cho từng dịch vụ.
 
-![Kiến trúc InsightShare](/images/5-Workshop/5.1-Workshop-overview/insightshare_architecture.png)
+![Kiến trúc InsightShare](/images/5-Workshop/5.1-Workshop-overview/insightshare_architecture-v2.png)
 
 #### Các dịch vụ AWS sử dụng
 
@@ -49,8 +49,8 @@ InsightShare hoạt động theo luồng serverless hoàn toàn:
 | Amazon API Gateway | Cổng API công khai để frontend gọi back-end | Endpoint HTTP được quản lý sẵn, có throttling và CORS, không phải chạy server |
 | AWS Lambda | Xử lý nghiệp vụ back-end bằng Python | Không phải quản lý server, trả tiền theo lượt gọi, tự co giãn theo tải |
 | Amazon DynamoDB | Lưu metadata của file kèm nhãn AI và văn bản trích xuất | NoSQL serverless đọc mili-giây, hợp với dạng metadata theo từng file và nhu cầu tìm kiếm |
-| Amazon Rekognition | Gắn nhãn ảnh và kiểm duyệt nội dung nhạy cảm | AI gọi sẵn, không cần train model, trả về nhãn và cờ kiểm duyệt chỉ với một lời gọi API |
+| Amazon Rekognition | Gắn nhãn ảnh | AI gọi sẵn, không cần train model, trả về nhãn chỉ với một lời gọi API |
 | Amazon Textract | Trích văn bản từ PDF và ảnh chữ | OCR gọi sẵn, giúp tài liệu tìm kiếm được theo nội dung |
-| Amazon Polly | Đọc văn bản trích xuất thành audio (mp3) | Text-to-speech gọi sẵn, thêm tính năng hỗ trợ tiếp cận chỉ với một lời gọi API |
+| Amazon Bedrock (Claude) | Trả lời câu hỏi và tóm tắt tài liệu bằng tiếng Việt | Model Claude host sẵn, không train; biến văn bản đã trích thành câu trả lời trực tiếp chỉ với một lời gọi API |
 | Amazon CloudWatch | Ghi log, số liệu và cảnh báo | Giám sát tập trung cho Lambda và API Gateway để gỡ lỗi và theo dõi chi phí/mức dùng |
 | AWS IAM | Kiểm soát quyền theo nguyên tắc tối thiểu | Cấp cho mỗi thành phần đúng quyền cần thiết, giữ file không công khai |
