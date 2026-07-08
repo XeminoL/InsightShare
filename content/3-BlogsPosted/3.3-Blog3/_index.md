@@ -38,4 +38,4 @@ MicroVMs close the gap between Lambda and EC2: VM-level isolation without minute
 https://www.facebook.com/share/p/18fFbiYK9m/
 
 ## Images
-![AWS Study Group post screenshot](/images/3-Blog/blog3_post.png)
+![AWS Study Group post screenshot](/images/3-Blog/blog3_post-v2.png)

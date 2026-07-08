@@ -25,7 +25,7 @@ chapter: false
 
 &emsp; **Thời gian thực tập:** Từ ngày 01/06/2026 đến ngày 15/08/2026
 
-![Đặng Thái Khang](/images/avatar.png)
+![Đặng Thái Khang](/images/avatar-v2.png)
 
 ### Nội dung báo cáo
 1.  [Worklog](1-Worklog/)

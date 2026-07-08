@@ -25,7 +25,7 @@ chapter: false
 
 &emsp; **Internship Duration:** From 01/06/2026 to 15/08/2026
 
-![Dang Thai Khang](/images/avatar.png)
+![Dang Thai Khang](/images/avatar-v2.png)
 
 ### Report Content
 1.  [Worklog](1-Worklog/)

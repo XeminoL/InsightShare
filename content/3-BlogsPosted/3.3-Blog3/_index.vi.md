@@ -38,4 +38,4 @@ MicroVMs lấp khoảng trống giữa Lambda và EC2: mức cách ly ngang máy
 https://www.facebook.com/share/p/18fFbiYK9m/
 
 ## Hình ảnh
-![Ảnh chụp bài đăng trên AWS Study Group](/images/3-Blog/blog3_post.png)
+![Ảnh chụp bài đăng trên AWS Study Group](/images/3-Blog/blog3_post-v2.png)
