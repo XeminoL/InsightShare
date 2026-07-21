@@ -21,6 +21,7 @@ InsightShare là một ứng dụng web để tải lên, phân tích và chia s
 - Tìm được tài liệu rồi thì vẫn phải mở ra đọc mới biết bên trong nói gì.
 
 *Giải pháp*
+
 InsightShare tập trung dữ liệu và xử lý trên một stack serverless thống nhất:
 - **Lưu trữ & chia sẻ:** S3 lưu file (bucket private), chia sẻ qua presigned URL có thời hạn; metadata lưu trong DynamoDB.
 - **Xử lý nghiệp vụ:** Lambda + API Gateway sinh presigned URL, điều phối phân tích AI, ghi/đọc dữ liệu.

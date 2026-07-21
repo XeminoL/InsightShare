@@ -21,6 +21,7 @@ InsightShare is a web application for uploading, analyzing and sharing images/do
 - Even after finding a document, understanding what is inside still means opening and reading it.
 
 *The solution*
+
 InsightShare centralizes data and processing on a unified serverless stack:
 - **Storage & sharing:** S3 stores files (private bucket), shared via time-limited presigned URLs; metadata lives in DynamoDB.
 - **Business logic:** Lambda + API Gateway generate presigned URLs, orchestrate AI analysis, and read/write data.
