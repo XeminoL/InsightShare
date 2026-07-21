@@ -34,8 +34,6 @@ aws cloudwatch put-metric-alarm \
 
 ![Console: CloudWatch alarms created](/images/5-Workshop/5.5-Policy/cloudwatch-alarms.png)
 
-_Screenshot: your AWS Console showing the `insightshare-lambda-errors` and `insightshare-lambda-throttles` alarms (screenshot to add)._
-
 - **CloudWatch Dashboard**: a dashboard `insightshare-monitoring` collects the operational views in one place. It has three widgets: Lambda invocations/errors, Lambda duration, and API Gateway request count.
 
 ```bash
@@ -45,8 +43,6 @@ aws cloudwatch put-dashboard \
 ```
 
 ![Console: CloudWatch monitoring dashboard](/images/5-Workshop/5.5-Policy/cloudwatch-dashboard.png)
-
-_Screenshot: your AWS Console showing the `insightshare-monitoring` dashboard widgets (screenshot to add)._
 
 #### Step 2: Security with IAM (least-privilege)
 

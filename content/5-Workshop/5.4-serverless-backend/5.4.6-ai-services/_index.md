@@ -38,8 +38,6 @@ For a test image, Rekognition returned labels such as `Diagram`, `Text`, `Networ
 
 ![Console: Rekognition labels on the uploaded image](/images/5-Workshop/5.4-serverless-backend/rekognition-labels.png)
 
-_Screenshot: your AWS Console (or the live site) showing the Rekognition labels returned for an uploaded image (screenshot to add)._
-
 {{% notice note %}}
 `MinConfidence` started at 70 and returned no labels for a diagram-style image (few real-world objects). Lowering it to 55 produced accurate labels, so the threshold is worth tuning to the kind of content you expect.
 {{% /notice %}}

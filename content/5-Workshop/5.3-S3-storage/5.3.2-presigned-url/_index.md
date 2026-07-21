@@ -63,4 +63,3 @@ aws s3 ls s3://insightshare-files-khang-2352464/ --recursive
 
 ![Console: uploaded object in the S3 bucket](/images/5-Workshop/5.3-S3-storage/s3-object-uploaded.png)
 
-_Screenshot: your AWS Console showing the uploaded object under its `{file_id}/` prefix in the bucket (screenshot to add)._

@@ -34,8 +34,6 @@ aws cloudwatch put-metric-alarm \
 
 ![Console: các alarm CloudWatch đã tạo](/images/5-Workshop/5.5-Policy/cloudwatch-alarms.png)
 
-_Ảnh chụp Console của bạn cho thấy hai alarm `insightshare-lambda-errors` và `insightshare-lambda-throttles` (ảnh cần bổ sung)._
-
 - **CloudWatch Dashboard**: dashboard `insightshare-monitoring` gom các khung theo dõi vào một chỗ. Nó có ba widget: Lambda invocations/errors, Lambda duration, và request count của API Gateway.
 
 ```bash
@@ -45,8 +43,6 @@ aws cloudwatch put-dashboard \
 ```
 
 ![Console: dashboard giám sát CloudWatch](/images/5-Workshop/5.5-Policy/cloudwatch-dashboard.png)
-
-_Ảnh chụp Console của bạn cho thấy các widget của dashboard `insightshare-monitoring` (ảnh cần bổ sung)._
 
 #### Bước 2: Bảo mật với IAM (least-privilege)
 

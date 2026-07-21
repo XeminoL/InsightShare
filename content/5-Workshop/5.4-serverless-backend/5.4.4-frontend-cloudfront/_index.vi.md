@@ -76,8 +76,6 @@ Distribution đã ở trạng thái `Deployed` và phục vụ trang qua HTTPS.
 
 ![Console: CloudFront distribution Deployed](/images/5-Workshop/5.4-serverless-backend/cloudfront-distribution.png)
 
-_Ảnh chụp Console của bạn cho thấy CloudFront distribution ở trạng thái `Deployed` (ảnh cần bổ sung)._
-
 Trang web đang chạy, có dải thống kê, nhãn AI, ảnh thu nhỏ và bộ lọc theo nhãn:
 
 ![Trang web InsightShare đang chạy](/images/5-Workshop/5.4-serverless-backend/web-live-v3.png)

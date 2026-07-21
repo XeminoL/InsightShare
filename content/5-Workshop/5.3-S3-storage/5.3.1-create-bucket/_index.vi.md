@@ -29,8 +29,6 @@ Giữ **tick cả 4 ô Block Public Access** để bucket luôn ở chế độ 
 
 ![Console: S3 Block Public Access đang bật](/images/5-Workshop/5.3-S3-storage/s3-block-public-access.png)
 
-_Ảnh chụp Console của bạn cho thấy cả 4 tùy chọn Block Public Access đang bật (ảnh cần bổ sung)._
-
 ```bash
 aws s3api get-public-access-block --bucket insightshare-files-khang-2352464
 ```
@@ -40,8 +38,6 @@ aws s3api get-public-access-block --bucket insightshare-files-khang-2352464
 Bật **Bucket Versioning** để giữ các phiên bản cũ của object:
 
 ![Console: S3 versioning đã bật](/images/5-Workshop/5.3-S3-storage/s3-versioning.png)
-
-_Ảnh chụp Console của bạn cho thấy Bucket Versioning ở trạng thái Enabled (ảnh cần bổ sung)._
 
 ```bash
 aws s3api get-bucket-versioning --bucket insightshare-files-khang-2352464

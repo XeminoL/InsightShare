@@ -76,8 +76,6 @@ The distribution reached the `Deployed` state and serves the page over HTTPS.
 
 ![Console: CloudFront distribution Deployed](/images/5-Workshop/5.4-serverless-backend/cloudfront-distribution.png)
 
-_Screenshot: your AWS Console showing the CloudFront distribution in the `Deployed` state (screenshot to add)._
-
 The live site, showing the stats bar, AI labels, thumbnails and label filter:
 
 ![InsightShare live site](/images/5-Workshop/5.4-serverless-backend/web-live-v3.png)

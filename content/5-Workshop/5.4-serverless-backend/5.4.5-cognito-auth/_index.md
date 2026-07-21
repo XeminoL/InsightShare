@@ -36,8 +36,6 @@ aws cognito-idp create-user-pool-domain \
 
 ![Console: Cognito user pool](/images/5-Workshop/5.4-serverless-backend/cognito-user-pool.png)
 
-_Screenshot: your AWS Console showing the `insightshare-users` user pool with the app client and Hosted UI domain (screenshot to add)._
-
 #### Step 2: Add a JWT authorizer on API Gateway
 
 Attach a JWT authorizer to the HTTP API. Its issuer is the user pool and its audience is the app client, so API Gateway verifies the token signature and expiry before the request reaches Lambda.
@@ -54,8 +52,6 @@ aws apigatewayv2 create-authorizer \
 The verified claims are placed at `event["requestContext"]["authorizer"]["jwt"]["claims"]`, which the Lambda reads. Because API Gateway already verifies the signature, the Lambda does not re-verify it.
 
 ![Console: JWT authorizer on the HTTP API](/images/5-Workshop/5.4-serverless-backend/cognito-jwt-authorizer.png)
-
-_Screenshot: your AWS Console showing the `cognito-jwt` authorizer attached to the API routes (screenshot to add)._
 
 #### Step 3: Lambda scopes data per user
 

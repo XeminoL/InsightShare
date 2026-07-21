@@ -29,8 +29,6 @@ Keep **all four Block Public Access boxes ticked** so the bucket stays private:
 
 ![Console: S3 Block Public Access on](/images/5-Workshop/5.3-S3-storage/s3-block-public-access.png)
 
-_Screenshot: your AWS Console showing all four Block Public Access options enabled (screenshot to add)._
-
 ```bash
 aws s3api get-public-access-block --bucket insightshare-files-khang-2352464
 ```
@@ -40,8 +38,6 @@ aws s3api get-public-access-block --bucket insightshare-files-khang-2352464
 Enable **Bucket Versioning** so previous versions of an object are kept:
 
 ![Console: S3 versioning enabled](/images/5-Workshop/5.3-S3-storage/s3-versioning.png)
-
-_Screenshot: your AWS Console showing Bucket Versioning set to Enabled (screenshot to add)._
 
 ```bash
 aws s3api get-bucket-versioning --bucket insightshare-files-khang-2352464

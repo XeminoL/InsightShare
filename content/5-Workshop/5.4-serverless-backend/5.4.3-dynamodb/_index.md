@@ -72,8 +72,6 @@ aws dynamodb scan --table-name insightshare-files --select COUNT
 
 ![Console: item in the DynamoDB table](/images/5-Workshop/5.4-serverless-backend/dynamodb-item.png)
 
-_Screenshot: your AWS Console showing a file item in the `insightshare-files` table under Explore items (screenshot to add)._
-
 {{% notice info %}}
 **Technical note.** The execution role granted `PutItem`/`GetItem`/`Query`/`Scan` but not `UpdateItem`, so `analyze` returned `AccessDeniedException ... not authorized to perform: dynamodb:UpdateItem`. Adding `dynamodb:UpdateItem` (and `s3:ListBucket`) to the role's policy resolves it. A running Lambda caches its credentials, so an IAM policy change takes effect only after the function is updated to spin up a fresh execution environment.
 {{% /notice %}}

@@ -38,8 +38,6 @@ Với một ảnh test, Rekognition trả về các nhãn như `Diagram`, `Text`
 
 ![Console: nhãn Rekognition trên ảnh đã upload](/images/5-Workshop/5.4-serverless-backend/rekognition-labels.png)
 
-_Ảnh chụp Console của bạn (hoặc trang web đang chạy) cho thấy các nhãn Rekognition trả về cho một ảnh đã upload (ảnh cần bổ sung)._
-
 {{% notice note %}}
 `MinConfidence` ban đầu để 70 và không ra nhãn nào cho ảnh dạng sơ đồ (ít vật thể thực). Hạ xuống 55 thì ra nhãn chính xác, nên ngưỡng này đáng tinh chỉnh theo loại nội dung bạn dự kiến.
 {{% /notice %}}

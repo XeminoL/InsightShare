@@ -36,8 +36,6 @@ aws cognito-idp create-user-pool-domain \
 
 ![Console: Cognito user pool](/images/5-Workshop/5.4-serverless-backend/cognito-user-pool.png)
 
-_Ảnh chụp: AWS Console hiển thị user pool `insightshare-users` cùng app client và Hosted UI domain (ảnh sẽ bổ sung)._
-
 #### Bước 2: Thêm JWT authorizer trên API Gateway
 
 Gắn một JWT authorizer vào HTTP API. Issuer là user pool và audience là app client, nên API Gateway kiểm tra chữ ký và hạn của token trước khi request tới Lambda.
@@ -54,8 +52,6 @@ aws apigatewayv2 create-authorizer \
 Các claim đã kiểm tra được đặt tại `event["requestContext"]["authorizer"]["jwt"]["claims"]` để Lambda đọc. Vì API Gateway đã kiểm tra chữ ký, Lambda không kiểm tra lại.
 
 ![Console: JWT authorizer trên HTTP API](/images/5-Workshop/5.4-serverless-backend/cognito-jwt-authorizer.png)
-
-_Ảnh chụp: AWS Console hiển thị authorizer `cognito-jwt` gắn vào các route của API (ảnh sẽ bổ sung)._
 
 #### Bước 3: Lambda gán dữ liệu theo người dùng
 

@@ -72,8 +72,6 @@ aws dynamodb scan --table-name insightshare-files --select COUNT
 
 ![Console: item trong bảng DynamoDB](/images/5-Workshop/5.4-serverless-backend/dynamodb-item.png)
 
-_Ảnh chụp Console của bạn cho thấy một item file trong bảng `insightshare-files` ở mục Explore items (ảnh cần bổ sung)._
-
 {{% notice info %}}
 **Ghi chú kỹ thuật.** Execution role có `PutItem`/`GetItem`/`Query`/`Scan` nhưng thiếu `UpdateItem`, nên gọi `analyze` trả về `AccessDeniedException ... not authorized to perform: dynamodb:UpdateItem`. Thêm `dynamodb:UpdateItem` (và `s3:ListBucket`) vào policy của role để xử lý. Lambda đang chạy giữ credentials cache, nên thay đổi policy IAM chỉ có hiệu lực sau khi cập nhật lại function để tạo môi trường chạy mới.
 {{% /notice %}}
