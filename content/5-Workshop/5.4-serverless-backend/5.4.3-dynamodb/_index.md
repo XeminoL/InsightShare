@@ -21,8 +21,6 @@ Open the DynamoDB console (region `ap-southeast-1`) and choose **Create table**:
 
 ![DynamoDB table](/images/5-Workshop/5.4-serverless-backend/dynamodb-table.png)
 
-The screenshot confirms the table is Active with `id` as its partition key.
-
 CLI equivalent:
 
 ```bash
@@ -74,8 +72,6 @@ aws dynamodb scan --table-name insightshare-files --select COUNT
 
 ![Console: item in the DynamoDB table](/images/5-Workshop/5.4-serverless-backend/dynamodb-item.png)
 
-The screenshot confirms the upload created one item keyed by its `id`, with the metadata attributes populated.
-
 {{% notice info %}}
-**Technical note.** The execution role initially granted `PutItem`/`GetItem`/`Query`/`Scan` but not `UpdateItem`, so `analyze` (which calls `update_item`) returned `AccessDeniedException ... not authorized to perform: dynamodb:UpdateItem`. Adding `dynamodb:UpdateItem` (and `s3:ListBucket`, needed elsewhere) to the role policy resolves it. The change did not take effect immediately: a warm Lambda execution environment caches the role credentials, so the new permission applied only after the function was updated and a fresh environment started. This is a caching effect, not a policy error, and is worth knowing when an IAM fix seems not to work.
+**Technical note.** The execution role initially granted `PutItem`/`GetItem`/`Query`/`Scan` but not `UpdateItem`, so `analyze` (which calls `update_item`) returned `AccessDeniedException ... not authorized to perform: dynamodb:UpdateItem`. Adding `dynamodb:UpdateItem` (and `s3:ListBucket`, needed elsewhere) to the role policy resolves it. The change did not take effect immediately: a warm Lambda execution environment caches the role credentials, so the new permission applied only after the function was updated and a fresh environment started. This is a caching effect, not a policy error.
 {{% /notice %}}

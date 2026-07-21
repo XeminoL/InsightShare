@@ -37,8 +37,6 @@ The function overview shows the API Gateway trigger wired to the function:
 
 ![Lambda function created](/images/5-Workshop/5.4-serverless-backend/lambda-function.png)
 
-The screenshot confirms the function exists with the API Gateway trigger attached, so requests reaching the API are routed into this function.
-
 #### Step 2: The handler
 
 Because API Gateway is set up with a single `$default` route (section 5.4.2), the handler itself does the routing. It reads the HTTP method and path from the API Gateway event (payload format v2, where the method is under `requestContext.http` and the path under `rawPath`) and dispatches to the matching function. `boto3` ships with the Lambda runtime, so no extra packaging is needed.
@@ -66,7 +64,7 @@ def handler(event, context):
     return _resp(404, {"error": "route not found"})
 ```
 
-The upload handler is the entry point of the whole pipeline. It mints a unique `file_id`, builds the S3 key as `{file_id}/{filename}`, generates a presigned PUT URL (section 5.3.2), and writes an initial metadata row so the file is tracked before its bytes even arrive. `labels`, `text` and `search_blob` start empty and are filled in later by `analyze`:
+The upload handler starts the pipeline. It mints a unique `file_id`, builds the S3 key as `{file_id}/{filename}`, generates a presigned PUT URL (section 5.3.2), and writes an initial metadata row so the file is tracked before its bytes arrive. `labels`, `text` and `search_blob` start empty and are filled in later by `analyze`:
 
 ```python
 def create_upload(event):

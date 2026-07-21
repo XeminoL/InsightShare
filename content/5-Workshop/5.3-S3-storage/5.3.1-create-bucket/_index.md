@@ -17,7 +17,7 @@ After creating it, the bucket opens empty:
 
 ![S3 bucket created](/images/5-Workshop/5.3-S3-storage/s3-bucket-created.png)
 
-The screenshot confirms the bucket exists in `ap-southeast-1` with no objects yet. Verify the region from the CLI:
+Verify the region from the CLI:
 
 ```bash
 aws s3api get-bucket-location --bucket insightshare-files-khang-2352464
@@ -29,7 +29,7 @@ The bucket holds user files that must never be world-readable; access is granted
 
 ![Console: S3 Block Public Access on](/images/5-Workshop/5.3-S3-storage/s3-block-public-access.png)
 
-The screenshot confirms all four blocks are on. The CLI reports the same state:
+Confirm the same state from the CLI:
 
 ```bash
 aws s3api get-public-access-block --bucket insightshare-files-khang-2352464
@@ -41,7 +41,7 @@ Versioning keeps a prior copy of an object when it is overwritten or deleted, so
 
 ![Console: S3 versioning enabled](/images/5-Workshop/5.3-S3-storage/s3-versioning.png)
 
-The screenshot confirms versioning is Enabled on the bucket. The CLI reports the same:
+Confirm it from the CLI:
 
 ```bash
 aws s3api get-bucket-versioning --bucket insightshare-files-khang-2352464
@@ -78,5 +78,3 @@ aws s3api get-bucket-cors --bucket insightshare-files-khang-2352464
 
 - Objects are stored under the prefix `{file_id}/{filename}`, so each file lives in its own folder keyed by a unique id, which is also the DynamoDB item key that ties the object to its metadata.
 - The Lambda function reads the bucket name `insightshare-files-khang-2352464` from its `BUCKET` environment variable, so the code carries no hard-coded bucket name.
-
-With the bucket private, versioned and CORS-enabled, the next step generates the presigned URLs that let the browser reach it without opening the bucket.

@@ -21,8 +21,6 @@ Mở DynamoDB console (region `ap-southeast-1`) và chọn **Create table**:
 
 ![Bảng DynamoDB](/images/5-Workshop/5.4-serverless-backend/dynamodb-table.png)
 
-Ảnh chụp xác nhận bảng ở trạng thái Active với partition key `id`.
-
 Lệnh CLI tương đương:
 
 ```bash
@@ -74,8 +72,6 @@ aws dynamodb scan --table-name insightshare-files --select COUNT
 
 ![Console: item trong bảng DynamoDB](/images/5-Workshop/5.4-serverless-backend/dynamodb-item.png)
 
-Ảnh chụp xác nhận lần upload đã tạo một item khóa theo `id` của nó, với các thuộc tính metadata đã điền.
-
 {{% notice info %}}
-**Ghi chú kỹ thuật.** Execution role ban đầu có `PutItem`/`GetItem`/`Query`/`Scan` nhưng thiếu `UpdateItem`, nên gọi `analyze` (vốn gọi `update_item`) trả về `AccessDeniedException ... not authorized to perform: dynamodb:UpdateItem`. Thêm `dynamodb:UpdateItem` (và `s3:ListBucket`, cần ở nơi khác) vào policy của role để xử lý. Thay đổi không có hiệu lực ngay: môi trường chạy Lambda còn ấm giữ cache credentials của role, nên quyền mới chỉ áp dụng sau khi cập nhật lại function và một môi trường mới khởi tạo. Đây là hiệu ứng cache, không phải lỗi policy, và đáng biết khi một bản sửa IAM có vẻ chưa ăn.
+**Ghi chú kỹ thuật.** Execution role ban đầu có `PutItem`/`GetItem`/`Query`/`Scan` nhưng thiếu `UpdateItem`, nên gọi `analyze` (vốn gọi `update_item`) trả về `AccessDeniedException ... not authorized to perform: dynamodb:UpdateItem`. Thêm `dynamodb:UpdateItem` (và `s3:ListBucket`, cần ở nơi khác) vào policy của role để xử lý. Thay đổi không có hiệu lực ngay: môi trường chạy Lambda còn ấm giữ cache credentials của role, nên quyền mới chỉ áp dụng sau khi cập nhật lại function và một môi trường mới khởi tạo. Đây là hiệu ứng cache, không phải lỗi policy.
 {{% /notice %}}

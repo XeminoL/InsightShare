@@ -33,7 +33,6 @@ aws sts get-caller-identity
 - **Visual Studio Code** (hoặc trình soạn thảo bất kỳ): để phát triển back-end và frontend.
 
 #### Bước 3. Tài khoản Cloud & Region
-Vì InsightShare chạy trên các dịch vụ được quản lý của AWS, bạn cần:
 - **Một tài khoản AWS** có quyền tạo và xóa các tài nguyên dùng trong workshop.
 - Region triển khai: **Asia Pacific (Singapore), `ap-southeast-1`**.
 - Một **S3 bucket** cho file người dùng tải lên, cùng một bucket S3 để host frontend tĩnh.

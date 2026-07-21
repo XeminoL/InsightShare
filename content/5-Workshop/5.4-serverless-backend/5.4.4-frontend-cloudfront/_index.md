@@ -12,7 +12,7 @@ Serve InsightShare's static web interface from **Amazon S3** and deliver it over
 
 #### Step 1: The frontend
 
-The frontend is the client half of every endpoint built so far; it has no logic of its own beyond calling the API and rendering the JSON. The interface is a single static `index.html` (vanilla HTML/CSS/JS): it uploads a file, shows the list with AI labels, offers a content-search box, a per-file download link (a presigned GET URL), and a box to ask a question about a document. It talks only to the API Gateway endpoint, so the same page works locally or on CloudFront with no rebuild.
+The frontend has no logic of its own beyond calling the API and rendering the JSON. The interface is a single static `index.html` (vanilla HTML/CSS/JS): it uploads a file, shows the list with AI labels, offers a content-search box, a per-file download link (a presigned GET URL), and a box to ask a question about a document. It talks only to the API Gateway endpoint, so the same page works locally or on CloudFront with no rebuild.
 
 The upload flow in the browser is the two-step call from 5.3.2: ask the API for a presigned URL, PUT the file straight to S3, then trigger `analyze` so the AI layer processes the object just uploaded.
 
@@ -76,13 +76,9 @@ The distribution reached the `Deployed` state and serves the page over HTTPS.
 
 ![Console: CloudFront distribution Deployed](/images/5-Workshop/5.4-serverless-backend/cloudfront-distribution.png)
 
-The screenshot confirms the distribution is `Deployed` with an HTTPS domain.
-
 The live site, showing the stats bar, AI labels, thumbnails and label filter:
 
 ![InsightShare live site](/images/5-Workshop/5.4-serverless-backend/web-live-v4.png)
-
-The screenshot confirms the deployed page renders real uploaded files with their AI labels, so the frontend and back-end are connected end to end.
 
 #### Step 4: End-to-end test
 

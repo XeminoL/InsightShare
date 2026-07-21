@@ -37,8 +37,6 @@ Màn Function overview cho thấy trigger API Gateway đã nối vào function:
 
 ![Đã tạo Lambda function](/images/5-Workshop/5.4-serverless-backend/lambda-function.png)
 
-Ảnh chụp xác nhận function đã tồn tại kèm trigger API Gateway, nên request tới API được route vào function này.
-
 #### Bước 2: Handler
 
 Vì API Gateway được cấu hình với một route `$default` duy nhất (phần 5.4.2), chính handler làm việc điều hướng. Nó đọc HTTP method và path từ sự kiện API Gateway (payload format v2, method nằm dưới `requestContext.http` và path dưới `rawPath`) rồi dispatch tới đúng hàm. `boto3` có sẵn trong runtime Lambda nên không cần đóng gói thêm.
@@ -66,7 +64,7 @@ def handler(event, context):
     return _resp(404, {"error": "route not found"})
 ```
 
-Hàm upload là điểm khởi đầu của cả pipeline. Nó sinh một `file_id` duy nhất, dựng key S3 dạng `{file_id}/{filename}`, sinh presigned PUT URL (phần 5.3.2), và ghi dòng metadata ban đầu để file được theo dõi trước cả khi bytes tới. `labels`, `text` và `search_blob` khởi tạo rỗng và được `analyze` điền về sau:
+Hàm upload mở đầu pipeline. Nó sinh một `file_id` duy nhất, dựng key S3 dạng `{file_id}/{filename}`, sinh presigned PUT URL (phần 5.3.2), và ghi dòng metadata ban đầu để file được theo dõi trước khi bytes tới. `labels`, `text` và `search_blob` khởi tạo rỗng và được `analyze` điền về sau:
 
 ```python
 def create_upload(event):

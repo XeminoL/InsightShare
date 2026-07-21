@@ -38,10 +38,8 @@ Với một ảnh test, Rekognition trả về các nhãn như `Diagram`, `Text`
 
 ![Console: nhãn Rekognition trên ảnh đã upload](/images/5-Workshop/5.4-serverless-backend/rekognition-labels.png)
 
-Ảnh chụp xác nhận Rekognition trả về nhãn cụ thể cho ảnh đã upload, rồi được lưu để tìm kiếm.
-
 {{% notice note %}}
-`MinConfidence` là phần trăm độ tin cậy tối thiểu để một nhãn được trả về. Ban đầu để 70 và không ra nhãn nào cho ảnh dạng sơ đồ (ít vật thể thực để nhận với độ tin cậy cao). Hạ xuống 55 thì lọt các nhãn chính xác nhưng kém chắc chắn hơn, nên ngưỡng này đáng tinh chỉnh theo loại nội dung dự kiến: cao hơn cho ảnh chụp vật thể, thấp hơn cho sơ đồ và ảnh chụp màn hình.
+`MinConfidence` là phần trăm độ tin cậy tối thiểu để một nhãn được trả về. Ban đầu để 70 và không ra nhãn nào cho ảnh dạng sơ đồ (ít vật thể thực để nhận với độ tin cậy cao). Hạ xuống 55 thì lọt các nhãn chính xác nhưng kém chắc chắn hơn. Tinh chỉnh ngưỡng theo loại nội dung: cao hơn cho ảnh chụp vật thể, thấp hơn cho sơ đồ và ảnh chụp màn hình.
 {{% /notice %}}
 
 #### Bước 2: Tài liệu → trích văn bản
@@ -72,7 +70,7 @@ elif fname.endswith(DOC_EXTS):
 
 #### Bước 3: Bedrock (Claude) hỏi đáp về tài liệu
 
-Bước này tiêu thụ văn bản do hai bước trước tạo ra: nhãn và văn bản trích nằm trong DynamoDB trở thành ngữ cảnh để model suy luận. Tính năng AI chính là endpoint hỏi đáp tài liệu, `POST /files/{id}/ask`. Nó đọc phần văn bản đã trích sẵn trong DynamoDB, ghép cùng câu hỏi trong một prompt yêu cầu model chỉ trả lời dựa trên tài liệu đó và bằng tiếng Việt, rồi gọi một model Claude trên Amazon Bedrock. Nếu body không có `question`, chính handler đó tóm tắt tài liệu.
+Bước này dùng văn bản mà hai bước trước lưu trong DynamoDB làm ngữ cảnh cho model. Tính năng chính là endpoint hỏi đáp tài liệu, `POST /files/{id}/ask`. Nó đọc phần văn bản đã trích từ DynamoDB, ghép cùng câu hỏi trong một prompt yêu cầu model chỉ trả lời dựa trên tài liệu đó và bằng tiếng Việt, rồi gọi một model Claude trên Amazon Bedrock. Nếu body không có `question`, chính handler đó tóm tắt tài liệu.
 
 Ngoài ra có endpoint hỏi đáp toàn thư viện, `POST /ask`. Nó quét mọi tệp trong DynamoDB, xếp hạng theo độ trùng từ khóa với câu hỏi, ghép văn bản các tệp liên quan (mỗi tệp đánh số để trích nguồn) rồi gọi Bedrock. Câu trả lời kèm danh sách tệp chứa thông tin, giúp tìm đúng tệp mà không phải mở từng cái.
 
@@ -99,7 +97,7 @@ answer = json.loads(out["body"].read())["content"][0]["text"]
 Model id nằm trong biến môi trường `BEDROCK_MODEL_ID` (mặc định `global.anthropic.claude-haiku-4-5-20251001-v1:0`), nên đổi model mà không phải sửa code. Văn bản tài liệu được cắt còn 20.000 ký tự trước khi đưa vào prompt, để chặn số token và chi phí mỗi lần gọi, đồng thời giữ request trong context window của model.
 
 {{% notice note %}}
-**Ghi chú thiết kế.** Phần tích hợp Bedrock dùng quyền IAM `bedrock:InvokeModel` và một model id dạng inference profile (`global.anthropic.claude-haiku-4-5-20251001-v1:0`) đọc từ biến môi trường, nên đổi model mà không phải sửa code. Handler `ask` bọc lời gọi `invoke_model`: khi thành công thì trả về câu trả lời của Claude, khi lỗi thì trả về HTTP 200 kèm một câu tiếng Việt ngắn thay vì 500, nên bản demo không sập vì một lỗi dịch vụ tạm thời.
+**Ghi chú thiết kế.** Phần tích hợp Bedrock dùng quyền IAM `bedrock:InvokeModel` và một model id dạng inference profile. Handler `ask` bọc lời gọi `invoke_model`: khi thành công thì trả về câu trả lời của Claude, khi lỗi thì trả về HTTP 200 kèm một câu tiếng Việt ngắn thay vì 500, nên một lỗi dịch vụ tạm thời không làm sập bản demo.
 {{% /notice %}}
 
 #### Bước 4: Lưu nhãn/văn bản vào DynamoDB

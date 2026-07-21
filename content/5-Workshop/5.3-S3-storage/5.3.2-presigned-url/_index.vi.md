@@ -63,5 +63,3 @@ aws s3 ls s3://insightshare-files-khang-2352464/ --recursive
 
 ![Console: object đã upload trong S3 bucket](/images/5-Workshop/5.3-S3-storage/s3-object-uploaded.png)
 
-Ảnh chụp xác nhận object đã upload nằm trong bucket dưới tiền tố theo file-id.
-

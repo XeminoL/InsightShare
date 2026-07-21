@@ -34,8 +34,6 @@ aws cloudwatch put-metric-alarm \
 
 ![Console: các alarm CloudWatch đã tạo](/images/5-Workshop/5.5-Policy/cloudwatch-alarms.png)
 
-Ảnh chụp xác nhận cả hai alarm đã tồn tại trên function.
-
 - **CloudWatch Dashboard**: dashboard `insightshare-monitoring` gom các khung theo dõi vào một chỗ. Nó có ba widget: Lambda invocations/errors, Lambda duration, và request count của API Gateway.
 
 ```bash
@@ -46,15 +44,11 @@ aws cloudwatch put-dashboard \
 
 ![Console: dashboard giám sát CloudWatch](/images/5-Workshop/5.5-Policy/cloudwatch-dashboard.png)
 
-Ảnh chụp xác nhận dashboard cùng ba widget vận hành của nó.
-
 #### Bước 2: Bảo mật với IAM (least-privilege)
 
-Lambda dùng một execution role riêng least-privilege, `insightshare-lambda-role`, được xác nhận đang hoạt động (mục "Last activity" cập nhật mỗi khi function chạy):
+Lambda dùng một execution role riêng least-privilege, `insightshare-lambda-role`. Mục "Last activity" cập nhật mỗi khi function chạy:
 
 ![Execution role IAM](/images/5-Workshop/5.5-Policy/iam-role.png)
-
-Ảnh chụp xác nhận role đã tồn tại và mục Last activity cập nhật khi function chạy.
 
 Policy gắn kèm chỉ cấp đúng những gì từng dịch vụ cần. S3 và DynamoDB được giới hạn theo ARN bucket và bảng cụ thể (không dùng `"Resource": "*"`); các action AI dùng `"*"` vì Rekognition, Textract và Bedrock không hỗ trợ phân quyền theo tài nguyên (Bedrock có thể giới hạn tùy chọn theo ARN của foundation model Claude):
 

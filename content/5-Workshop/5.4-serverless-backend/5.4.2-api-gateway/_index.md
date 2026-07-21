@@ -37,8 +37,6 @@ The Routes view shows the single `$default` route managed by API Gateway, integr
 
 ![API Gateway routes](/images/5-Workshop/5.4-serverless-backend/apigateway-routes.png)
 
-The screenshot confirms the one `$default` route pointing at the Lambda integration.
-
 #### Step 2: Routes handled by the Lambda
 
 These are the logical endpoints the frontend uses; all arrive through the single `$default` route and are separated inside the Lambda. Together they form the pipeline: upload a file, analyze it, then list, search or ask over the results.

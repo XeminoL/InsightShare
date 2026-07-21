@@ -8,7 +8,7 @@ pre: " <b> 5.6. </b> "
 
 #### Dọn dẹp tài nguyên
 
-Xóa toàn bộ tài nguyên đã tạo trong workshop để dừng phát sinh chi phí (region `ap-southeast-1`). Việc dọn dẹp được script hóa trong `cleanup-aws.ps1`, xóa mọi tài nguyên trong một lần chạy (có cờ `-Force` để bỏ qua bước hỏi xác nhận). Script xóa lần lượt: API Gateway HTTP API, hàm Lambda, bảng DynamoDB, cả hai bucket S3 (files và web), CloudFront distribution, các alarm/dashboard/log group của CloudWatch, và IAM role. Thứ tự quan trọng ở chỗ tài nguyên phụ thuộc nhau: IAM role xóa cuối vì Lambda dùng nó, và mỗi bucket S3 phải được làm rỗng (`s3 rm --recursive`) trước khi xóa, vì S3 từ chối xóa bucket chưa rỗng. Các lệnh CLI tương đương:
+Các tài nguyên này vẫn phát sinh chi phí, nên xóa chúng sau khi đồ án đã được chấm. Chạy `cleanup-aws.ps1 -Force` để xóa toàn bộ, hoặc dùng các lệnh dưới đây.
 
 ```bash
 aws apigatewayv2 delete-api --api-id <api-id>

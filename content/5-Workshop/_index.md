@@ -11,23 +11,15 @@ alwaysopen: false
 
 #### Overview
 
-**InsightShare** is a web application for uploading, analyzing and sharing images and documents, built entirely on a **serverless** architecture on AWS. Unlike plain storage, the moment a file is uploaded the system uses AWS AI services to understand its content, so users can search their files by what is inside them, not only by filename.
+**InsightShare** is a web application for uploading, analyzing and sharing images and documents, built entirely on a **serverless** architecture on AWS. When a file is uploaded, the system uses AWS AI services to read its content, so files can be searched by what is inside them, not only by filename.
 
 The build covers:
-- File storage in **Amazon S3** with sharing through time-limited **presigned URLs**
+- **Amazon S3** for private file storage, shared through time-limited **presigned URLs**
 - A serverless back-end on **AWS Lambda** (Python) behind **Amazon API Gateway**
-- File metadata, AI labels and extracted text in **Amazon DynamoDB** for content-based search
-- A content-understanding layer using **Amazon Rekognition**, **Amazon Textract** and **Amazon Bedrock** (Claude)
+- File metadata, AI labels and extracted text in **Amazon DynamoDB**, which back content-based search
+- A content-understanding layer with **Amazon Rekognition**, **Amazon Textract** and **Amazon Bedrock** (Claude), all ready-to-call with no model training
 - The static frontend served over **Amazon CloudFront** (HTTPS), with monitoring in **Amazon CloudWatch**
 - Least-privilege access through **AWS IAM** across every service
-
-The project uses a serverless architecture built from:
-- **Storage & sharing**: Amazon S3 for private file storage with presigned URLs; metadata in Amazon DynamoDB
-- **Serverless back-end**: AWS Lambda (Python) behind Amazon API Gateway for all business logic
-- **Content understanding with AI**: Amazon Rekognition (image labels), Amazon Textract (text extraction), Amazon Bedrock/Claude (Vietnamese Q&A and summary over documents), all ready-to-call with no model training
-- **Smart search**: labels and extracted text indexed in DynamoDB to find files by content
-- **Delivery & monitoring**: Amazon CloudFront for HTTPS delivery, Amazon CloudWatch for logs and metrics
-- **Security**: AWS IAM roles following the least-privilege principle
 
 #### Content
 

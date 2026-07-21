@@ -8,30 +8,19 @@ pre: " <b> 5.1. </b> "
 
 #### About InsightShare
 
-**InsightShare** is a serverless web application for uploading, analyzing and sharing images and documents on AWS. It uses ready-to-call AWS AI services to understand each file on upload, so users search by content and share through time-limited links.
+**InsightShare** is a serverless web application for uploading, analyzing and sharing images and documents on AWS. It uses ready-to-call AWS AI services to read each file on upload, so files are searchable by content and shared through time-limited links.
 
 The platform is built on:
-- **Amazon S3 + presigned URLs**: private file storage; the browser uploads/downloads directly through short-lived signed links.
+- **Amazon S3 + presigned URLs**: private file storage; the browser uploads and downloads directly through short-lived signed links.
 - **AWS Lambda + Amazon API Gateway**: a Python back-end with no servers to manage, exposed as an HTTP API.
-- **Amazon Cognito**: user sign-in through the Hosted UI, so each user sees only their own files, scoped by the JWT `sub` claim.
-- **Amazon DynamoDB**: file metadata with AI labels and extracted text, powering content-based search.
-- **Amazon Rekognition, Textract and Bedrock (Claude)**: the AI layer, labels images, extracts document text, and answers questions or summarizes a document in Vietnamese, no model training.
+- **Amazon Cognito**: user sign-in through the Hosted UI, scoped by the JWT `sub` claim so each user sees only their own files.
+- **Amazon DynamoDB**: file metadata with AI labels and extracted text, backing content-based search.
+- **Amazon Rekognition, Textract and Bedrock (Claude)**: the AI layer that labels images, extracts document text, and answers questions or summarizes a document in Vietnamese, with no model training.
 - **Amazon CloudFront + CloudWatch + IAM**: HTTPS delivery of the static frontend, monitoring, and least-privilege access control.
-
-#### Workshop Overview
-
-InsightShare is built end to end across the following parts:
-
-- A secure file storage layer on **Amazon S3** with **presigned URLs**.
-- A back-end on **AWS Lambda** (Python) behind **Amazon API Gateway**, with metadata in **Amazon DynamoDB**.
-- An **AI layer** that reads file content automatically: image labels with **Amazon Rekognition**, text extraction with **Amazon Textract**, and document Q&A / summary in Vietnamese with **Amazon Bedrock** (Claude).
-- **Content search** over image labels and text extracted from documents.
-- The static frontend on **Amazon S3 + CloudFront** (HTTPS).
-- Monitoring and security with **Amazon CloudWatch** and a least-privilege **IAM Role**.
 
 #### Architecture Overview
 
-InsightShare follows a fully serverless flow. The numbered steps match the arrows in the architecture diagram, in order:
+The numbered steps match the arrows in the architecture diagram, in order:
 
 1. **User → CloudFront**: the browser loads the static web interface from **Amazon S3**, delivered over HTTPS through **Amazon CloudFront**.
 2. **User → API Gateway → Lambda**: the browser calls **Amazon API Gateway**, which forwards the request to **AWS Lambda** (Python) for business logic.

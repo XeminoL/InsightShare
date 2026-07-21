@@ -37,8 +37,6 @@ Màn Routes cho thấy route `$default` duy nhất do API Gateway quản lý, đ
 
 ![Route của API Gateway](/images/5-Workshop/5.4-serverless-backend/apigateway-routes.png)
 
-Ảnh chụp xác nhận đúng một route `$default` trỏ vào integration Lambda.
-
 #### Bước 2: Các route do Lambda xử lý
 
 Đây là các endpoint logic mà frontend dùng; tất cả đều đi vào qua route `$default` duy nhất và được tách bên trong Lambda. Gộp lại chúng tạo thành pipeline: upload một file, phân tích nó, rồi liệt kê, tìm kiếm hoặc hỏi đáp trên kết quả.

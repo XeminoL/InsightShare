@@ -33,7 +33,6 @@ aws sts get-caller-identity
 - **Visual Studio Code** (or any editor): for backend and frontend development.
 
 #### Step 3. Cloud Account & Region
-Because InsightShare runs on AWS managed services, you need:
 - **An AWS account** with permission to create and delete the resources used in this workshop.
 - Deployment region: **Asia Pacific (Singapore), `ap-southeast-1`**.
 - An **S3 bucket** for uploaded files, and a second use of S3 to host the static frontend.

@@ -8,30 +8,19 @@ pre: " <b> 5.1. </b> "
 
 #### Giới thiệu InsightShare
 
-**InsightShare** là một ứng dụng web serverless để tải lên, phân tích và chia sẻ ảnh và tài liệu trên AWS. Nó dùng các dịch vụ AI gọi sẵn của AWS để hiểu nội dung mỗi file khi tải lên, nhờ vậy người dùng tìm file theo nội dung và chia sẻ qua link có thời hạn.
+**InsightShare** là một ứng dụng web serverless để tải lên, phân tích và chia sẻ ảnh và tài liệu trên AWS. Nó dùng các dịch vụ AI gọi sẵn của AWS để đọc nội dung mỗi file khi tải lên, nhờ vậy tìm file được theo nội dung và chia sẻ qua link có thời hạn.
 
 Nền tảng được xây trên:
-- **Amazon S3 + presigned URL**: lưu trữ file riêng tư; trình duyệt tải lên/tải xuống trực tiếp qua link ký có thời hạn ngắn.
+- **Amazon S3 + presigned URL**: lưu trữ file riêng tư; trình duyệt tải lên và tải xuống trực tiếp qua link ký có thời hạn ngắn.
 - **AWS Lambda + Amazon API Gateway**: back-end Python không phải quản lý máy chủ, expose thành API HTTP.
-- **Amazon Cognito**: đăng nhập người dùng qua Hosted UI, để mỗi người chỉ thấy file của mình, cô lập theo claim `sub` trong JWT.
-- **Amazon DynamoDB**: metadata của file cùng nhãn AI và văn bản trích, phục vụ tìm kiếm theo nội dung.
+- **Amazon Cognito**: đăng nhập người dùng qua Hosted UI, cô lập theo claim `sub` trong JWT để mỗi người chỉ thấy file của mình.
+- **Amazon DynamoDB**: metadata của file cùng nhãn AI và văn bản trích, làm nền cho tìm kiếm theo nội dung.
 - **Amazon Rekognition, Textract và Bedrock (Claude)**: lớp AI gắn nhãn ảnh, trích văn bản tài liệu, và trả lời câu hỏi hoặc tóm tắt tài liệu bằng tiếng Việt, không cần train model.
 - **Amazon CloudFront + CloudWatch + IAM**: phân phối frontend tĩnh qua HTTPS, giám sát và kiểm soát quyền theo nguyên tắc tối thiểu.
 
-#### Tổng quan workshop
-
-InsightShare được xây dựng từ đầu tới cuối gồm các phần sau:
-
-- Tầng lưu trữ file an toàn trên **Amazon S3** với **presigned URL**.
-- Back-end trên **AWS Lambda** (Python) sau **Amazon API Gateway**, metadata lưu trong **Amazon DynamoDB**.
-- **Lớp AI** đọc nội dung file tự động: gắn nhãn ảnh bằng **Amazon Rekognition**, trích văn bản bằng **Amazon Textract**, và hỏi đáp / tóm tắt tài liệu bằng tiếng Việt bằng **Amazon Bedrock** (Claude).
-- **Tìm kiếm theo nội dung** dựa trên nhãn ảnh và văn bản trích từ tài liệu.
-- Frontend tĩnh trên **Amazon S3 + CloudFront** (HTTPS).
-- Giám sát và bảo mật bằng **Amazon CloudWatch** và **IAM Role** theo nguyên tắc tối thiểu quyền.
-
 #### Tổng quan kiến trúc
 
-InsightShare hoạt động theo luồng serverless hoàn toàn. Các bước đánh số khớp với các mũi tên trong sơ đồ kiến trúc, theo thứ tự:
+Các bước đánh số khớp với các mũi tên trong sơ đồ kiến trúc, theo thứ tự:
 
 1. **User → CloudFront**: trình duyệt tải giao diện web tĩnh từ **Amazon S3**, phân phối qua HTTPS bằng **Amazon CloudFront**.
 2. **User → API Gateway → Lambda**: trình duyệt gọi **Amazon API Gateway**, cổng này chuyển yêu cầu đến **AWS Lambda** (Python) để xử lý nghiệp vụ.

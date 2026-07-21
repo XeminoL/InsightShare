@@ -12,7 +12,7 @@ Phục vụ giao diện web tĩnh của InsightShare từ **Amazon S3** và phâ
 
 #### Bước 1: Frontend
 
-Frontend là nửa phía client của mọi endpoint đã dựng đến giờ; nó không có logic riêng ngoài việc gọi API và render JSON. Giao diện là một file `index.html` tĩnh (HTML/CSS/JS thuần): upload file, hiển thị danh sách kèm nhãn AI, có ô tìm kiếm theo nội dung, link tải cho từng file (một presigned GET URL), và ô đặt câu hỏi về một tài liệu. Nó chỉ nói chuyện với endpoint API Gateway, nên cùng một trang chạy được cả ở local lẫn trên CloudFront mà không cần build lại.
+Frontend không có logic riêng ngoài việc gọi API và render JSON. Giao diện là một file `index.html` tĩnh (HTML/CSS/JS thuần): upload file, hiển thị danh sách kèm nhãn AI, có ô tìm kiếm theo nội dung, link tải cho từng file (một presigned GET URL), và ô đặt câu hỏi về một tài liệu. Nó chỉ nói chuyện với endpoint API Gateway, nên cùng một trang chạy được cả ở local lẫn trên CloudFront mà không cần build lại.
 
 Luồng upload trên trình duyệt là hai lời gọi từ 5.3.2: xin presigned URL từ API, PUT file thẳng lên S3, rồi kích hoạt `analyze` để lớp AI xử lý object vừa upload.
 
@@ -76,13 +76,9 @@ Distribution đã ở trạng thái `Deployed` và phục vụ trang qua HTTPS.
 
 ![Console: CloudFront distribution Deployed](/images/5-Workshop/5.4-serverless-backend/cloudfront-distribution.png)
 
-Ảnh chụp xác nhận distribution ở trạng thái `Deployed` với domain HTTPS.
-
 Trang web đang chạy, có dải thống kê, nhãn AI, ảnh thu nhỏ và bộ lọc theo nhãn:
 
 ![Trang web InsightShare đang chạy](/images/5-Workshop/5.4-serverless-backend/web-live-v4.png)
-
-Ảnh chụp xác nhận trang đã deploy render file thật đã upload kèm nhãn AI của chúng, nên frontend và back-end đã nối với nhau đầu-cuối.
 
 #### Bước 4: Test end-to-end
 

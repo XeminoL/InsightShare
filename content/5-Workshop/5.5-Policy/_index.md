@@ -34,8 +34,6 @@ aws cloudwatch put-metric-alarm \
 
 ![Console: CloudWatch alarms created](/images/5-Workshop/5.5-Policy/cloudwatch-alarms.png)
 
-The screenshot confirms both alarms exist against the function.
-
 - **CloudWatch Dashboard**: a dashboard `insightshare-monitoring` collects the operational views in one place. It has three widgets: Lambda invocations/errors, Lambda duration, and API Gateway request count.
 
 ```bash
@@ -46,15 +44,11 @@ aws cloudwatch put-dashboard \
 
 ![Console: CloudWatch monitoring dashboard](/images/5-Workshop/5.5-Policy/cloudwatch-dashboard.png)
 
-The screenshot confirms the dashboard with its three operational widgets.
-
 #### Step 2: Security with IAM (least-privilege)
 
-The Lambda uses a dedicated least-privilege execution role, `insightshare-lambda-role`, confirmed active (its "Last activity" updates whenever the function runs):
+The Lambda uses a dedicated least-privilege execution role, `insightshare-lambda-role`. Its "Last activity" updates whenever the function runs:
 
 ![IAM execution role](/images/5-Workshop/5.5-Policy/iam-role.png)
-
-The screenshot confirms the role exists and its Last activity updates as the function runs.
 
 The attached policy grants only what each service needs. S3 and DynamoDB are scoped to the specific bucket and table ARNs (not `"Resource": "*"`); the AI actions use `"*"` because Rekognition, Textract and Bedrock do not support resource-level permissions (Bedrock can optionally be scoped to the Claude foundation-model ARN):
 
