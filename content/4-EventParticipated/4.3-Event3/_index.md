@@ -9,8 +9,8 @@ pre: " <b> 4.3. </b> "
 | Field | Detail |
 | --- | --- |
 | Event name | AWS: Enterprise Cloud Architectures and Industry Application (featuring Cloud Kinetics & Renova Cloud) |
-| Date & time | [DD/MM/2026, HH:MM-HH:MM] |
-| Location | [LOCATION] |
+| Date & time | 04/07/2026, 09:00-12:00 |
+| Location | Floor 26, Bitexco Financial Tower, 2 Hai Trieu St, Saigon Ward, HCMC |
 | Role | Attendee |
 
 ### Main content
