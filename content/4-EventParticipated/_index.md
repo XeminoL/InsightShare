@@ -6,7 +6,7 @@ chapter: false
 pre: " <b> 4. </b> "
 ---
 
-Three events attended during the internship, each organized by the First Cloud AI Journey program. Every event is documented on its own page below, with the details and photo or video evidence.
+Three events attended during the internship, each organized by the First Cloud AI Journey program and covering a different corner of building AI on AWS.
 
 ### [Event 1 - FCAJ Community Day, June 2026](4.1-Event1/)
 A monthly community event where speakers from several companies shared hands-on experience building AI on AWS: agentic cloud operations, voice AI for Vietnamese, an incident-investigation DevOps agent, and Amazon Quick for HR.
