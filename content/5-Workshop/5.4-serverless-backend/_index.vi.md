@@ -25,5 +25,5 @@ Sau khi hoàn thành phần này, toàn bộ luồng từ trình duyệt → API
 - [Tạo API Gateway](5.4.2-api-gateway/)
 - [Tích hợp DynamoDB metadata](5.4.3-dynamodb/)
 - [Frontend S3 + CloudFront](5.4.4-frontend-cloudfront/)
-- [Đăng nhập theo người dùng với Amazon Cognito](5.4.6-cognito-auth/)
-- [Thêm AI: Rekognition, Textract, Bedrock (Claude)](5.4.5-ai-services/)
+- [Đăng nhập theo người dùng với Amazon Cognito](5.4.5-cognito-auth/)
+- [Thêm AI: Rekognition, Textract, Bedrock (Claude)](5.4.6-ai-services/)

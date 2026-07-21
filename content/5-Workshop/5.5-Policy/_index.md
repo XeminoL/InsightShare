@@ -101,5 +101,5 @@ The permission set was tuned during real testing: `dynamodb:UpdateItem` and `s3:
 {{% /notice %}}
 
 {{% notice info %}}
-The Cognito sign-in (see [5.4.6](../5.4-serverless-backend/5.4.6-cognito-auth/)) needs no extra permission in this Lambda role. The JWT authorizer on API Gateway verifies the token and passes the `sub` claim to the function, so per-user scoping runs on the existing DynamoDB permissions above.
+The Cognito sign-in (see [5.4.6](../5.4-serverless-backend/5.4.5-cognito-auth/)) needs no extra permission in this Lambda role. The JWT authorizer on API Gateway verifies the token and passes the `sub` claim to the function, so per-user scoping runs on the existing DynamoDB permissions above.
 {{% /notice %}}

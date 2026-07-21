@@ -25,5 +25,5 @@ After completing this section, the whole flow from browser → API Gateway → L
 - [Create the API Gateway](5.4.2-api-gateway/)
 - [Integrate DynamoDB metadata](5.4.3-dynamodb/)
 - [Frontend S3 + CloudFront](5.4.4-frontend-cloudfront/)
-- [Per-user sign-in with Amazon Cognito](5.4.6-cognito-auth/)
-- [Add AI: Rekognition, Textract, Bedrock (Claude)](5.4.5-ai-services/)
+- [Per-user sign-in with Amazon Cognito](5.4.5-cognito-auth/)
+- [Add AI: Rekognition, Textract, Bedrock (Claude)](5.4.6-ai-services/)
