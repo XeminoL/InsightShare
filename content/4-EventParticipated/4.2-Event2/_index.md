@@ -23,7 +23,7 @@ A monthly community event where speakers from a few companies shared how they bu
 - **Mr. Toan (Renova Cloud)** on connecting **Amazon Quick** to another service privately, so the data does not travel over the public internet.
 
 ### What I learned
-The point that stuck with me, repeated across the talks, was that these AI tools assist engineers rather than replace them: they suggest or draft, and a person still decides. That is close to how my own project works, where the AI analyzes and answers but the user stays in control. I also picked up something from anh Toan's talk that I had not thought about, that connecting an AI to a service is not the whole job in a company, keeping that connection off the public internet matters just as much. A few of the speakers work in solution and sales roles rather than pure engineering, which gave me a wider view of where cloud knowledge can lead.
+The point that stuck with me, repeated across the talks, was that these AI tools assist engineers rather than replace them: they suggest or draft, and a person still decides. That is close to how my own project works, where the AI analyzes and answers but the user stays in control. I also picked up something from Mr. Toan's talk that I had not thought about, that connecting an AI to a service is not the whole job in a company, keeping that connection off the public internet matters just as much. A few of the speakers work in solution and sales roles rather than pure engineering, which gave me a wider view of where cloud knowledge can lead.
 
 ### Photos
 [Insert 1-2 photos or a video link as evidence.]
