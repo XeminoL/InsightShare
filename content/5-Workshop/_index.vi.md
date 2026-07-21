@@ -4,7 +4,7 @@ date: 2026-07-29
 weight: 5
 chapter: false
 pre: " <b> 5. </b> "
-alwaysopen: true
+alwaysopen: false
 ---
 
 # InsightShare: Xây dựng nền tảng chia sẻ ảnh & tài liệu tích hợp AI trên AWS (Serverless)
