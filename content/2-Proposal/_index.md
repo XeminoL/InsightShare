@@ -37,7 +37,7 @@ InsightShare centralizes data and processing on a unified serverless stack:
 *Overview*
 The browser loads the static frontend from **S3 + CloudFront (HTTPS)** → calls **API Gateway** → **Lambda (Python)**. Lambda generates presigned URLs so the browser uploads/downloads directly to **S3**. After upload, Lambda calls the AI services (**Rekognition / Textract / Bedrock**) and stores results in **DynamoDB** for search. **CloudWatch** monitors logs/metrics; **IAM** enforces least-privilege access.
 
-![InsightShare Architecture](/images/2-Proposal/insightshare_architecture-v2.png)
+![InsightShare Architecture](/images/2-Proposal/insightshare_architecture-v3.png)
 
 *AWS Services Used*
 
