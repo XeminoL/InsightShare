@@ -26,4 +26,6 @@ Sự kiện cộng đồng hàng tháng, các diễn giả từ vài công ty ch
 Điều đọng lại với em, lặp qua các phần chia sẻ, là những công cụ AI này hỗ trợ kỹ sư chứ không thay thế: chúng gợi ý hoặc soạn nháp, còn con người vẫn là người quyết định. Điều đó gần với cách đồ án của em hoạt động, nơi AI phân tích và trả lời còn người dùng vẫn giữ quyền quyết định. Em cũng nhận ra một điều từ phần của anh Toàn mà trước đó em chưa nghĩ tới, rằng nối AI vào một dịch vụ chưa phải toàn bộ công việc trong một doanh nghiệp, giữ kết nối đó nằm ngoài internet công khai cũng quan trọng không kém. Vài diễn giả làm ở vai trò solution và sale chứ không thuần kỹ thuật, cho em một góc nhìn rộng hơn về nơi kiến thức cloud có thể dẫn tới.
 
 ### Hình ảnh
-[Chèn 1-2 ảnh hoặc liên kết video làm bằng chứng.]
+![FCAJ Community Day - June 2026](/images/4-Event/event2-1.jpg)
+
+![FCAJ Community Day - June 2026](/images/4-Event/event2-2.jpg)
