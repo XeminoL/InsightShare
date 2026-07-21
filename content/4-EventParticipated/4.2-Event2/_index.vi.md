@@ -9,8 +9,8 @@ pre: " <b> 4.2. </b> "
 | Trường | Chi tiết |
 | --- | --- |
 | Tên sự kiện | FCAJ Community Day - June 2026 |
-| Thời gian | [DD/MM/2026, 09:00-12:00] |
-| Địa điểm | Tầng 26 và 36, tòa nhà Bitexco Financial Tower, số 2 Hải Triều, phường Sài Gòn, TP. Hồ Chí Minh |
+| Thời gian | 27/06/2026, 09:00-12:00 |
+| Địa điểm | Tầng 26, tòa nhà Bitexco Financial Tower, số 2 Hải Triều, phường Sài Gòn, TP. Hồ Chí Minh |
 | Vai trò | Người tham dự |
 
 ### Nội dung chính

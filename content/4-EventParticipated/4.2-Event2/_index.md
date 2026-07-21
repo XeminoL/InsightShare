@@ -9,8 +9,8 @@ pre: " <b> 4.2. </b> "
 | Field | Detail |
 | --- | --- |
 | Event name | FCAJ Community Day - June 2026 |
-| Date & time | [DD/MM/2026, 09:00-12:00] |
-| Location | Floor 26 & 36, Bitexco Financial Tower, 2 Hai Trieu St, Saigon Ward, HCMC |
+| Date & time | 27/06/2026, 09:00-12:00 |
+| Location | Floor 26, Bitexco Financial Tower, 2 Hai Trieu St, Saigon Ward, HCMC |
 | Role | Attendee |
 
 ### Main content
