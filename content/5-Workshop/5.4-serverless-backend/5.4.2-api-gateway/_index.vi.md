@@ -45,7 +45,7 @@ Màn Routes cho thấy route `$default` duy nhất do API Gateway quản lý, đ
 |---|---|---|
 | POST | `/files` | Xin presigned upload URL + tạo metadata |
 | POST | `/files/{id}/analyze` | Chạy Rekognition/Textract trên object đã upload |
-| POST | `/files/{id}/ask` | Hỏi đáp về tài liệu (Bedrock/Claude, tiếng Việt) |
+| POST | `/files/{id}/ask` | Hỏi đáp về tài liệu (Bedrock/Claude, trả lời theo ngôn ngữ câu hỏi) |
 | POST | `/ask` | Hỏi đáp trên toàn thư viện (Bedrock/Claude, kèm tệp nguồn) |
 | GET | `/files` | Liệt kê tất cả file |
 | GET | `/files/search?q=` | Tìm kiếm theo nội dung (nhãn + văn bản trích xuất) |

@@ -52,7 +52,7 @@ Trình duyệt tải giao diện tĩnh từ **S3 + CloudFront (HTTPS)** → đă
 | Amazon DynamoDB | Lưu metadata + nhãn AI + văn bản trích, phục vụ tìm kiếm |
 | Amazon Rekognition | Gắn nhãn ảnh (DetectLabels) |
 | Amazon Textract | Trích văn bản từ PDF/ảnh chữ (DetectDocumentText) |
-| Amazon Bedrock (Claude) | Hỏi đáp và tóm tắt tài liệu theo ngôn ngữ câu hỏi (InvokeModel) |
+| Amazon Bedrock (Claude) | Hỏi đáp và tóm tắt tài liệu, trả lời theo ngôn ngữ câu hỏi (InvokeModel) |
 | Amazon CloudWatch | Log, metric, alarm giám sát hệ thống |
 | AWS IAM | Phân quyền least-privilege cho Lambda và từng dịch vụ AI |
 

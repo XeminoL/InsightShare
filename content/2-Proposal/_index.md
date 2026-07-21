@@ -52,7 +52,7 @@ The browser loads the static frontend from **S3 + CloudFront (HTTPS)** → signs
 | Amazon DynamoDB | Store metadata + AI labels + extracted text for search |
 | Amazon Rekognition | Image labeling (DetectLabels) |
 | Amazon Textract | Text extraction from PDF/scanned images (DetectDocumentText) |
-| Amazon Bedrock (Claude) | Vietnamese Q&A and document summary (InvokeModel) |
+| Amazon Bedrock (Claude) | Document Q&A and summary, answered in the question's language (InvokeModel) |
 | Amazon CloudWatch | Logs, metrics, alarms for monitoring |
 | AWS IAM | Least-privilege access for Lambda and each AI service |
 

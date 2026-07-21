@@ -97,7 +97,7 @@ answer = json.loads(out["body"].read())["content"][0]["text"]
 Model id nằm trong biến môi trường `BEDROCK_MODEL_ID` (mặc định `global.anthropic.claude-haiku-4-5-20251001-v1:0`), nên đổi model mà không phải sửa code. Văn bản tài liệu được cắt còn 20.000 ký tự trước khi đưa vào prompt, để chặn số token và chi phí mỗi lần gọi, đồng thời giữ request trong context window của model.
 
 {{% notice note %}}
-**Ghi chú thiết kế.** Phần tích hợp Bedrock dùng quyền IAM `bedrock:InvokeModel` và một model id dạng inference profile. Handler `ask` bọc lời gọi `invoke_model`: khi thành công thì trả về câu trả lời của Claude, khi lỗi thì trả về HTTP 200 kèm một câu tiếng Việt ngắn thay vì 500, nên một lỗi dịch vụ tạm thời không làm sập bản demo.
+**Ghi chú thiết kế.** Phần tích hợp Bedrock dùng quyền IAM `bedrock:InvokeModel` và một model id dạng inference profile. Handler `ask` bọc lời gọi `invoke_model`: khi thành công thì trả về câu trả lời của Claude, khi lỗi thì trả về HTTP 200 kèm một câu tiếng Anh ngắn thay vì 500, nên một lỗi dịch vụ tạm thời không làm sập bản demo.
 {{% /notice %}}
 
 #### Bước 4: Lưu nhãn/văn bản vào DynamoDB

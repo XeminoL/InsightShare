@@ -97,7 +97,7 @@ answer = json.loads(out["body"].read())["content"][0]["text"]
 The model id lives in the `BEDROCK_MODEL_ID` environment variable (default `global.anthropic.claude-haiku-4-5-20251001-v1:0`), so the model can change without editing code. The document text is capped at 20,000 characters before it goes into the prompt, which bounds the token count and cost per call and keeps the request within the model's context window.
 
 {{% notice note %}}
-**Design note.** The Bedrock integration uses the IAM `bedrock:InvokeModel` permission and an inference-profile model id. The `ask` handler wraps the `invoke_model` call: on success it returns the Claude answer, on error it returns HTTP 200 with a short Vietnamese message instead of a 500, so a transient service error does not crash the demo.
+**Design note.** The Bedrock integration uses the IAM `bedrock:InvokeModel` permission and an inference-profile model id. The `ask` handler wraps the `invoke_model` call: on success it returns the Claude answer, on error it returns HTTP 200 with a short English message instead of a 500, so a transient service error does not crash the demo.
 {{% /notice %}}
 
 #### Step 4: Store labels/text in DynamoDB

@@ -45,7 +45,7 @@ These are the logical endpoints the frontend uses; all arrive through the single
 |---|---|---|
 | POST | `/files` | Request a presigned upload URL + create metadata |
 | POST | `/files/{id}/analyze` | Run Rekognition/Textract on the uploaded object |
-| POST | `/files/{id}/ask` | Ask a question about the document (Bedrock/Claude, Vietnamese) |
+| POST | `/files/{id}/ask` | Ask a question about the document (Bedrock/Claude, answered in the question's language) |
 | POST | `/ask` | Ask across the whole library (Bedrock/Claude, with source files) |
 | GET | `/files` | List all files |
 | GET | `/files/search?q=` | Content search over labels + extracted text |
