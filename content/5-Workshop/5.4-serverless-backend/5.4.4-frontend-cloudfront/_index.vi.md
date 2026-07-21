@@ -14,7 +14,7 @@ Phục vụ giao diện web tĩnh của InsightShare từ **Amazon S3** và phâ
 
 Frontend không có logic riêng ngoài việc gọi API và render JSON. Giao diện là một file `index.html` tĩnh (HTML/CSS/JS thuần): upload file, hiển thị danh sách kèm nhãn AI, có ô tìm kiếm theo nội dung, link tải cho từng file (một presigned GET URL), và ô đặt câu hỏi về một tài liệu. Nó chỉ nói chuyện với endpoint API Gateway, nên cùng một trang chạy được cả ở local lẫn trên CloudFront mà không cần build lại.
 
-Luồng upload trên trình duyệt là hai lời gọi từ 5.3.2: xin presigned URL từ API, PUT file thẳng lên S3, rồi kích hoạt `analyze` để lớp AI xử lý object vừa upload.
+Luồng upload trên trình duyệt là hai lời gọi: xin presigned URL từ API, PUT file thẳng lên S3, rồi kích hoạt `analyze` để lớp AI xử lý object vừa upload.
 
 ```javascript
 const r = await fetch(`${API}/files`, {
@@ -58,7 +58,7 @@ aws s3 website s3://insightshare-web-khang-2352464/ --index-document index.html
 aws s3 cp index.html s3://insightshare-web-khang-2352464/index.html --content-type text/html
 ```
 
-Chỉ bucket web này áp bucket policy public-read, vì trang phải tải được cho bất kỳ ai có URL; bucket file ở 5.3 vẫn bật hết Block Public Access và không bao giờ public. Trang chạy tại:
+Chỉ bucket web này áp bucket policy public-read, vì trang phải tải được cho bất kỳ ai có URL; bucket file vẫn bật hết Block Public Access và không bao giờ public. Trang chạy tại:
 
 `http://insightshare-web-khang-2352464.s3-website-ap-southeast-1.amazonaws.com`
 

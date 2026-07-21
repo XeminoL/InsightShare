@@ -14,7 +14,7 @@ Bổ sung lớp AI để InsightShare hiểu nội dung file thay vì chỉ lưu
 - **Amazon Textract**: trích văn bản từ PDF và ảnh scan (`DetectDocumentText`).
 - **Amazon Bedrock (Claude)**: hỏi đáp về nội dung tài liệu và tóm tắt, trả lời theo ngôn ngữ câu hỏi (`InvokeModel`). Đây là tính năng AI chính.
 
-Rekognition và Textract là dịch vụ gọi sẵn, không cần train model. Bedrock chạy một model Claude được host sẵn nên cũng không phải huấn luyện. Quyền IAM Lambda cần nằm ở phần 5.5.
+Rekognition và Textract là dịch vụ gọi sẵn, không cần train model. Bedrock chạy một model Claude được host sẵn nên cũng không phải huấn luyện.
 
 #### Bước 1: Ảnh → Rekognition gắn nhãn
 
@@ -102,7 +102,7 @@ Model id nằm trong biến môi trường `BEDROCK_MODEL_ID` (mặc định `gl
 
 #### Bước 4: Lưu nhãn/văn bản vào DynamoDB
 
-Lưu lại output AI chính là điều khiến `analyze` chỉ tốn một lần: về sau tìm kiếm và hỏi đáp đọc từ DynamoDB thay vì gọi lại Rekognition, Textract hay Bedrock. Kết quả được ghi trở lại item metadata (phần 5.4.3); thuộc tính `search_blob` (nhãn + văn bản, viết thường) phục vụ tìm kiếm theo nội dung, và phần `text` được lưu chính là thứ mà hỏi đáp Bedrock đọc. `size` được đặt bí danh `#sz` cùng lý do từ khóa dành riêng như `text`:
+Lưu lại output AI chính là điều khiến `analyze` chỉ tốn một lần: về sau tìm kiếm và hỏi đáp đọc từ DynamoDB thay vì gọi lại Rekognition, Textract hay Bedrock. Kết quả được ghi trở lại item metadata; thuộc tính `search_blob` (nhãn + văn bản, viết thường) phục vụ tìm kiếm theo nội dung, và phần `text` được lưu chính là thứ mà hỏi đáp Bedrock đọc. `size` được đặt bí danh `#sz` cùng lý do từ khóa dành riêng như `text`:
 
 ```python
 table.update_item(

@@ -55,7 +55,7 @@ curl -X PUT "<upload_url>" -H "Content-Type: text/plain" \
 
 #### Bước 3: Kiểm tra object trong S3
 
-Object xuất hiện dưới tiền tố `{file_id}/{filename}` của nó, chứng minh lệnh PUT presigned đã vào được bucket private mà bucket không cần public. Chính object vừa upload này là thứ lớp AI (phần 5.4.6) đọc về sau để sinh nhãn và văn bản.
+Object xuất hiện dưới tiền tố `{file_id}/{filename}` của nó, chứng minh lệnh PUT presigned đã vào được bucket private mà bucket không cần public. Chính object vừa upload này là thứ lớp AI đọc về sau để sinh nhãn và văn bản.
 
 ```bash
 aws s3 ls s3://insightshare-files-khang-2352464/ --recursive

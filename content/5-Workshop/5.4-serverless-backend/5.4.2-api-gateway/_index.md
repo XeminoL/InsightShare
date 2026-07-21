@@ -12,7 +12,7 @@ Create an **API Gateway (HTTP API)** as the public entry point through which the
 
 #### Step 1: Create the API
 
-API Gateway is the public HTTPS front door: it terminates TLS, applies CORS, and (once the authorizer is added in 5.4.5) checks the Cognito token before any request reaches Lambda. Because the Lambda already dispatches by method and path internally, a single **`$default`** route forwarding everything to Lambda is all that is needed, so routes do not have to be declared twice. The `--cors-configuration` here lets the browser call the API cross-origin, mirroring the S3 CORS in 5.3:
+API Gateway is the public HTTPS front door: it terminates TLS, applies CORS, and (once the authorizer is added) checks the Cognito token before any request reaches Lambda. Because the Lambda already dispatches by method and path internally, a single **`$default`** route forwarding everything to Lambda is all that is needed, so routes do not have to be declared twice. The `--cors-configuration` here lets the browser call the API cross-origin, mirroring the CORS set on the S3 bucket:
 
 ```bash
 aws apigatewayv2 create-api \

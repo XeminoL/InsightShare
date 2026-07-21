@@ -52,7 +52,7 @@ The account used for deployment needs permission to create and delete the follow
 - **Amazon CloudWatch and CloudWatch Logs**: view logs, create alarms
 - **AWS IAM**: create the Lambda execution role
 
-The account permissions above are for the person deploying the stack. Separately, the Lambda function assumes its own execution role at runtime, granted only the actions the code calls (detailed in section 5.5). The two are distinct: the deployer creates resources, the role lets the running function reach them:
+The account permissions above are for the person deploying the stack. Separately, the Lambda function assumes its own execution role at runtime, granted only the actions the code calls. The two are distinct: the deployer creates resources, the role lets the running function reach them:
 
 ```json
 {

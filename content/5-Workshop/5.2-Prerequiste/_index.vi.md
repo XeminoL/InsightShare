@@ -52,7 +52,7 @@ Tài khoản dùng để triển khai cần quyền tạo và xóa các dịch v
 - **Amazon CloudWatch và CloudWatch Logs**: xem log, tạo alarm
 - **AWS IAM**: tạo execution role cho Lambda
 
-Các quyền tài khoản ở trên là dành cho người deploy stack. Tách biệt với đó, Lambda function assume execution role riêng khi chạy, chỉ được cấp đúng các action mà code gọi (chi tiết ở phần 5.5). Hai thứ này khác nhau: người deploy tạo tài nguyên, còn role cho function đang chạy chạm tới chúng:
+Các quyền tài khoản ở trên là dành cho người deploy stack. Tách biệt với đó, Lambda function assume execution role riêng khi chạy, chỉ được cấp đúng các action mà code gọi. Hai thứ này khác nhau: người deploy tạo tài nguyên, còn role cho function đang chạy chạm tới chúng:
 
 ```json
 {

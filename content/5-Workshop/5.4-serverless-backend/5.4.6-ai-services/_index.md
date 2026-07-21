@@ -14,7 +14,7 @@ Add the AI layer so InsightShare understands file content instead of just storin
 - **Amazon Textract**: extract text from PDFs and scanned images (`DetectDocumentText`).
 - **Amazon Bedrock (Claude)**: ask questions about a document and get a summary, answered in the same language as the question (`InvokeModel`). This is the main AI feature.
 
-Rekognition and Textract are ready-to-call, no model training. Bedrock runs a hosted Claude model, so nothing is trained either. The IAM permissions Lambda needs are in section 5.5.
+Rekognition and Textract are ready-to-call, no model training. Bedrock runs a hosted Claude model, so nothing is trained either.
 
 #### Step 1: Image → Rekognition labels
 
@@ -102,7 +102,7 @@ The model id lives in the `BEDROCK_MODEL_ID` environment variable (default `glob
 
 #### Step 4: Store labels/text in DynamoDB
 
-Persisting the AI output is what makes `analyze` a one-time cost: search and Q&A later read from DynamoDB instead of re-calling Rekognition, Textract or Bedrock. The results are written back to the metadata item (section 5.4.3); the `search_blob` attribute (labels + text, lowercased) powers content search, and the stored `text` is what the Bedrock Q&A reads. `size` is aliased with `#sz` for the same reserved-word reason as `text`:
+Persisting the AI output is what makes `analyze` a one-time cost: search and Q&A later read from DynamoDB instead of re-calling Rekognition, Textract or Bedrock. The results are written back to the metadata item; the `search_blob` attribute (labels + text, lowercased) powers content search, and the stored `text` is what the Bedrock Q&A reads. `size` is aliased with `#sz` for the same reserved-word reason as `text`:
 
 ```python
 table.update_item(

@@ -16,7 +16,7 @@ Create a Lambda function in region `ap-southeast-1`:
 
 - **Runtime**: Python 3.13, matching the code and giving `boto3` in the runtime with no packaging.
 - **Handler**: `lambda_function.handler`, the `handler` function in `lambda_function.py` that Lambda invokes per request.
-- **Execution role**: `insightshare-lambda-role`, the least-privilege role the function assumes to reach S3, DynamoDB and the AI services (created in section 5.5).
+- **Execution role**: `insightshare-lambda-role`, the least-privilege role the function assumes to reach S3, DynamoDB and the AI services.
 - **Timeout**: 30s, high enough for a Textract or Bedrock call to finish; **Memory**: 256 MB, enough for JSON and a single file's text.
 - **Environment variables**: `BUCKET=insightshare-files-khang-2352464` and `TABLE=insightshare-files`, so the bucket and table names stay out of the code.
 
@@ -39,7 +39,7 @@ The function overview shows the API Gateway trigger wired to the function:
 
 #### Step 2: The handler
 
-Because API Gateway is set up with a single `$default` route (section 5.4.2), the handler itself does the routing. It reads the HTTP method and path from the API Gateway event (payload format v2, where the method is under `requestContext.http` and the path under `rawPath`) and dispatches to the matching function. `boto3` ships with the Lambda runtime, so no extra packaging is needed.
+Because API Gateway is set up with a single `$default` route, the handler itself does the routing. It reads the HTTP method and path from the API Gateway event (payload format v2, where the method is under `requestContext.http` and the path under `rawPath`) and dispatches to the matching function. `boto3` ships with the Lambda runtime, so no extra packaging is needed.
 
 ```python
 def handler(event, context):
@@ -64,7 +64,7 @@ def handler(event, context):
     return _resp(404, {"error": "route not found"})
 ```
 
-The upload handler starts the pipeline. It mints a unique `file_id`, builds the S3 key as `{file_id}/{filename}`, generates a presigned PUT URL (section 5.3.2), and writes an initial metadata row so the file is tracked before its bytes arrive. `labels`, `text` and `search_blob` start empty and are filled in later by `analyze`:
+The upload handler starts the pipeline. It mints a unique `file_id`, builds the S3 key as `{file_id}/{filename}`, generates a presigned PUT URL, and writes an initial metadata row so the file is tracked before its bytes arrive. `labels`, `text` and `search_blob` start empty and are filled in later by `analyze`:
 
 ```python
 def create_upload(event):

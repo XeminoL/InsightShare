@@ -55,7 +55,7 @@ curl -X PUT "<upload_url>" -H "Content-Type: text/plain" \
 
 #### Step 3: Check the object in S3
 
-The object appears under its `{file_id}/{filename}` prefix, which proves the presigned PUT reached the private bucket without the bucket being public. This uploaded object is what the AI layer (section 5.4.6) later reads to produce labels and text.
+The object appears under its `{file_id}/{filename}` prefix, which proves the presigned PUT reached the private bucket without the bucket being public. This uploaded object is what the AI layer later reads to produce labels and text.
 
 ```bash
 aws s3 ls s3://insightshare-files-khang-2352464/ --recursive

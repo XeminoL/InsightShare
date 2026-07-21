@@ -43,7 +43,7 @@ Mỗi item lưu thông tin một file:
 
 #### Bước 3: Nối Lambda với DynamoDB
 
-Dòng metadata được ghi một lần khi upload và cập nhật một lần sau khi phân tích, nên bảng luôn phản ánh trạng thái hiện tại của file. Lambda dùng DynamoDB resource của `boto3`: `put_item` khi upload (dòng rỗng từ 5.4.1), `update_item` sau khi phân tích AI để điền nhãn và văn bản, và `scan` cho list/search:
+Dòng metadata được ghi một lần khi upload và cập nhật một lần sau khi phân tích, nên bảng luôn phản ánh trạng thái hiện tại của file. Lambda dùng DynamoDB resource của `boto3`: `put_item` khi upload (ghi dòng rỗng), `update_item` sau khi phân tích AI để điền nhãn và văn bản, và `scan` cho list/search:
 
 ```python
 ddb = boto3.resource("dynamodb", region_name="ap-southeast-1")

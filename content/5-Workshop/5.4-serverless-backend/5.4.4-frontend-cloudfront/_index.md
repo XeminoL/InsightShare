@@ -14,7 +14,7 @@ Serve InsightShare's static web interface from **Amazon S3** and deliver it over
 
 The frontend has no logic of its own beyond calling the API and rendering the JSON. The interface is a single static `index.html` (vanilla HTML/CSS/JS): it uploads a file, shows the list with AI labels, offers a content-search box, a per-file download link (a presigned GET URL), and a box to ask a question about a document. It talks only to the API Gateway endpoint, so the same page works locally or on CloudFront with no rebuild.
 
-The upload flow in the browser is the two-step call from 5.3.2: ask the API for a presigned URL, PUT the file straight to S3, then trigger `analyze` so the AI layer processes the object just uploaded.
+The upload flow in the browser is a two-step call: ask the API for a presigned URL, PUT the file straight to S3, then trigger `analyze` so the AI layer processes the object just uploaded.
 
 ```javascript
 const r = await fetch(`${API}/files`, {
@@ -58,7 +58,7 @@ aws s3 website s3://insightshare-web-khang-2352464/ --index-document index.html
 aws s3 cp index.html s3://insightshare-web-khang-2352464/index.html --content-type text/html
 ```
 
-A public-read bucket policy is applied to this web bucket only, because the page must load for anyone with the URL; the file bucket in 5.3 keeps all Block Public Access on and is never made public. The site is live at:
+A public-read bucket policy is applied to this web bucket only, because the page must load for anyone with the URL; the file bucket keeps all Block Public Access on and is never made public. The site is live at:
 
 `http://insightshare-web-khang-2352464.s3-website-ap-southeast-1.amazonaws.com`
 
