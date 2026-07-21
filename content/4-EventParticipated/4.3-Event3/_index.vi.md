@@ -26,4 +26,6 @@ Một buổi study tour tại AWS Việt Nam, những người đang làm trong 
 Buổi này ít về sản phẩm mà nhiều về con đường phía trước, nên cái em giữ lại chủ yếu là về định hướng. Điều đọng lại là ý của anh Hưng, rằng tổng lượng việc không co lại mà dịch về phía senior, nghĩa là sinh viên mới ra trường bị đẩy phải trưởng thành nhanh hơn và phải dùng AI để giải những bài toán trước đây làm bằng tay. Ý của anh Vĩnh về học kiến trúc thay vì học tool khớp với cách em cố xây đồ án của mình, giữ nguyên cấu trúc kể cả khi các thành phần đổi. Câu chuyện chị Như apply mười một lần là một nhắc nhở hữu ích rằng sự kiên trì quan trọng ngang với năng lực.
 
 ### Hình ảnh
-[Chèn 1-2 ảnh hoặc liên kết video làm bằng chứng.]
+![Enterprise Cloud Architectures and Industry Application](/images/4-Event/event3-1.jpg)
+
+![Enterprise Cloud Architectures and Industry Application](/images/4-Event/event3-2.jpg)

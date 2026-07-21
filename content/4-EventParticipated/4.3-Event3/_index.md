@@ -26,4 +26,6 @@ A study tour at AWS Vietnam where people working in the industry talked about th
 This one was less about a product and more about the road ahead, so what I kept was mostly about direction. The part that stayed with me was Mr. Hung's point that the total amount of work has not shrunk, it has shifted toward senior roles, which means new graduates are pushed to grow faster and to use AI to solve problems that used to be done by hand. Mr. Vinh's idea of learning the architecture rather than the tools matches how I tried to build my own project, keeping the same structure even as the pieces changed. Ms. Nhu's story about applying eleven times was a useful reminder that persistence matters as much as skill.
 
 ### Photos
-[Insert 1-2 photos or a video link as evidence.]
+![Enterprise Cloud Architectures and Industry Application](/images/4-Event/event3-1.jpg)
+
+![Enterprise Cloud Architectures and Industry Application](/images/4-Event/event3-2.jpg)
