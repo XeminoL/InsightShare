@@ -1,9 +1,9 @@
 ---
 title: "Thêm AI: Rekognition, Textract, Bedrock (Claude)"
 date: 2026-07-29
-weight: 5
+weight: 6
 chapter: false
-pre: " <b> 5.4.5 </b> "
+pre: " <b> 5.4.6 </b> "
 ---
 
 #### Mục tiêu

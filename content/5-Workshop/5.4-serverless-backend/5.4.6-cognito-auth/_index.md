@@ -1,9 +1,9 @@
 ---
 title: "Per-user sign-in with Amazon Cognito"
 date: 2026-07-29
-weight: 6
+weight: 5
 chapter: false
-pre: " <b> 5.4.6 </b> "
+pre: " <b> 5.4.5 </b> "
 ---
 
 #### Goal
