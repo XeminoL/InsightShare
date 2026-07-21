@@ -27,4 +27,4 @@ A Saturday community meetup where members shared short talks on topics they pick
 What I liked about this one was how mixed the topics were, from Docker to game networking to a personal career story, so it felt less like a lecture and more like people sharing what they happened to be into. The talk on WAF with machine learning was the closest to my own project, since it also puts an AWS service together with an AI layer to do something a single service cannot. Mr. Vinh's career story was a useful reminder that the path into cloud is not always straight, and that starting somewhere like IT support is not a dead end.
 
 ### Photos
-[Insert 1-2 photos or a video link as evidence.]
+![Saturday Meetup - First Cloud AI Journey](/images/4-Event/event1-1.jpg)
