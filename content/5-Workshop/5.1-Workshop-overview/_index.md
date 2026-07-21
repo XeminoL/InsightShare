@@ -40,7 +40,7 @@ InsightShare follows a fully serverless flow. The numbered steps match the arrow
 5. **Lambda → DynamoDB**: file metadata, AI labels and extracted text are written to **Amazon DynamoDB**, which powers content-based search.
 6. **Monitoring & security**: **Amazon CloudWatch** collects logs and metrics; an **IAM Role** grants least-privilege access to each service.
 
-![InsightShare Architecture](/images/5-Workshop/5.1-Workshop-overview/insightshare_architecture-v3.png)
+![InsightShare Architecture](/images/5-Workshop/5.1-Workshop-overview/insightshare_architecture-v4.png)
 
 #### AWS services used
 

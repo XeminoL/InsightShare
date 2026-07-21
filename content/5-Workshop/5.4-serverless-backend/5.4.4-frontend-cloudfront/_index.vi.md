@@ -78,7 +78,7 @@ Distribution đã ở trạng thái `Deployed` và phục vụ trang qua HTTPS.
 
 Trang web đang chạy, có dải thống kê, nhãn AI, ảnh thu nhỏ và bộ lọc theo nhãn:
 
-![Trang web InsightShare đang chạy](/images/5-Workshop/5.4-serverless-backend/web-live-v3.png)
+![Trang web InsightShare đang chạy](/images/5-Workshop/5.4-serverless-backend/web-live-v4.png)
 
 #### Bước 4: Test end-to-end
 

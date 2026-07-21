@@ -78,7 +78,7 @@ The distribution reached the `Deployed` state and serves the page over HTTPS.
 
 The live site, showing the stats bar, AI labels, thumbnails and label filter:
 
-![InsightShare live site](/images/5-Workshop/5.4-serverless-backend/web-live-v3.png)
+![InsightShare live site](/images/5-Workshop/5.4-serverless-backend/web-live-v4.png)
 
 #### Step 4: End-to-end test
 
