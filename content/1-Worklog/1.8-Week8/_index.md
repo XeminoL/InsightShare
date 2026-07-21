@@ -8,21 +8,21 @@ pre: " <b> 1.8. </b> "
 
 ### Week 8 objectives
 
-* Add the AI layer so the system understands file content.
-* Use AWS managed AI services, no model training.
+* Add user sign-in with Amazon Cognito.
+* Scope file data per user so each person only sees their own files.
 
 ### Tasks during the week (20/07 - 24/07/2026)
 
 | Day | Task | Start | End | Reference |
 | --- | --- | --- | --- | --- |
-| Mon | Study the FCJ AI services workshop; settle how to call Rekognition and Textract from boto3 and where to trigger them in the upload flow. | 20/07/2026 | 20/07/2026 | [AI services](https://000056.awsstudygroup.com) |
-| Tue | Call Rekognition `detect_labels` (MaxLabels=10, MinConfidence=70) to tag images on upload; store the labels for search. | 21/07/2026 | 21/07/2026 |  |
-| Wed | Call Textract `detect_document_text` to extract text from PDFs and scanned images; read `.txt` files straight from the S3 object. | 22/07/2026 | 22/07/2026 |  |
-| Thu | Add the `POST /files/{id}/ask` endpoint: send the extracted text plus a question to a Claude model on Amazon Bedrock (`invoke_model`) and return the answer in the same language as the question; with no question, summarize instead. | 23/07/2026 | 23/07/2026 | [Bedrock](https://docs.aws.amazon.com/bedrock/) |
-| Fri | Extend the IAM Role with rekognition/textract/bedrock permissions; save the labels and extracted text to DynamoDB; test the whole pipeline. | 24/07/2026 | 24/07/2026 |  |
+| Mon | Create a Cognito user pool and an app client with USER_PASSWORD_AUTH; note the pool id, client id and token endpoint. | 20/07/2026 | 20/07/2026 | [Cognito lab](https://000081.awsstudygroup.com) |
+| Tue | Add a JWT authorizer to the API Gateway `$default` route; add an unauthenticated OPTIONS route so the CORS preflight is not blocked with 401. | 21/07/2026 | 21/07/2026 |  |
+| Wed | Read the `sub` claim from the JWT in Lambda (a `current_user` helper) to identify the caller and filter files by owner. | 22/07/2026 | 22/07/2026 |  |
+| Thu | Wire the frontend to call cognito-idp directly for sign-up, confirm and sign-in, without an external library. | 23/07/2026 | 23/07/2026 |  |
+| Fri | Test the flow: sign-up → confirm → sign-in → call the API with the token (200), without a token (401), and OPTIONS (200). | 24/07/2026 | 24/07/2026 | Postman |
 
 ### Results achieved
 
-1. Uploaded images are auto-labeled with Rekognition; documents have text extracted by Textract (`.txt` read directly).
-2. A document Q&A endpoint answers questions and summarizes in the same language as the question via Bedrock/Claude, wrapped to fail soft so an unavailable AI service does not break the analysis flow.
-3. Labels and text are saved to DynamoDB for search; AI permissions are least-privilege.
+1. Users can sign up, confirm and sign in through Cognito; the API accepts requests only with a valid JWT.
+2. Lambda reads the `sub` claim to know the caller and returns files filtered by owner, so each user sees only their own.
+3. The OPTIONS route stays unauthenticated, so the CORS preflight passes while other routes require a token.
