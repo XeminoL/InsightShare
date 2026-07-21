@@ -12,7 +12,7 @@ Bổ sung lớp AI để InsightShare hiểu nội dung file thay vì chỉ lưu
 
 - **Amazon Rekognition**: gắn nhãn ảnh (`DetectLabels`).
 - **Amazon Textract**: trích văn bản từ PDF và ảnh scan (`DetectDocumentText`).
-- **Amazon Bedrock (Claude)**: hỏi đáp về nội dung tài liệu và tóm tắt, trả lời bằng tiếng Việt (`InvokeModel`). Đây là tính năng AI chính.
+- **Amazon Bedrock (Claude)**: hỏi đáp về nội dung tài liệu và tóm tắt, trả lời theo ngôn ngữ câu hỏi (`InvokeModel`). Đây là tính năng AI chính.
 
 Rekognition và Textract là dịch vụ gọi sẵn, không cần train model. Bedrock chạy một model Claude được host sẵn nên cũng không phải huấn luyện. Quyền IAM Lambda cần nằm ở phần 5.5.
 
@@ -70,7 +70,7 @@ elif fname.endswith(DOC_EXTS):
 
 #### Bước 3: Bedrock (Claude) hỏi đáp về tài liệu
 
-Bước này dùng văn bản mà hai bước trước lưu trong DynamoDB làm ngữ cảnh cho model. Tính năng chính là endpoint hỏi đáp tài liệu, `POST /files/{id}/ask`. Nó đọc phần văn bản đã trích từ DynamoDB, ghép cùng câu hỏi trong một prompt yêu cầu model chỉ trả lời dựa trên tài liệu đó và bằng tiếng Việt, rồi gọi một model Claude trên Amazon Bedrock. Nếu body không có `question`, chính handler đó tóm tắt tài liệu.
+Bước này dùng văn bản mà hai bước trước lưu trong DynamoDB làm ngữ cảnh cho model. Tính năng chính là endpoint hỏi đáp tài liệu, `POST /files/{id}/ask`. Nó đọc phần văn bản đã trích từ DynamoDB, ghép cùng câu hỏi trong một prompt yêu cầu model chỉ trả lời dựa trên tài liệu đó và theo ngôn ngữ câu hỏi, rồi gọi một model Claude trên Amazon Bedrock. Nếu body không có `question`, chính handler đó tóm tắt tài liệu.
 
 Ngoài ra có endpoint hỏi đáp toàn thư viện, `POST /ask`. Nó quét mọi tệp trong DynamoDB, xếp hạng theo độ trùng từ khóa với câu hỏi, ghép văn bản các tệp liên quan (mỗi tệp đánh số để trích nguồn) rồi gọi Bedrock. Câu trả lời kèm danh sách tệp chứa thông tin, giúp tìm đúng tệp mà không phải mở từng cái.
 

@@ -15,7 +15,7 @@ Nền tảng được xây trên:
 - **AWS Lambda + Amazon API Gateway**: back-end Python không phải quản lý máy chủ, expose thành API HTTP.
 - **Amazon Cognito**: đăng nhập người dùng qua Hosted UI, cô lập theo claim `sub` trong JWT để mỗi người chỉ thấy file của mình.
 - **Amazon DynamoDB**: metadata của file cùng nhãn AI và văn bản trích, làm nền cho tìm kiếm theo nội dung.
-- **Amazon Rekognition, Textract và Bedrock (Claude)**: lớp AI gắn nhãn ảnh, trích văn bản tài liệu, và trả lời câu hỏi hoặc tóm tắt tài liệu bằng tiếng Việt, không cần train model.
+- **Amazon Rekognition, Textract và Bedrock (Claude)**: lớp AI gắn nhãn ảnh, trích văn bản tài liệu, và trả lời câu hỏi hoặc tóm tắt tài liệu theo ngôn ngữ câu hỏi, không cần train model.
 - **Amazon CloudFront + CloudWatch + IAM**: phân phối frontend tĩnh qua HTTPS, giám sát và kiểm soát quyền theo nguyên tắc tối thiểu.
 
 #### Tổng quan kiến trúc
@@ -25,7 +25,7 @@ Các bước đánh số khớp với các mũi tên trong sơ đồ kiến trú
 1. **User → CloudFront**: trình duyệt tải giao diện web tĩnh từ **Amazon S3**, phân phối qua HTTPS bằng **Amazon CloudFront**.
 2. **User → API Gateway → Lambda**: trình duyệt gọi **Amazon API Gateway**, cổng này chuyển yêu cầu đến **AWS Lambda** (Python) để xử lý nghiệp vụ.
 3. **Lambda → S3 (presigned URL)**: Lambda trả về **presigned URL** để trình duyệt tải file trực tiếp lên **Amazon S3**.
-4. **Lambda → dịch vụ AI**: sau khi upload, Lambda gọi lớp AI, **Rekognition** gắn nhãn ảnh và **Textract** trích văn bản tài liệu, và endpoint `ask` gửi văn bản đã lưu tới **Amazon Bedrock** (Claude) để trả lời câu hỏi hoặc tóm tắt tài liệu bằng tiếng Việt.
+4. **Lambda → dịch vụ AI**: sau khi upload, Lambda gọi lớp AI, **Rekognition** gắn nhãn ảnh và **Textract** trích văn bản tài liệu, và endpoint `ask` gửi văn bản đã lưu tới **Amazon Bedrock** (Claude) để trả lời câu hỏi hoặc tóm tắt tài liệu theo ngôn ngữ câu hỏi.
 5. **Lambda → DynamoDB**: metadata của file, nhãn AI và văn bản trích được ghi vào **Amazon DynamoDB**, phục vụ tìm kiếm theo nội dung.
 6. **Giám sát & bảo mật**: **Amazon CloudWatch** thu thập log và số liệu; **IAM Role** cấp quyền tối thiểu cho từng dịch vụ.
 
@@ -43,6 +43,6 @@ Các bước đánh số khớp với các mũi tên trong sơ đồ kiến trú
 | Amazon DynamoDB | Lưu metadata của file kèm nhãn AI và văn bản trích xuất | NoSQL serverless đọc mili-giây, hợp với dạng metadata theo từng file và nhu cầu tìm kiếm |
 | Amazon Rekognition | Gắn nhãn ảnh | AI gọi sẵn, không cần train model, trả về nhãn chỉ với một lời gọi API |
 | Amazon Textract | Trích văn bản từ PDF và ảnh chữ | OCR gọi sẵn, giúp tài liệu tìm kiếm được theo nội dung |
-| Amazon Bedrock (Claude) | Trả lời câu hỏi và tóm tắt tài liệu bằng tiếng Việt | Model Claude host sẵn, không train; biến văn bản đã trích thành câu trả lời trực tiếp chỉ với một lời gọi API |
+| Amazon Bedrock (Claude) | Trả lời câu hỏi và tóm tắt tài liệu theo ngôn ngữ câu hỏi | Model Claude host sẵn, không train; biến văn bản đã trích thành câu trả lời trực tiếp chỉ với một lời gọi API |
 | Amazon CloudWatch | Ghi log, số liệu và cảnh báo | Giám sát tập trung cho Lambda và API Gateway để gỡ lỗi và theo dõi chi phí/mức dùng |
 | AWS IAM | Kiểm soát quyền theo nguyên tắc tối thiểu | Cấp cho mỗi thành phần đúng quyền cần thiết, giữ file không công khai |

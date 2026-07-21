@@ -11,7 +11,7 @@ pre: " <b> 2. </b> "
 
 ### 1. Executive Summary
 
-InsightShare is a web application for uploading, analyzing and sharing images/documents. On upload, AWS AI services label images, extract document text, and answer questions or summarize a document in Vietnamese, so files can be found by content and not only by name. It is fully **serverless** on AWS (region `ap-southeast-1`): no servers to manage, per-request billing, scaling with load. It uses S3, Lambda, API Gateway, DynamoDB, CloudFront and Cognito, with three AI services: Rekognition, Textract and Bedrock (Claude). Amazon Cognito handles sign-in, and the JWT `sub` claim scopes each file to its owner so users see only their own files.
+InsightShare is a web application for uploading, analyzing and sharing images/documents. On upload, AWS AI services label images, extract document text, and answer questions or summarize a document in the same language as the question, so files can be found by content and not only by name. It is fully **serverless** on AWS (region `ap-southeast-1`): no servers to manage, per-request billing, scaling with load. It uses S3, Lambda, API Gateway, DynamoDB, CloudFront and Cognito, with three AI services: Rekognition, Textract and Bedrock (Claude). Amazon Cognito handles sign-in, and the JWT `sub` claim scopes each file to its owner so users see only their own files.
 
 ### 2. Problem Statement
 
@@ -25,7 +25,7 @@ InsightShare is a web application for uploading, analyzing and sharing images/do
 InsightShare centralizes data and processing on a unified serverless stack:
 - **Storage & sharing:** S3 stores files (private bucket), shared via time-limited presigned URLs; metadata lives in DynamoDB.
 - **Business logic:** Lambda + API Gateway generate presigned URLs, orchestrate AI analysis, and read/write data.
-- **Content understanding with AI:** Rekognition labels images, Textract extracts document text, and Bedrock (a Claude model) answers questions and summarizes documents in Vietnamese. All are ready-to-call services, with no model training.
+- **Content understanding with AI:** Rekognition labels images, Textract extracts document text, and Bedrock (a Claude model) answers questions and summarizes documents in the same language as the question. All are ready-to-call services, with no model training.
 - **Smart search:** labels and extracted text are stored in DynamoDB to find files by content.
 
 *Benefits*

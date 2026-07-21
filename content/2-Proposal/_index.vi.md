@@ -11,7 +11,7 @@ pre: " <b> 2. </b> "
 
 ### 1. Tóm tắt
 
-InsightShare là một ứng dụng web để tải lên, phân tích và chia sẻ ảnh/tài liệu. Khi file được tải lên, các dịch vụ AI của AWS gắn nhãn ảnh, trích văn bản từ tài liệu, và trả lời câu hỏi hoặc tóm tắt tài liệu bằng tiếng Việt, nhờ đó tìm file được theo nội dung chứ không chỉ theo tên. Toàn bộ theo kiến trúc **serverless** trên AWS (region `ap-southeast-1`): không phải quản lý máy chủ, tính phí theo lượt gọi, tự mở rộng theo tải. Nền tảng dùng S3, Lambda, API Gateway, DynamoDB, CloudFront và Cognito, cùng ba dịch vụ AI Rekognition, Textract và Bedrock (Claude). Amazon Cognito lo phần đăng nhập, và claim `sub` trong JWT gán mỗi file cho đúng chủ nên người dùng chỉ thấy file của mình.
+InsightShare là một ứng dụng web để tải lên, phân tích và chia sẻ ảnh/tài liệu. Khi file được tải lên, các dịch vụ AI của AWS gắn nhãn ảnh, trích văn bản từ tài liệu, và trả lời câu hỏi hoặc tóm tắt tài liệu theo ngôn ngữ câu hỏi, nhờ đó tìm file được theo nội dung chứ không chỉ theo tên. Toàn bộ theo kiến trúc **serverless** trên AWS (region `ap-southeast-1`): không phải quản lý máy chủ, tính phí theo lượt gọi, tự mở rộng theo tải. Nền tảng dùng S3, Lambda, API Gateway, DynamoDB, CloudFront và Cognito, cùng ba dịch vụ AI Rekognition, Textract và Bedrock (Claude). Amazon Cognito lo phần đăng nhập, và claim `sub` trong JWT gán mỗi file cho đúng chủ nên người dùng chỉ thấy file của mình.
 
 ### 2. Tuyên bố vấn đề
 
@@ -25,7 +25,7 @@ InsightShare là một ứng dụng web để tải lên, phân tích và chia s
 InsightShare tập trung dữ liệu và xử lý trên một stack serverless thống nhất:
 - **Lưu trữ & chia sẻ:** S3 lưu file (bucket private), chia sẻ qua presigned URL có thời hạn; metadata lưu trong DynamoDB.
 - **Xử lý nghiệp vụ:** Lambda + API Gateway sinh presigned URL, điều phối phân tích AI, ghi/đọc dữ liệu.
-- **Hiểu nội dung bằng AI:** Rekognition gắn nhãn ảnh, Textract trích văn bản tài liệu, và Bedrock (một model Claude) trả lời câu hỏi và tóm tắt tài liệu bằng tiếng Việt. Tất cả đều là dịch vụ gọi sẵn, không huấn luyện mô hình.
+- **Hiểu nội dung bằng AI:** Rekognition gắn nhãn ảnh, Textract trích văn bản tài liệu, và Bedrock (một model Claude) trả lời câu hỏi và tóm tắt tài liệu theo ngôn ngữ câu hỏi. Tất cả đều là dịch vụ gọi sẵn, không huấn luyện mô hình.
 - **Tìm kiếm thông minh:** nhãn và văn bản trích được lưu vào DynamoDB để tìm file theo nội dung.
 
 *Lợi ích*
@@ -52,7 +52,7 @@ Trình duyệt tải giao diện tĩnh từ **S3 + CloudFront (HTTPS)** → đă
 | Amazon DynamoDB | Lưu metadata + nhãn AI + văn bản trích, phục vụ tìm kiếm |
 | Amazon Rekognition | Gắn nhãn ảnh (DetectLabels) |
 | Amazon Textract | Trích văn bản từ PDF/ảnh chữ (DetectDocumentText) |
-| Amazon Bedrock (Claude) | Hỏi đáp và tóm tắt tài liệu bằng tiếng Việt (InvokeModel) |
+| Amazon Bedrock (Claude) | Hỏi đáp và tóm tắt tài liệu theo ngôn ngữ câu hỏi (InvokeModel) |
 | Amazon CloudWatch | Log, metric, alarm giám sát hệ thống |
 | AWS IAM | Phân quyền least-privilege cho Lambda và từng dịch vụ AI |
 

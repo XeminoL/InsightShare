@@ -37,7 +37,7 @@ const res = await fetch(`${API}/files/search?q=` + encodeURIComponent(query));
 render(await res.json());
 ```
 
-Asking a question about a document is one more call to the `ask` route (Bedrock/Claude answers in Vietnamese; an empty question returns a summary):
+Asking a question about a document is one more call to the `ask` route (Bedrock/Claude answers in the same language as the question; an empty question returns a summary):
 
 ```javascript
 const res = await fetch(`${API}/files/${id}/ask`, {

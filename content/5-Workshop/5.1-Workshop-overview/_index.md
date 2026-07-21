@@ -15,7 +15,7 @@ The platform is built on:
 - **AWS Lambda + Amazon API Gateway**: a Python back-end with no servers to manage, exposed as an HTTP API.
 - **Amazon Cognito**: user sign-in through the Hosted UI, scoped by the JWT `sub` claim so each user sees only their own files.
 - **Amazon DynamoDB**: file metadata with AI labels and extracted text, backing content-based search.
-- **Amazon Rekognition, Textract and Bedrock (Claude)**: the AI layer that labels images, extracts document text, and answers questions or summarizes a document in Vietnamese, with no model training.
+- **Amazon Rekognition, Textract and Bedrock (Claude)**: the AI layer that labels images, extracts document text, and answers questions or summarizes a document in the same language as the question, with no model training.
 - **Amazon CloudFront + CloudWatch + IAM**: HTTPS delivery of the static frontend, monitoring, and least-privilege access control.
 
 #### Architecture Overview
@@ -25,7 +25,7 @@ The numbered steps match the arrows in the architecture diagram, in order:
 1. **User → CloudFront**: the browser loads the static web interface from **Amazon S3**, delivered over HTTPS through **Amazon CloudFront**.
 2. **User → API Gateway → Lambda**: the browser calls **Amazon API Gateway**, which forwards the request to **AWS Lambda** (Python) for business logic.
 3. **Lambda → S3 (presigned URL)**: Lambda returns a **presigned URL** so the browser uploads directly to **Amazon S3**.
-4. **Lambda → AI services**: after upload, Lambda calls the AI layer, **Rekognition** labels images and **Textract** extracts document text, and the `ask` endpoint sends stored text to **Amazon Bedrock** (Claude) to answer questions or summarize the document in Vietnamese.
+4. **Lambda → AI services**: after upload, Lambda calls the AI layer, **Rekognition** labels images and **Textract** extracts document text, and the `ask` endpoint sends stored text to **Amazon Bedrock** (Claude) to answer questions or summarize the document in the same language as the question.
 5. **Lambda → DynamoDB**: file metadata, AI labels and extracted text are written to **Amazon DynamoDB**, which powers content-based search.
 6. **Monitoring & security**: **Amazon CloudWatch** collects logs and metrics; an **IAM Role** grants least-privilege access to each service.
 
@@ -43,6 +43,6 @@ The numbered steps match the arrows in the architecture diagram, in order:
 | Amazon DynamoDB | Stores file metadata with AI labels and extracted text | Serverless NoSQL with millisecond reads, fits the per-file metadata and search pattern |
 | Amazon Rekognition | Labels images | Ready-to-call AI, no model training, returns labels from a single API call |
 | Amazon Textract | Extracts text from PDFs and scanned images | Ready-to-call OCR that makes documents searchable by their content |
-| Amazon Bedrock (Claude) | Answers questions and summarizes a document in Vietnamese | Hosted Claude model, no training; turns extracted text into direct answers with one API call |
+| Amazon Bedrock (Claude) | Answers questions and summarizes a document in the same language as the question | Hosted Claude model, no training; turns extracted text into direct answers with one API call |
 | Amazon CloudWatch | Logging, metrics and alarms | Central monitoring for Lambda and API Gateway to debug and watch cost/usage |
 | AWS IAM | Least-privilege access control | Grants each component only the permissions it needs, keeping files non-public |

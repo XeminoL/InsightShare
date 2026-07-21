@@ -12,7 +12,7 @@ Add the AI layer so InsightShare understands file content instead of just storin
 
 - **Amazon Rekognition**: label images (`DetectLabels`).
 - **Amazon Textract**: extract text from PDFs and scanned images (`DetectDocumentText`).
-- **Amazon Bedrock (Claude)**: ask questions about a document and get a summary, answered in Vietnamese (`InvokeModel`). This is the main AI feature.
+- **Amazon Bedrock (Claude)**: ask questions about a document and get a summary, answered in the same language as the question (`InvokeModel`). This is the main AI feature.
 
 Rekognition and Textract are ready-to-call, no model training. Bedrock runs a hosted Claude model, so nothing is trained either. The IAM permissions Lambda needs are in section 5.5.
 
@@ -70,7 +70,7 @@ elif fname.endswith(DOC_EXTS):
 
 #### Step 3: Bedrock (Claude) answers questions about the document
 
-This step uses the text the previous two steps stored in DynamoDB as the context for the model. The main feature is a document Q&A endpoint, `POST /files/{id}/ask`. It reads the extracted text from DynamoDB, wraps it with the question in a prompt that instructs the model to answer only from that document and in Vietnamese, and calls a Claude model on Amazon Bedrock. With no `question` in the body, the same handler summarizes the document instead.
+This step uses the text the previous two steps stored in DynamoDB as the context for the model. The main feature is a document Q&A endpoint, `POST /files/{id}/ask`. It reads the extracted text from DynamoDB, wraps it with the question in a prompt that instructs the model to answer only from that document and in the same language as the question, and calls a Claude model on Amazon Bedrock. With no `question` in the body, the same handler summarizes the document instead.
 
 There is also a library-wide endpoint, `POST /ask`. It scans every file in DynamoDB, ranks them by keyword overlap with the question, joins the text of the relevant files (each numbered so it can be cited), and calls Bedrock. The answer comes back with the list of files it came from, so you find the right file without opening each one.
 

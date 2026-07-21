@@ -37,7 +37,7 @@ const res = await fetch(`${API}/files/search?q=` + encodeURIComponent(query));
 render(await res.json());
 ```
 
-Hỏi về một tài liệu là thêm một lời gọi tới route `ask` (Bedrock/Claude trả lời bằng tiếng Việt; câu hỏi rỗng thì trả về bản tóm tắt):
+Hỏi về một tài liệu là thêm một lời gọi tới route `ask` (Bedrock/Claude trả lời theo ngôn ngữ câu hỏi; câu hỏi rỗng thì trả về bản tóm tắt):
 
 ```javascript
 const res = await fetch(`${API}/files/${id}/ask`, {
