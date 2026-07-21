@@ -8,7 +8,7 @@ pre: " <b> 3.1. </b> "
 # Hệ thống tóm tắt cuộc họp bằng AI với Amazon Bedrock và Amazon Transcribe
 
 ## Tóm tắt
-Một hệ thống serverless của AWS biến file ghi âm cuộc họp thành bản tóm tắt có cấu trúc, hành động được, ghép nhiều dịch vụ AWS thành một ứng dụng generative AI với chi phí theo lượt dùng thấp.
+Một hệ thống serverless của AWS biến file ghi âm cuộc họp thành bản tóm tắt có cấu trúc, dựng từ nhiều dịch vụ AWS và tính phí theo lượt dùng.
 
 ## Nội dung chính
 
@@ -30,7 +30,7 @@ Hệ thống xử lý theo luồng tự động:
 - Bài gốc cho biết chi phí trung bình khoảng 0,98 USD mỗi cuộc họp.
 
 ### Bài học rút ra
-Bài ghép nhiều dịch vụ AWS (Transcribe, Bedrock, Step Functions, Lambda, S3, DynamoDB) thành một ứng dụng hoàn chỉnh. Yêu cầu mô hình sinh bản tóm tắt theo cấu trúc định sẵn (bên liên quan, hành động, yêu cầu) cho kết quả dùng được trực tiếp thay vì một đoạn văn chung chung.
+Yêu cầu mô hình sinh bản tóm tắt theo cấu trúc định sẵn (bên liên quan, hành động, yêu cầu) cho kết quả dùng được trực tiếp thay vì một đoạn văn chung chung. Bài cũng cho thấy Transcribe, Bedrock, Step Functions, Lambda, S3 và DynamoDB ghép với nhau trong một luồng ra sao.
 
 ## Nguồn tham khảo
 [Build an AI-powered automated summarization system with Amazon Bedrock and Amazon Transcribe](https://aws.amazon.com/blogs/machine-learning/build-an-ai-powered-automated-summarization-system-with-amazon-bedrock-and-amazon-transcribe-using-terraform/) (AWS Machine Learning Blog)

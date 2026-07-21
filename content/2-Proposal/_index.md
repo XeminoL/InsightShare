@@ -11,7 +11,7 @@ pre: " <b> 2. </b> "
 
 ### 1. Executive Summary
 
-InsightShare is a web application for uploading, analyzing and sharing images/documents. On upload, AWS AI services understand the content: labeling images, extracting document text, and answering questions or summarizing a document in Vietnamese, so users search by content rather than only by name. It is fully **serverless** on AWS (region `ap-southeast-1`): no servers to manage, per-request billing so idle cost stays minimal, scaling with load. It uses S3, Lambda, API Gateway, DynamoDB, CloudFront and Cognito with three AI services: Rekognition, Textract and Bedrock (Claude). Amazon Cognito handles user sign-in so each user sees only their own files, isolated by the JWT `sub` claim.
+InsightShare is a web application for uploading, analyzing and sharing images/documents. On upload, AWS AI services label images, extract document text, and answer questions or summarize a document in Vietnamese, so files can be found by content and not only by name. It is fully **serverless** on AWS (region `ap-southeast-1`): no servers to manage, per-request billing, scaling with load. It uses S3, Lambda, API Gateway, DynamoDB, CloudFront and Cognito, with three AI services: Rekognition, Textract and Bedrock (Claude). Amazon Cognito handles sign-in, and the JWT `sub` claim scopes each file to its owner so users see only their own files.
 
 ### 2. Problem Statement
 
@@ -28,9 +28,9 @@ InsightShare centralizes data and processing on a unified serverless stack:
 - **Smart search:** labels and extracted text are stored in DynamoDB to find files by content.
 
 *Benefits*
-- **Low cost:** the serverless model bills per use; at demo scale the total stays under $1/month.
-- **Reliable & secure:** files are non-public, IAM least-privilege, monitored with CloudWatch.
-- **Content-based search:** AI labels and extracted text make files findable by what is inside them, not only by name.
+- The serverless model bills per use; at demo scale the total stays under $1/month.
+- Files are non-public, permissions follow IAM least-privilege, and CloudWatch monitors the system.
+- AI labels and extracted text let files be found by what is inside them, not only by name.
 
 ### 3. Solution Architecture
 

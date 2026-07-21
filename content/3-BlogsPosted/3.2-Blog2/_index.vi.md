@@ -8,7 +8,7 @@ pre: " <b> 3.2. </b> "
 # Xây ứng dụng nhiều bước với AWS Lambda Durable Functions
 
 ## Tóm tắt
-Lambda Durable Functions của AWS cho phép xây các ứng dụng nhiều bước và luồng AI phức tạp với quản lý trạng thái và tự phục hồi lỗi tích hợp sẵn, mà không phải tự dựng thêm hạ tầng.
+Lambda Durable Functions của AWS cho phép xây các ứng dụng nhiều bước và luồng AI ngay trong Lambda, với việc quản lý trạng thái và phục hồi lỗi do runtime lo thay vì một kho trạng thái riêng.
 
 ## Nội dung chính
 

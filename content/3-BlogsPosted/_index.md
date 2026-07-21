@@ -12,7 +12,7 @@ Three posts published to the [AWS Study Group](https://www.facebook.com/groups/a
 Shares how to build a serverless system that turns meeting recordings into structured summaries, using Transcribe for speech-to-text and Bedrock for summarization.
 
 ### [Blog 2 - Building multi-step applications with AWS Lambda Durable Functions](3.2-Blog2/)
-Introduces Lambda Durable Functions, which let you build long-running workflows with built-in state management and failure recovery inside Lambda, without building your own state infrastructure.
+Introduces Lambda Durable Functions, which build long-running workflows inside Lambda with state management and failure recovery handled by the runtime.
 
 ### [Blog 3 - AWS Lambda MicroVMs: isolated, stateful sandboxes for running untrusted code](3.3-Blog3/)
-Introduces AWS Lambda MicroVMs, a new serverless compute primitive that runs user-supplied or AI-generated code in isolated, stateful environments with VM-level isolation, near-instant launch from a snapshot, and preserved state, without managing servers.
+Introduces AWS Lambda MicroVMs, a serverless compute primitive that runs user-supplied or AI-generated code with VM-level isolation, near-instant launch from a snapshot, and preserved state.

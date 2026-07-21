@@ -11,7 +11,7 @@ pre: " <b> 2. </b> "
 
 ### 1. Tóm tắt
 
-InsightShare là một ứng dụng web để tải lên, phân tích và chia sẻ ảnh/tài liệu. Khi file được tải lên, các dịch vụ AI của AWS hiểu nội dung: gắn nhãn ảnh, trích văn bản từ tài liệu, và trả lời câu hỏi hoặc tóm tắt tài liệu bằng tiếng Việt, nhờ đó người dùng tìm file theo nội dung thay vì chỉ theo tên. Toàn bộ theo kiến trúc **serverless** trên AWS (region `ap-southeast-1`): không phải quản lý máy chủ, tính phí theo lượt gọi nên chi phí lúc nhàn rỗi nhỏ, tự mở rộng theo tải. Nền tảng dùng S3, Lambda, API Gateway, DynamoDB, CloudFront và Cognito cùng ba dịch vụ AI Rekognition, Textract và Bedrock (Claude). Amazon Cognito lo phần đăng nhập người dùng để mỗi người chỉ thấy file của chính mình, cô lập theo claim `sub` trong JWT.
+InsightShare là một ứng dụng web để tải lên, phân tích và chia sẻ ảnh/tài liệu. Khi file được tải lên, các dịch vụ AI của AWS gắn nhãn ảnh, trích văn bản từ tài liệu, và trả lời câu hỏi hoặc tóm tắt tài liệu bằng tiếng Việt, nhờ đó tìm file được theo nội dung chứ không chỉ theo tên. Toàn bộ theo kiến trúc **serverless** trên AWS (region `ap-southeast-1`): không phải quản lý máy chủ, tính phí theo lượt gọi, tự mở rộng theo tải. Nền tảng dùng S3, Lambda, API Gateway, DynamoDB, CloudFront và Cognito, cùng ba dịch vụ AI Rekognition, Textract và Bedrock (Claude). Amazon Cognito lo phần đăng nhập, và claim `sub` trong JWT gán mỗi file cho đúng chủ nên người dùng chỉ thấy file của mình.
 
 ### 2. Tuyên bố vấn đề
 
@@ -28,9 +28,9 @@ InsightShare tập trung dữ liệu và xử lý trên một stack serverless t
 - **Tìm kiếm thông minh:** nhãn và văn bản trích được lưu vào DynamoDB để tìm file theo nội dung.
 
 *Lợi ích*
-- **Chi phí thấp:** mô hình serverless trả theo lượng dùng; ở mức demo tổng chi phí dưới 1 USD/tháng.
-- **Tin cậy & bảo mật:** file không public, IAM least-privilege, giám sát bằng CloudWatch.
-- **Tìm kiếm theo nội dung:** nhãn AI và văn bản trích giúp tìm file theo nội dung bên trong, không chỉ theo tên.
+- Mô hình serverless trả theo lượng dùng; ở mức demo tổng chi phí dưới 1 USD/tháng.
+- File không public, quyền theo IAM least-privilege, và CloudWatch giám sát hệ thống.
+- Nhãn AI và văn bản trích giúp tìm file theo nội dung bên trong, không chỉ theo tên.
 
 ### 3. Kiến trúc giải pháp
 

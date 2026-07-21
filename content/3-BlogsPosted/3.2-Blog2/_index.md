@@ -8,7 +8,7 @@ pre: " <b> 3.2. </b> "
 # Building multi-step applications with AWS Lambda Durable Functions
 
 ## Summary
-AWS Lambda Durable Functions build multi-step applications and complex AI workflows with built-in state management and automatic failure recovery, without your own infrastructure.
+AWS Lambda Durable Functions build multi-step applications and AI workflows inside Lambda, with state management and failure recovery handled by the runtime instead of a separate state store.
 
 ## Main content
 
