@@ -101,5 +101,5 @@ Tập quyền được tinh chỉnh trong lúc test thật: `dynamodb:UpdateItem
 {{% /notice %}}
 
 {{% notice info %}}
-Đăng nhập Cognito (xem [5.4.6](../5.4-serverless-backend/5.4.5-cognito-auth/)) không cần thêm quyền nào cho role Lambda này. JWT authorizer trên API Gateway kiểm tra token và truyền claim `sub` vào hàm, nên việc gán dữ liệu theo người dùng chạy trên đúng các quyền DynamoDB ở trên.
+Đăng nhập Cognito (xem [5.4.5](../5.4-serverless-backend/5.4.5-cognito-auth/)) không cần thêm quyền nào cho role Lambda này. JWT authorizer trên API Gateway kiểm tra token và truyền claim `sub` vào hàm, nên việc gán dữ liệu theo người dùng chạy trên đúng các quyền DynamoDB ở trên.
 {{% /notice %}}
