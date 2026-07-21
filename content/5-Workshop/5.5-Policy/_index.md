@@ -99,3 +99,7 @@ The attached policy grants only what each service needs. S3 and DynamoDB are sco
 {{% notice note %}}
 The permission set was tuned during real testing: `dynamodb:UpdateItem` and `s3:ListBucket` were added after `analyze` failed with `AccessDeniedException`. This is least-privilege in practice: start narrow, then grant exactly the missing action rather than opening broad access.
 {{% /notice %}}
+
+{{% notice info %}}
+The Cognito sign-in (see [5.4.6](../5.4-serverless-backend/5.4.6-cognito-auth/)) needs no extra permission in this Lambda role. The JWT authorizer on API Gateway verifies the token and passes the `sub` claim to the function, so per-user scoping runs on the existing DynamoDB permissions above.
+{{% /notice %}}

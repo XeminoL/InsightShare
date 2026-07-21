@@ -11,7 +11,7 @@ pre: " <b> 2. </b> "
 
 ### 1. Tóm tắt
 
-InsightShare là một ứng dụng web để tải lên, phân tích và chia sẻ ảnh/tài liệu. Khi file được tải lên, các dịch vụ AI của AWS hiểu nội dung: gắn nhãn ảnh, trích văn bản từ tài liệu, và trả lời câu hỏi hoặc tóm tắt tài liệu bằng tiếng Việt, nhờ đó người dùng tìm file theo nội dung thay vì chỉ theo tên. Toàn bộ theo kiến trúc **serverless** trên AWS (region `ap-southeast-1`): không phải quản lý máy chủ, tính phí theo lượt gọi nên chi phí lúc nhàn rỗi nhỏ, tự mở rộng theo tải. Nền tảng dùng S3, Lambda, API Gateway, DynamoDB, CloudFront cùng ba dịch vụ AI Rekognition, Textract và Bedrock (Claude).
+InsightShare là một ứng dụng web để tải lên, phân tích và chia sẻ ảnh/tài liệu. Khi file được tải lên, các dịch vụ AI của AWS hiểu nội dung: gắn nhãn ảnh, trích văn bản từ tài liệu, và trả lời câu hỏi hoặc tóm tắt tài liệu bằng tiếng Việt, nhờ đó người dùng tìm file theo nội dung thay vì chỉ theo tên. Toàn bộ theo kiến trúc **serverless** trên AWS (region `ap-southeast-1`): không phải quản lý máy chủ, tính phí theo lượt gọi nên chi phí lúc nhàn rỗi nhỏ, tự mở rộng theo tải. Nền tảng dùng S3, Lambda, API Gateway, DynamoDB, CloudFront và Cognito cùng ba dịch vụ AI Rekognition, Textract và Bedrock (Claude). Amazon Cognito lo phần đăng nhập người dùng để mỗi người chỉ thấy file của chính mình, cô lập theo claim `sub` trong JWT.
 
 ### 2. Tuyên bố vấn đề
 
@@ -35,7 +35,7 @@ InsightShare tập trung dữ liệu và xử lý trên một stack serverless t
 ### 3. Kiến trúc giải pháp
 
 *Tổng quan*
-Trình duyệt tải giao diện tĩnh từ **S3 + CloudFront (HTTPS)** → gọi **API Gateway** → **Lambda (Python)**. Lambda sinh presigned URL để trình duyệt upload/download trực tiếp với **S3**. Sau khi upload, Lambda gọi các dịch vụ AI (**Rekognition / Textract / Bedrock**) và lưu kết quả vào **DynamoDB** phục vụ tìm kiếm. **CloudWatch** giám sát log/metric; **IAM** kiểm soát quyền theo least-privilege.
+Trình duyệt tải giao diện tĩnh từ **S3 + CloudFront (HTTPS)** → đăng nhập qua **Amazon Cognito** → gọi **API Gateway** → **Lambda (Python)**. API Gateway chạy một JWT authorizer kiểm tra token Cognito, và Lambda đọc claim `sub` để gán mỗi file cho đúng chủ sở hữu. Lambda sinh presigned URL để trình duyệt upload/download trực tiếp với **S3**. Sau khi upload, Lambda gọi các dịch vụ AI (**Rekognition / Textract / Bedrock**) và lưu kết quả vào **DynamoDB** phục vụ tìm kiếm. **CloudWatch** giám sát log/metric; **IAM** kiểm soát quyền theo least-privilege.
 
 ![Kiến trúc InsightShare](/images/2-Proposal/insightshare_architecture-v3.png)
 
@@ -45,7 +45,8 @@ Trình duyệt tải giao diện tĩnh từ **S3 + CloudFront (HTTPS)** → gọ
 |---|---|
 | Amazon S3 | Lưu file người dùng; host giao diện web tĩnh |
 | Amazon CloudFront | CDN phân phối web, HTTPS, tăng tốc |
-| Amazon API Gateway | Cổng API công khai cho ứng dụng |
+| Amazon API Gateway | Cổng API công khai cho ứng dụng; một JWT authorizer kiểm tra token Cognito |
+| Amazon Cognito | Đăng nhập người dùng (Hosted UI); claim `sub` trong JWT gán mỗi file cho đúng chủ sở hữu để cô lập theo người dùng |
 | AWS Lambda | Xử lý nghiệp vụ (Python/boto3); một handler điều hướng request API Gateway HTTP API theo method và path |
 | Amazon DynamoDB | Lưu metadata + nhãn AI + văn bản trích, phục vụ tìm kiếm |
 | Amazon Rekognition | Gắn nhãn ảnh (DetectLabels) |

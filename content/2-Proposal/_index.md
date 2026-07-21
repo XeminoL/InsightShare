@@ -11,7 +11,7 @@ pre: " <b> 2. </b> "
 
 ### 1. Executive Summary
 
-InsightShare is a web application for uploading, analyzing and sharing images/documents. On upload, AWS AI services understand the content: labeling images, extracting document text, and answering questions or summarizing a document in Vietnamese, so users search by content rather than only by name. It is fully **serverless** on AWS (region `ap-southeast-1`): no servers to manage, per-request billing so idle cost stays minimal, scaling with load. It uses S3, Lambda, API Gateway, DynamoDB and CloudFront with three AI services: Rekognition, Textract and Bedrock (Claude).
+InsightShare is a web application for uploading, analyzing and sharing images/documents. On upload, AWS AI services understand the content: labeling images, extracting document text, and answering questions or summarizing a document in Vietnamese, so users search by content rather than only by name. It is fully **serverless** on AWS (region `ap-southeast-1`): no servers to manage, per-request billing so idle cost stays minimal, scaling with load. It uses S3, Lambda, API Gateway, DynamoDB, CloudFront and Cognito with three AI services: Rekognition, Textract and Bedrock (Claude). Amazon Cognito handles user sign-in so each user sees only their own files, isolated by the JWT `sub` claim.
 
 ### 2. Problem Statement
 
@@ -35,7 +35,7 @@ InsightShare centralizes data and processing on a unified serverless stack:
 ### 3. Solution Architecture
 
 *Overview*
-The browser loads the static frontend from **S3 + CloudFront (HTTPS)** → calls **API Gateway** → **Lambda (Python)**. Lambda generates presigned URLs so the browser uploads/downloads directly to **S3**. After upload, Lambda calls the AI services (**Rekognition / Textract / Bedrock**) and stores results in **DynamoDB** for search. **CloudWatch** monitors logs/metrics; **IAM** enforces least-privilege access.
+The browser loads the static frontend from **S3 + CloudFront (HTTPS)** → signs in through **Amazon Cognito** → calls **API Gateway** → **Lambda (Python)**. API Gateway runs a JWT authorizer that validates the Cognito token, and Lambda reads the `sub` claim to scope every file to its owner. Lambda generates presigned URLs so the browser uploads/downloads directly to **S3**. After upload, Lambda calls the AI services (**Rekognition / Textract / Bedrock**) and stores results in **DynamoDB** for search. **CloudWatch** monitors logs/metrics; **IAM** enforces least-privilege access.
 
 ![InsightShare Architecture](/images/2-Proposal/insightshare_architecture-v3.png)
 
@@ -45,7 +45,8 @@ The browser loads the static frontend from **S3 + CloudFront (HTTPS)** → calls
 |---|---|
 | Amazon S3 | Store user files; host the static web frontend |
 | Amazon CloudFront | CDN for the web, HTTPS, faster delivery |
-| Amazon API Gateway | Public API gateway for the application |
+| Amazon API Gateway | Public API gateway for the application; a JWT authorizer validates Cognito tokens |
+| Amazon Cognito | User sign-in (Hosted UI); the JWT `sub` claim scopes each file to its owner for per-user isolation |
 | AWS Lambda | Business logic (Python/boto3); a single handler routes API Gateway HTTP API requests by method and path |
 | Amazon DynamoDB | Store metadata + AI labels + extracted text for search |
 | Amazon Rekognition | Image labeling (DetectLabels) |

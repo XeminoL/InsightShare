@@ -13,6 +13,7 @@ pre: " <b> 5.1. </b> "
 Nền tảng được xây trên:
 - **Amazon S3 + presigned URL**: lưu trữ file riêng tư; trình duyệt tải lên/tải xuống trực tiếp qua link ký có thời hạn ngắn.
 - **AWS Lambda + Amazon API Gateway**: back-end Python không phải quản lý máy chủ, expose thành API HTTP.
+- **Amazon Cognito**: đăng nhập người dùng qua Hosted UI, để mỗi người chỉ thấy file của mình, cô lập theo claim `sub` trong JWT.
 - **Amazon DynamoDB**: metadata của file cùng nhãn AI và văn bản trích, phục vụ tìm kiếm theo nội dung.
 - **Amazon Rekognition, Textract và Bedrock (Claude)**: lớp AI gắn nhãn ảnh, trích văn bản tài liệu, và trả lời câu hỏi hoặc tóm tắt tài liệu bằng tiếng Việt, không cần train model.
 - **Amazon CloudFront + CloudWatch + IAM**: phân phối frontend tĩnh qua HTTPS, giám sát và kiểm soát quyền theo nguyên tắc tối thiểu.
@@ -47,7 +48,8 @@ InsightShare hoạt động theo luồng serverless hoàn toàn. Các bước đ
 |---|---|---|
 | Amazon S3 | Lưu file người dùng tải lên và host web tĩnh | Bền vững, chi phí thấp, hỗ trợ presigned URL nên trình duyệt truyền file trực tiếp không qua Lambda |
 | Amazon CloudFront | CDN phân phối giao diện web tĩnh qua HTTPS | Phân phối nhanh trên toàn cầu và có HTTPS cho frontend mà không cần quản lý web server |
-| Amazon API Gateway | Cổng API công khai để frontend gọi back-end | Endpoint HTTP được quản lý sẵn, có throttling và CORS, không phải chạy server |
+| Amazon API Gateway | Cổng API công khai để frontend gọi back-end; một JWT authorizer kiểm tra token Cognito | Endpoint HTTP được quản lý sẵn, có throttling và CORS, không phải chạy server |
+| Amazon Cognito | Đăng nhập người dùng qua Hosted UI; cấp JWT có claim `sub` để gán file theo từng người | User directory và đăng nhập OAuth2 được quản lý sẵn, không phải tự dựng server xác thực |
 | AWS Lambda | Xử lý nghiệp vụ back-end bằng Python | Không phải quản lý server, trả tiền theo lượt gọi, tự co giãn theo tải |
 | Amazon DynamoDB | Lưu metadata của file kèm nhãn AI và văn bản trích xuất | NoSQL serverless đọc mili-giây, hợp với dạng metadata theo từng file và nhu cầu tìm kiếm |
 | Amazon Rekognition | Gắn nhãn ảnh | AI gọi sẵn, không cần train model, trả về nhãn chỉ với một lời gọi API |
