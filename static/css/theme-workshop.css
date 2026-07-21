@@ -226,3 +226,5 @@ div.notices.info p {
   border-top: 30px solid #fd9827;
   background: #fff2db;
 }
+
+#sidebar .select-style { margin-left: 8px; }
