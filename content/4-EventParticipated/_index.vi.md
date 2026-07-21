@@ -6,10 +6,13 @@ chapter: false
 pre: " <b> 4. </b> "
 ---
 
-### Các sự kiện đã tham gia
+Ba sự kiện đã tham gia trong kỳ thực tập, đều do chương trình First Cloud AI Journey tổ chức. Mỗi sự kiện được trình bày ở trang riêng bên dưới, kèm thông tin và hình ảnh hoặc video chứng minh.
 
-Trong quá trình thực tập tại First Cloud AI Journey, em đã tham gia ít nhất 3 sự kiện do chương trình tổ chức. Mỗi sự kiện được trình bày ở trang riêng bên dưới, kèm thông tin sự kiện và hình ảnh hoặc video chứng minh tham gia.
+### [Sự kiện 1 - FCAJ Community Day, tháng 6/2026](4.1-Event1/)
+Sự kiện cộng đồng hàng tháng, các diễn giả từ nhiều công ty chia sẻ kinh nghiệm thực tế khi xây dựng AI trên AWS: vận hành cloud bằng agent, voice AI cho tiếng Việt, DevOps agent điều tra sự cố, và Amazon Quick cho HR.
 
-- [Sự kiện 1](4.1-Event1/)
-- [Sự kiện 2](4.2-Event2/)
-- [Sự kiện 3](4.3-Event3/)
+### [Sự kiện 2](4.2-Event2/)
+[Tóm tắt một dòng về sự kiện và chủ đề chính.]
+
+### [Sự kiện 3](4.3-Event3/)
+[Tóm tắt một dòng về sự kiện và chủ đề chính.]
