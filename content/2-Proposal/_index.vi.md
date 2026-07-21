@@ -27,12 +27,10 @@ InsightShare tập trung dữ liệu và xử lý trên một stack serverless t
 - **Hiểu nội dung bằng AI:** Rekognition gắn nhãn ảnh, Textract trích văn bản tài liệu, và Bedrock (một model Claude) trả lời câu hỏi và tóm tắt tài liệu bằng tiếng Việt. Tất cả đều là dịch vụ gọi sẵn, không huấn luyện mô hình.
 - **Tìm kiếm thông minh:** nhãn và văn bản trích được lưu vào DynamoDB để tìm file theo nội dung.
 
-*Lợi ích & ROI*
-- **Tập trung:** lưu trữ, chia sẻ và phân tích trên một nền tảng duy nhất, giảm thao tác thủ công.
-- **Thông minh:** tự gắn nhãn, trích text, hỏi đáp tài liệu và tìm kiếm theo nội dung, bổ sung trên nền lưu trữ.
-- **Chi phí thấp:** mô hình serverless trả theo lượng dùng; các dịch vụ AI nằm trong Free Tier ở mức demo, tổng chi phí dưới 1 USD/tháng.
+*Lợi ích*
+- **Chi phí thấp:** mô hình serverless trả theo lượng dùng; ở mức demo tổng chi phí dưới 1 USD/tháng.
 - **Tin cậy & bảo mật:** file không public, IAM least-privilege, giám sát bằng CloudWatch.
-- Là nền tảng học tập thực tế về kiến trúc serverless kết hợp AI, có thể mở rộng thành sản phẩm lớn hơn.
+- **Tìm kiếm theo nội dung:** nhãn AI và văn bản trích giúp tìm file theo nội dung bên trong, không chỉ theo tên.
 
 ### 3. Kiến trúc giải pháp
 
@@ -59,8 +57,6 @@ Trình duyệt tải giao diện tĩnh từ **S3 + CloudFront (HTTPS)** → gọ
 *Thiết kế thành phần*
 - **Frontend:** trang web tĩnh (HTML/JS) chọn file, hiển thị danh sách kèm nhãn AI, ô tìm kiếm theo nội dung, ô đặt câu hỏi về một tài liệu.
 - **API:** các endpoint yêu cầu URL upload, xác nhận upload (kích hoạt phân tích AI), liệt kê/tìm kiếm file, lấy URL download, và hỏi đáp về một tài liệu.
-- **Lưu trữ:** file trong S3; metadata + kết quả AI trong DynamoDB.
-- **Bảo mật:** IAM Role least-privilege; file không public, chỉ truy cập qua presigned URL.
 
 ### 4. Triển khai kỹ thuật
 
@@ -79,35 +75,11 @@ Trình duyệt tải giao diện tĩnh từ **S3 + CloudFront (HTTPS)** → gọ
 - Công cụ: AWS CLI, Python 3, boto3.
 - Kiến thức: S3, Lambda, API Gateway, DynamoDB, IAM, CloudWatch và các dịch vụ AI (Rekognition, Textract, Bedrock).
 
-### 5. Lộ trình & Mốc triển khai
+### 5. Ước tính ngân sách
 
-| Mốc | Hoạt động |
-|---|---|
-| Chuẩn bị | Chốt kiến trúc, thiết kế DynamoDB, thiết lập tài khoản AWS, viết Proposal |
-| Phát triển lõi | Lưu trữ S3 + presigned URL, back-end Lambda + API Gateway, DynamoDB + link tải presigned |
-| Tích hợp AI | Rekognition + Textract + Bedrock; tìm kiếm thông minh theo nội dung |
-| Hoàn thiện | CloudFront, CloudWatch, tối ưu chi phí/bảo mật, script deploy/dọn dẹp |
-| Vận hành | Giám sát, kiểm thử, rà bảo mật và dọn dẹp tài nguyên |
+Ở mức demo, mô hình serverless tính theo lượt dùng cùng Free Tier giữ chi phí dưới 1 USD/tháng. Một AWS Budget `InsightShare-Monthly` giới hạn 5 USD/tháng theo dõi chi tiêu. Số liệu chi tiết tính bằng [AWS Pricing Calculator](https://calculator.aws/).
 
-Mốc chính: hoàn thành MVP lưu trữ (upload + link tải) trước; tích hợp lớp AI và tìm kiếm tiếp theo; sau đó hoàn thiện, tối ưu và vận hành.
-
-### 6. Ước tính ngân sách
-
-Chi phí ước tính thấp do mô hình serverless tính theo lượt dùng, và các dịch vụ AI nằm trong Free Tier ở mức demo. Số liệu chi tiết sẽ tính bằng [AWS Pricing Calculator](https://calculator.aws/).
-
-| Dịch vụ | Ước tính/tháng |
-| --- | --- |
-| AWS Lambda | ~0,00 USD (trong Free Tier) |
-| Amazon API Gateway | ~0,01 USD |
-| Amazon S3 (lưu trữ + request) | ~0,10-0,20 USD |
-| Amazon DynamoDB (on-demand) | ~0,00-0,05 USD |
-| Amazon CloudFront | ~0,00-0,10 USD |
-| Rekognition + Textract + Bedrock (Claude) | ~0,00-0,50 USD (mức demo, ít lượt gọi) |
-| **Tổng** | **< 1 USD/tháng (mức demo)** |
-
-Đo trên hạ tầng đang chạy, chi phí vận hành thực tế tháng 7/2026 về cơ bản là 0 USD: mọi dịch vụ đều nằm trong Free Tier hoặc theo mô hình pay-per-use, nên một stack nhàn rỗi gần như không tốn gì. Một AWS Budget `InsightShare-Monthly` giới hạn 5 USD/tháng đã được tạo để theo dõi chi tiêu, bên cạnh budget zero-spend có sẵn của tài khoản.
-
-Ở quy mô thật, chi phí tăng theo mức dùng. Ước tính hàng tháng cho **1.000 người dùng** (khoảng 20.000 lượt upload, mỗi lượt phân tích một lần, cùng duyệt và tìm kiếm):
+Ở quy mô thật, chi phí tăng theo mức dùng, chủ yếu đến từ các dịch vụ AI (đánh đổi cho việc không phải huấn luyện hay tự vận hành mô hình). Ước tính hàng tháng cho **1.000 người dùng** (khoảng 20.000 lượt upload, mỗi lượt phân tích một lần, cùng duyệt và tìm kiếm):
 
 | Dịch vụ | Cơ sở tính | Ước tính/tháng |
 | --- | --- | --- |
@@ -120,9 +92,7 @@ Chi phí ước tính thấp do mô hình serverless tính theo lượt dùng, v
 | Amazon CloudFront | ~30 GB ra | ~2,50 USD |
 | **Tổng** | | **~40 USD/tháng** |
 
-Ở quy mô lớn, chi phí chủ yếu đến từ các dịch vụ AI (Rekognition, Bedrock), đây là đánh đổi cho việc không phải huấn luyện hay tự vận hành mô hình. Claude Haiku 4.5 là model chi phí thấp nên Bedrock ở đây vẫn ở mức vừa phải. Ở mức demo, chi phí gần 0 vì lượng dùng rất ít.
-
-### 7. Đánh giá rủi ro
+### 6. Đánh giá rủi ro
 
 | Rủi ro | Tác động | Xác suất | Giảm thiểu |
 |---|---|---|---|
@@ -133,12 +103,12 @@ Chi phí ước tính thấp do mô hình serverless tính theo lượt dùng, v
 
 *Kế hoạch dự phòng:* giữ một script dọn dẹp (cleanup-aws.ps1) để xóa toàn bộ tài nguyên nhanh chóng.
 
-### 8. Kết quả kỳ vọng
+### 7. Kết quả kỳ vọng
 
 *Cải tiến kỹ thuật*
 - Ứng dụng web hoạt động end-to-end: upload → tự động phân tích nội dung bằng AI → liệt kê → tìm kiếm theo nội dung → hỏi đáp về một tài liệu → tải qua presigned link.
-- Làm chủ kiến trúc serverless kết hợp các dịch vụ AI managed trên AWS.
-- Hỏi đáp tài liệu bằng Bedrock đã được triển khai đầy đủ và nối đúng; trên tài khoản dạng credit này nó trả về câu dự phòng cho tới khi tài khoản được cấp inference quota on-demand của Bedrock (hiện là 0).
+- Kiến trúc serverless kết hợp các dịch vụ AI managed trên AWS.
+- Hỏi đáp tài liệu bằng Amazon Bedrock (Claude): endpoint `ask` nhận một tài liệu và một câu hỏi, được nối vào lệnh gọi `bedrock:InvokeModel` với model id theo inference-profile cùng phần xử lý request/response đầy đủ.
 
 *Giá trị dài hạn*
 - Nền tảng có thể mở rộng: thêm đăng nhập người dùng (Cognito), điều phối pipeline AI nhiều bước (Step Functions), hỗ trợ thêm loại file.

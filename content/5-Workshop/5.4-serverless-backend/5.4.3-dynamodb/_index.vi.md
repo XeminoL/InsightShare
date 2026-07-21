@@ -10,7 +10,7 @@ pre: " <b> 5.4.3 </b> "
 
 Lưu **metadata** của mỗi file vào **Amazon DynamoDB** để InsightShare liệt kê, tìm kiếm và quản lý file. Nhãn AI và văn bản trích xuất cũng nằm ở đây, chính là thứ giúp tìm kiếm theo nội dung.
 
-#### Tạo bảng DynamoDB
+#### Bước 1: Tạo bảng DynamoDB
 
 Mở DynamoDB console (region `ap-southeast-1`) và chọn **Create table**:
 
@@ -30,7 +30,7 @@ aws dynamodb create-table --table-name insightshare-files \
   --billing-mode PAY_PER_REQUEST
 ```
 
-#### Các thuộc tính metadata
+#### Bước 2: Các thuộc tính metadata
 
 Mỗi item lưu thông tin một file:
 
@@ -41,7 +41,7 @@ Mỗi item lưu thông tin một file:
 - `search_blob` : nhãn + văn bản viết thường, dùng để tìm kiếm theo nội dung
 - `size`, `uploaded_at` : kích thước object (từ `head_object` của S3) và thời điểm upload
 
-#### Nối Lambda với DynamoDB
+#### Bước 3: Nối Lambda với DynamoDB
 
 Lambda dùng DynamoDB resource của `boto3`. `put_item` khi upload, `update_item` sau khi phân tích AI, và `scan` cho list/search:
 
@@ -62,13 +62,17 @@ table.update_item(
 
 Lưu ý `ExpressionAttributeNames={"#t": "text"}`: `text` là từ khóa dành riêng của DynamoDB, nên phải đặt bí danh trong update expression.
 
-#### Test
+#### Bước 4: Test
 
 Gọi API upload, rồi xác nhận item mới xuất hiện:
 
 ```bash
 aws dynamodb scan --table-name insightshare-files --select COUNT
 ```
+
+![Console: item trong bảng DynamoDB](/images/5-Workshop/5.4-serverless-backend/dynamodb-item.png)
+
+_Ảnh chụp Console của bạn cho thấy một item file trong bảng `insightshare-files` ở mục Explore items (ảnh cần bổ sung)._
 
 {{% notice info %}}
 **Ghi chú kỹ thuật.** Execution role có `PutItem`/`GetItem`/`Query`/`Scan` nhưng thiếu `UpdateItem`, nên gọi `analyze` trả về `AccessDeniedException ... not authorized to perform: dynamodb:UpdateItem`. Thêm `dynamodb:UpdateItem` (và `s3:ListBucket`) vào policy của role để xử lý. Lambda đang chạy giữ credentials cache, nên thay đổi policy IAM chỉ có hiệu lực sau khi cập nhật lại function để tạo môi trường chạy mới.

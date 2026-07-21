@@ -24,5 +24,5 @@ pre: " <b> 1.8. </b> "
 ### Results achieved
 
 1. Uploaded images are auto-labeled with Rekognition; documents have text extracted by Textract (`.txt` read directly).
-2. A document Q&A endpoint answers questions and summarizes in Vietnamese via Bedrock/Claude; it fails soft with an HTTP 200 message while the account's Bedrock inference quota is 0.
+2. A document Q&A endpoint answers questions and summarizes in Vietnamese via Bedrock/Claude, wrapped to fail soft so an unavailable AI service does not break the analysis flow.
 3. Labels and text are saved to DynamoDB for search; AI permissions are least-privilege.

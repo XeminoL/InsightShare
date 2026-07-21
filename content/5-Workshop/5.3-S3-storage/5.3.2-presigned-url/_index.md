@@ -10,7 +10,7 @@ pre: " <b> 5.3.2 </b> "
 
 A **presigned URL** is a signed link to one S3 object, valid for a limited time, so the browser uploads/downloads directly while the bucket stays private.
 
-#### Generate a presigned URL with boto3
+#### Step 1: Generate a presigned URL with boto3
 
 Lambda creates the S3 client and generates a PUT URL for uploads and a GET URL for downloads, expiring after 15 minutes (`PRESIGN_EXPIRY = 900`).
 
@@ -41,7 +41,7 @@ get_url = s3.generate_presigned_url(
 **Technical note.** The default S3 client uses the global endpoint (`s3.amazonaws.com`), which returns **HTTP 307** when uploading to a bucket in Singapore. Pinning the regional endpoint plus Signature V4 (as above) makes the upload return HTTP 200.
 {{% /notice %}}
 
-#### Test upload through the presigned URL
+#### Step 2: Test upload through the presigned URL
 
 Request an upload URL, then PUT a file to it:
 
@@ -53,7 +53,7 @@ curl -X PUT "<upload_url>" -H "Content-Type: text/plain" \
   --data-binary @test.txt -w "HTTP %{http_code}\n"
 ```
 
-#### Check the object in S3
+#### Step 3: Check the object in S3
 
 Confirm the file landed in the bucket:
 
@@ -61,6 +61,6 @@ Confirm the file landed in the bucket:
 aws s3 ls s3://insightshare-files-khang-2352464/ --recursive
 ```
 
-#### Summary
+![Console: uploaded object in the S3 bucket](/images/5-Workshop/5.3-S3-storage/s3-object-uploaded.png)
 
-The storage layer uses a private bucket with CORS; files move through presigned URLs without the bucket ever being public. The same mechanism generates GET URLs for downloading and sharing.
+_Screenshot: your AWS Console showing the uploaded object under its `{file_id}/` prefix in the bucket (screenshot to add)._

@@ -10,7 +10,7 @@ pre: " <b> 5.4.1 </b> "
 
 Một **Lambda function Python** cho back-end của InsightShare. Một function duy nhất điều hướng mọi route theo HTTP method và path: upload, list, search, analyze, ask, get, delete.
 
-#### Tạo function
+#### Bước 1: Tạo function
 
 Tạo Lambda function trong region `ap-southeast-1`:
 
@@ -37,7 +37,7 @@ Màn Function overview cho thấy trigger API Gateway đã nối vào function:
 
 ![Đã tạo Lambda function](/images/5-Workshop/5.4-serverless-backend/lambda-function.png)
 
-#### Handler
+#### Bước 2: Handler
 
 Handler đọc HTTP method và path từ sự kiện API Gateway (payload format v2) rồi điều hướng tới đúng hàm. `boto3` có sẵn trong runtime Lambda nên không cần đóng gói thêm.
 
@@ -85,7 +85,7 @@ def create_upload(event):
     return _resp(200, {"id": file_id, "upload_url": put_url, "key": key})
 ```
 
-#### Deploy & test
+#### Bước 3: Deploy & test
 
 Đóng gói file rồi test bằng một sự kiện API Gateway giả:
 

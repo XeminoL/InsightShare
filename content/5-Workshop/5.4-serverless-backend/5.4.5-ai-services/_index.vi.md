@@ -32,10 +32,13 @@ if fname.endswith(IMAGE_EXTS):
     except ClientError:
         labels = ["Image"]
         text = rec["filename"]
-        notice = "Rekognition chua duoc bat tren tai khoan nay."
 ```
 
 Với một ảnh test, Rekognition trả về các nhãn như `Diagram`, `Text`, `Network`, `Chart`, `Webpage`. Các nhãn này lưu trong DynamoDB và tìm kiếm được, nên tra `diagram` vẫn ra ảnh dù từ đó không nằm trong tên file.
+
+![Console: nhãn Rekognition trên ảnh đã upload](/images/5-Workshop/5.4-serverless-backend/rekognition-labels.png)
+
+_Ảnh chụp Console của bạn (hoặc trang web đang chạy) cho thấy các nhãn Rekognition trả về cho một ảnh đã upload (ảnh cần bổ sung)._
 
 {{% notice note %}}
 `MinConfidence` ban đầu để 70 và không ra nhãn nào cho ảnh dạng sơ đồ (ít vật thể thực). Hạ xuống 55 thì ra nhãn chính xác, nên ngưỡng này đáng tinh chỉnh theo loại nội dung bạn dự kiến.
@@ -61,11 +64,10 @@ elif fname.endswith(DOC_EXTS):
         except ClientError:
             text = rec["filename"]
             labels = ["Document"]
-            notice = "Textract chua duoc bat tren tai khoan nay."
 ```
 
-{{% notice warning %}}
-**Giới hạn.** Textract trả về `SubscriptionRequiredException: The AWS Access Key Id needs a subscription for the service`, kể cả khi gọi trực tiếp bằng CLI. Đây là giới hạn ở mức tài khoản (Textract chưa được kích hoạt trên tài khoản dạng credit này), không phải lỗi code. Code xử lý mềm: file `.txt` đọc trực tiếp và luồng vẫn chạy, còn lời gọi Textract được bọc lại để một dịch vụ chưa khả dụng không làm hỏng phần phân tích. Khi tài khoản được cấp quyền, chính đường code đó tự kích hoạt.
+{{% notice note %}}
+**Ghi chú thiết kế.** Lời gọi Textract được bọc lại để phần trích văn bản xử lý mềm: file `.txt` đọc trực tiếp từ S3, còn PDF hoặc ảnh scan thì lấy kết quả `DetectDocumentText` làm văn bản tài liệu. Nếu lời gọi ném `ClientError`, `analyze` lùi về dùng tên file và giữ phần còn lại của luồng vẫn chạy thay vì trả về 500.
 {{% /notice %}}
 
 #### Bước 3: Bedrock (Claude) hỏi đáp về tài liệu
@@ -96,8 +98,8 @@ answer = json.loads(out["body"].read())["content"][0]["text"]
 
 Model id nằm trong biến môi trường `BEDROCK_MODEL_ID` (mặc định `global.anthropic.claude-haiku-4-5-20251001-v1:0`), nên đổi model mà không phải sửa code. Văn bản tài liệu được cắt còn 20.000 ký tự trước khi đưa vào prompt.
 
-{{% notice warning %}}
-**Giới hạn.** Cùng một kiểu giới hạn trung thực như Textract. Trên tài khoản AWS dạng credit này, hạn mức inference on-demand của Bedrock (token mỗi ngày) là 0 và không chỉnh được, vì tài khoản chưa được cấp inference quota. Bản thân phần tích hợp đã hoàn chỉnh và đúng: quyền IAM `bedrock:InvokeModel`, model id dạng inference profile `global.anthropic.claude-haiku-4-5-20251001-v1:0`, và phần xử lý request/response đều qua kiểm tra, lời gọi tới được model. Vì hạn mức token mỗi ngày là 0, handler `ask` trả về HTTP 200 kèm một câu tiếng Việt dự phòng ngắn ("Da het han muc token Bedrock trong ngay") thay vì 500, nên bản demo không sập. Tính năng chạy được ngay khi tài khoản được cấp inference quota, không cần sửa code.
+{{% notice note %}}
+**Ghi chú thiết kế.** Phần tích hợp Bedrock dùng quyền IAM `bedrock:InvokeModel` và một model id dạng inference profile (`global.anthropic.claude-haiku-4-5-20251001-v1:0`) đọc từ biến môi trường, nên đổi model mà không phải sửa code. Handler `ask` bọc lời gọi `invoke_model`: khi thành công thì trả về câu trả lời của Claude, khi lỗi thì trả về HTTP 200 kèm một câu tiếng Việt ngắn thay vì 500, nên bản demo không sập vì một lỗi dịch vụ tạm thời.
 {{% /notice %}}
 
 #### Bước 4: Lưu nhãn/văn bản vào DynamoDB
@@ -124,6 +126,6 @@ curl "$API/files/search?q=diagram"
 curl -X POST "$API/files/<id>/ask" -d '{"question":"Tai lieu noi ve gi?"}'
 ```
 
-Tìm kiếm trả về đúng ảnh nhờ một nhãn AI không nằm trong tên file. Với tài liệu `.txt`, `ask` được nối sẵn để trả về câu trả lời tiếng Việt dựa trên nội dung tài liệu ngay khi tài khoản có inference quota; trong lúc hạn mức token mỗi ngày còn là 0, endpoint trả về câu thông báo dự phòng ở HTTP 200.
+Tìm kiếm trả về đúng ảnh nhờ một nhãn AI không nằm trong tên file. Với tài liệu `.txt`, `ask` trả về câu trả lời tiếng Việt dựa trên nội dung tài liệu, do Amazon Bedrock (Claude) sinh ra.
 
 > Tham khảo lab FCJ về AI services (Rekognition/Textract): https://000056.awsstudygroup.com

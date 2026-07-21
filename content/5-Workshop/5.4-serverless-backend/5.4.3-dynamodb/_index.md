@@ -10,7 +10,7 @@ pre: " <b> 5.4.3 </b> "
 
 Store each file's **metadata** in **Amazon DynamoDB** so InsightShare can list, search and manage files. The AI labels and extracted text also live here, which is what makes content-based search possible.
 
-#### Create the DynamoDB table
+#### Step 1: Create the DynamoDB table
 
 Open the DynamoDB console (region `ap-southeast-1`) and choose **Create table**:
 
@@ -30,7 +30,7 @@ aws dynamodb create-table --table-name insightshare-files \
   --billing-mode PAY_PER_REQUEST
 ```
 
-#### Metadata attributes
+#### Step 2: Metadata attributes
 
 Each item stores one file's information:
 
@@ -41,7 +41,7 @@ Each item stores one file's information:
 - `search_blob` : lowercase labels + text, used for content search
 - `size`, `uploaded_at` : object size (from the S3 `head_object`) and upload timestamp
 
-#### Wire Lambda to DynamoDB
+#### Step 3: Wire Lambda to DynamoDB
 
 Lambda uses the `boto3` DynamoDB resource. `put_item` on upload, `update_item` after AI analysis, and `scan` for list/search:
 
@@ -62,13 +62,17 @@ table.update_item(
 
 Note the `ExpressionAttributeNames={"#t": "text"}`: `text` is a DynamoDB reserved word, so it must be aliased in the update expression.
 
-#### Test
+#### Step 4: Test
 
 Call the upload API, then confirm a new item appears:
 
 ```bash
 aws dynamodb scan --table-name insightshare-files --select COUNT
 ```
+
+![Console: item in the DynamoDB table](/images/5-Workshop/5.4-serverless-backend/dynamodb-item.png)
+
+_Screenshot: your AWS Console showing a file item in the `insightshare-files` table under Explore items (screenshot to add)._
 
 {{% notice info %}}
 **Technical note.** The execution role granted `PutItem`/`GetItem`/`Query`/`Scan` but not `UpdateItem`, so `analyze` returned `AccessDeniedException ... not authorized to perform: dynamodb:UpdateItem`. Adding `dynamodb:UpdateItem` (and `s3:ListBucket`) to the role's policy resolves it. A running Lambda caches its credentials, so an IAM policy change takes effect only after the function is updated to spin up a fresh execution environment.

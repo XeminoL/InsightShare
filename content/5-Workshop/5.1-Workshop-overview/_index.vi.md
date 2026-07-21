@@ -30,13 +30,14 @@ InsightShare được xây dựng từ đầu tới cuối gồm các phần sau
 
 #### Tổng quan kiến trúc
 
-InsightShare hoạt động theo luồng serverless hoàn toàn:
+InsightShare hoạt động theo luồng serverless hoàn toàn. Các bước đánh số khớp với các mũi tên trong sơ đồ kiến trúc, theo thứ tự:
 
-1. **Phân phối frontend**: trình duyệt tải giao diện web tĩnh từ **Amazon S3**, phân phối qua HTTPS bằng **Amazon CloudFront**.
-2. **Gọi API**: trình duyệt gọi **Amazon API Gateway**, cổng này chuyển yêu cầu đến **AWS Lambda** (Python) để xử lý nghiệp vụ.
-3. **Tải trực tiếp**: Lambda trả về **presigned URL** để trình duyệt tải file trực tiếp lên **Amazon S3**, đồng thời ghi metadata vào **Amazon DynamoDB**.
-4. **Phân tích AI**: sau khi upload, Lambda gọi lớp AI, **Rekognition** gắn nhãn ảnh và **Textract** trích văn bản tài liệu; nhãn và văn bản được lưu vào **DynamoDB** để tìm kiếm theo nội dung. Một endpoint `ask` riêng gửi phần văn bản đã lưu tới **Amazon Bedrock** (Claude) để trả lời câu hỏi hoặc tóm tắt tài liệu bằng tiếng Việt.
-5. **Giám sát & bảo mật**: **Amazon CloudWatch** thu thập log và số liệu; **IAM Role** cấp quyền tối thiểu cho từng dịch vụ.
+1. **User → CloudFront**: trình duyệt tải giao diện web tĩnh từ **Amazon S3**, phân phối qua HTTPS bằng **Amazon CloudFront**.
+2. **User → API Gateway → Lambda**: trình duyệt gọi **Amazon API Gateway**, cổng này chuyển yêu cầu đến **AWS Lambda** (Python) để xử lý nghiệp vụ.
+3. **Lambda → S3 (presigned URL)**: Lambda trả về **presigned URL** để trình duyệt tải file trực tiếp lên **Amazon S3**.
+4. **Lambda → dịch vụ AI**: sau khi upload, Lambda gọi lớp AI, **Rekognition** gắn nhãn ảnh và **Textract** trích văn bản tài liệu, và endpoint `ask` gửi văn bản đã lưu tới **Amazon Bedrock** (Claude) để trả lời câu hỏi hoặc tóm tắt tài liệu bằng tiếng Việt.
+5. **Lambda → DynamoDB**: metadata của file, nhãn AI và văn bản trích được ghi vào **Amazon DynamoDB**, phục vụ tìm kiếm theo nội dung.
+6. **Giám sát & bảo mật**: **Amazon CloudWatch** thu thập log và số liệu; **IAM Role** cấp quyền tối thiểu cho từng dịch vụ.
 
 ![Kiến trúc InsightShare](/images/5-Workshop/5.1-Workshop-overview/insightshare_architecture-v2.png)
 

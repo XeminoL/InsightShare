@@ -10,7 +10,7 @@ pre: " <b> 5.3.2 </b> "
 
 **Presigned URL** là đường dẫn có chữ ký trỏ tới một object trong S3, hiệu lực trong thời gian giới hạn, để trình duyệt tải lên/tải xuống trực tiếp trong khi bucket vẫn private.
 
-#### Sinh presigned URL bằng boto3
+#### Bước 1: Sinh presigned URL bằng boto3
 
 Lambda tạo S3 client rồi sinh URL PUT để upload và URL GET để download, hết hạn sau 15 phút (`PRESIGN_EXPIRY = 900`).
 
@@ -41,7 +41,7 @@ get_url = s3.generate_presigned_url(
 **Ghi chú kỹ thuật.** S3 client mặc định dùng endpoint toàn cầu (`s3.amazonaws.com`), trả về **HTTP 307** khi upload lên bucket ở Singapore. Ép endpoint theo region kèm Signature V4 (như trên) để upload trả về HTTP 200.
 {{% /notice %}}
 
-#### Test upload qua presigned URL
+#### Bước 2: Test upload qua presigned URL
 
 Xin URL upload, rồi PUT file lên URL đó:
 
@@ -53,7 +53,7 @@ curl -X PUT "<upload_url>" -H "Content-Type: text/plain" \
   --data-binary @test.txt -w "HTTP %{http_code}\n"
 ```
 
-#### Kiểm tra object trong S3
+#### Bước 3: Kiểm tra object trong S3
 
 Xác nhận file đã vào bucket:
 
@@ -61,6 +61,6 @@ Xác nhận file đã vào bucket:
 aws s3 ls s3://insightshare-files-khang-2352464/ --recursive
 ```
 
-#### Tóm tắt
+![Console: object đã upload trong S3 bucket](/images/5-Workshop/5.3-S3-storage/s3-object-uploaded.png)
 
-Tầng lưu trữ dùng bucket private kèm CORS; file đi qua presigned URL mà bucket không bao giờ public. Cùng cơ chế này sinh URL GET để download và chia sẻ.
+_Ảnh chụp Console của bạn cho thấy object đã upload nằm dưới tiền tố `{file_id}/` trong bucket (ảnh cần bổ sung)._

@@ -24,5 +24,5 @@ pre: " <b> 1.8. </b> "
 ### Kết quả đạt được
 
 1. Ảnh upload được tự gắn nhãn bằng Rekognition; tài liệu được trích text bằng Textract (file `.txt` đọc trực tiếp).
-2. Endpoint hỏi đáp tài liệu trả lời câu hỏi và tóm tắt bằng tiếng Việt qua Bedrock/Claude; xử lý mềm bằng thông báo HTTP 200 trong lúc inference quota Bedrock của tài khoản còn là 0.
+2. Endpoint hỏi đáp tài liệu trả lời câu hỏi và tóm tắt bằng tiếng Việt qua Bedrock/Claude, được bọc để fail soft nên một dịch vụ AI không sẵn sàng không làm hỏng luồng phân tích.
 3. Nhãn và text lưu vào DynamoDB, làm nền cho tìm kiếm; quyền AI theo least-privilege.

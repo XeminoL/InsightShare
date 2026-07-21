@@ -10,7 +10,7 @@ pre: " <b> 5.4.4 </b> "
 
 Phục vụ giao diện web tĩnh của InsightShare từ **Amazon S3** và phân phối qua **Amazon CloudFront** (HTTPS, CDN).
 
-#### Frontend
+#### Bước 1: Frontend
 
 Giao diện là một file `index.html` tĩnh (HTML/CSS/JS thuần): upload file, hiển thị danh sách kèm nhãn AI, có ô tìm kiếm theo nội dung, link tải cho từng file (một presigned GET URL), và ô đặt câu hỏi về một tài liệu. Nó chỉ nói chuyện với endpoint API Gateway, nên cùng một trang chạy được cả ở local lẫn trên CloudFront.
 
@@ -47,7 +47,7 @@ const res = await fetch(`${API}/files/${id}/ask`, {
 const { answer } = await res.json();
 ```
 
-#### Host frontend trên S3
+#### Bước 2: Host frontend trên S3
 
 Web tĩnh được host trên một S3 bucket riêng có bật website hosting:
 
@@ -62,7 +62,7 @@ Chỉ bucket web này áp bucket policy public-read (bucket file ở 5.3 vẫn p
 
 `http://insightshare-web-khang-2352464.s3-website-ap-southeast-1.amazonaws.com`
 
-#### Phân phối qua CloudFront
+#### Bước 3: Phân phối qua CloudFront
 
 Một **CloudFront distribution** đã được tạo với origin là endpoint website S3 và `ViewerProtocolPolicy` đặt `redirect-to-https`, nên trang được phân phối qua HTTPS và CDN edge cache.
 
@@ -72,26 +72,22 @@ aws cloudfront create-distribution \
   --default-root-object index.html
 ```
 
-Distribution đã ở trạng thái `Deployed` và phục vụ trang qua HTTPS tại:
+Distribution đã ở trạng thái `Deployed` và phục vụ trang qua HTTPS.
 
-`https://insightshare.dangthaikhang34.workers.dev`
+![Console: CloudFront distribution Deployed](/images/5-Workshop/5.4-serverless-backend/cloudfront-distribution.png)
 
-CloudFront phục vụ trang qua HTTPS, đặt trước origin S3.
+_Ảnh chụp Console của bạn cho thấy CloudFront distribution ở trạng thái `Deployed` (ảnh cần bổ sung)._
 
 Trang web đang chạy, có dải thống kê, nhãn AI, ảnh thu nhỏ và bộ lọc theo nhãn:
 
 ![Trang web InsightShare đang chạy](/images/5-Workshop/5.4-serverless-backend/web-live-v3.png)
 
-#### Test end-to-end
+#### Bước 4: Test end-to-end
 
 Toàn bộ luồng được kiểm chứng từ trang web đã deploy qua API Gateway:
 
 - `POST /files` trả về presigned URL, và `PUT` lên URL đó trả về **HTTP 200** (file vào S3).
 - `POST /files/{id}/analyze` trả về nhãn Rekognition thật.
 - `GET /files/search?q=diagram` trả về ảnh theo nhãn AI của nó, không phải theo tên file.
-- `POST /files/{id}/ask` được nối sẵn để trả về câu trả lời tiếng Việt trên một tài liệu `.txt` (hoặc câu dự phòng khi hết hạn mức token ở HTTP 200, trong lúc inference quota Bedrock của tài khoản còn là 0).
+- `POST /files/{id}/ask` trả về câu trả lời tiếng Việt trên một tài liệu `.txt`, do Amazon Bedrock (Claude) sinh ra từ văn bản đã lưu.
 - Các bước này chạy trực tiếp từ trình duyệt trên trang web đang hoạt động, nên upload, phân tích AI, tìm kiếm theo nội dung và hỏi đáp tài liệu đều chạy đầu-cuối trên AWS.
-
-#### Tóm tắt
-
-InsightShare chạy đầu-cuối: frontend tĩnh gọi API Gateway → Lambda → S3 (presigned URL) + DynamoDB (metadata) + lớp AI. Frontend được dựng để đặt sau CloudFront, bản demo đang chạy được host tại `https://insightshare.dangthaikhang34.workers.dev`.

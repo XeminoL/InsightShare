@@ -10,7 +10,7 @@ pre: " <b> 5.4.2 </b> "
 
 Tạo một **API Gateway (HTTP API)** làm cổng công khai để frontend gọi tới Lambda. HTTP API rẻ và đơn giản hơn REST API, đủ dùng cho dự án này.
 
-#### Tạo API
+#### Bước 1: Tạo API
 
 Vì Lambda đã tự điều hướng theo method và path bên trong, chỉ cần một route **`$default`** chuyển mọi thứ tới Lambda là đủ:
 
@@ -37,20 +37,20 @@ Màn Routes cho thấy route `$default` duy nhất do API Gateway quản lý, đ
 
 ![Route của API Gateway](/images/5-Workshop/5.4-serverless-backend/apigateway-routes.png)
 
-#### Các route do Lambda xử lý
+#### Bước 2: Các route do Lambda xử lý
 
 | Method | Path | Mục đích |
 |---|---|---|
 | POST | `/files` | Xin presigned upload URL + tạo metadata |
 | POST | `/files/{id}/analyze` | Chạy Rekognition/Textract trên object đã upload |
 | POST | `/files/{id}/ask` | Hỏi đáp về tài liệu (Bedrock/Claude, tiếng Việt) |
-| POST | `/ask` | Ask across the whole library (Bedrock/Claude, with source files) |
+| POST | `/ask` | Hỏi đáp trên toàn thư viện (Bedrock/Claude, kèm tệp nguồn) |
 | GET | `/files` | Liệt kê tất cả file |
 | GET | `/files/search?q=` | Tìm kiếm theo nội dung (nhãn + văn bản trích xuất) |
 | GET | `/files/{id}` | Metadata của một file + presigned download URL |
 | DELETE | `/files/{id}` | Xóa object + metadata |
 
-#### Test API
+#### Bước 3: Test API
 
 ```bash
 API="https://<api-id>.execute-api.ap-southeast-1.amazonaws.com"

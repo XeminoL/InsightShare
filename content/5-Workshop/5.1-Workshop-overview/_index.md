@@ -30,13 +30,14 @@ InsightShare is built end to end across the following parts:
 
 #### Architecture Overview
 
-InsightShare follows a fully serverless flow:
+InsightShare follows a fully serverless flow. The numbered steps match the arrows in the architecture diagram, in order:
 
-1. **Frontend delivery**: the browser loads the static web interface from **Amazon S3**, delivered over HTTPS through **Amazon CloudFront**.
-2. **API call**: the browser calls **Amazon API Gateway**, which forwards the request to **AWS Lambda** (Python) for business logic.
-3. **Direct upload**: Lambda returns a **presigned URL** so the browser uploads directly to **Amazon S3**, and writes metadata into **Amazon DynamoDB**.
-4. **AI analysis**: after upload, Lambda calls the AI layer, **Rekognition** labels images and **Textract** extracts document text; labels and text are saved into **DynamoDB** for content-based search. A separate `ask` endpoint then sends the stored text to **Amazon Bedrock** (Claude) to answer questions or summarize the document in Vietnamese.
-5. **Monitoring & security**: **Amazon CloudWatch** collects logs and metrics; an **IAM Role** grants least-privilege access to each service.
+1. **User → CloudFront**: the browser loads the static web interface from **Amazon S3**, delivered over HTTPS through **Amazon CloudFront**.
+2. **User → API Gateway → Lambda**: the browser calls **Amazon API Gateway**, which forwards the request to **AWS Lambda** (Python) for business logic.
+3. **Lambda → S3 (presigned URL)**: Lambda returns a **presigned URL** so the browser uploads directly to **Amazon S3**.
+4. **Lambda → AI services**: after upload, Lambda calls the AI layer, **Rekognition** labels images and **Textract** extracts document text, and the `ask` endpoint sends stored text to **Amazon Bedrock** (Claude) to answer questions or summarize the document in Vietnamese.
+5. **Lambda → DynamoDB**: file metadata, AI labels and extracted text are written to **Amazon DynamoDB**, which powers content-based search.
+6. **Monitoring & security**: **Amazon CloudWatch** collects logs and metrics; an **IAM Role** grants least-privilege access to each service.
 
 ![InsightShare Architecture](/images/5-Workshop/5.1-Workshop-overview/insightshare_architecture-v2.png)
 

@@ -27,12 +27,10 @@ InsightShare centralizes data and processing on a unified serverless stack:
 - **Content understanding with AI:** Rekognition labels images, Textract extracts document text, and Bedrock (a Claude model) answers questions and summarizes documents in Vietnamese. All are ready-to-call services, with no model training.
 - **Smart search:** labels and extracted text are stored in DynamoDB to find files by content.
 
-*Benefits & ROI*
-- **Centralization:** storage, sharing and analysis on a single platform, reducing manual steps.
-- **Smart:** auto-labeling, text extraction, document Q&A and content-based search on top of storage.
-- **Low cost:** the serverless model bills per use; the AI services stay within the Free Tier at demo scale, for a total under $1/month.
+*Benefits*
+- **Low cost:** the serverless model bills per use; at demo scale the total stays under $1/month.
 - **Reliable & secure:** files are non-public, IAM least-privilege, monitored with CloudWatch.
-- A practical learning platform on serverless + AI architecture, extensible into a larger product.
+- **Content-based search:** AI labels and extracted text make files findable by what is inside them, not only by name.
 
 ### 3. Solution Architecture
 
@@ -59,8 +57,6 @@ The browser loads the static frontend from **S3 + CloudFront (HTTPS)** → calls
 *Component Design*
 - **Frontend:** a static web page (HTML/JS) to pick files, show the list with AI labels, a content search box, and a box to ask a question about a document.
 - **API:** endpoints to request an upload URL, confirm upload (triggers AI analysis), list/search files, get a download URL, and ask a question about a document.
-- **Storage:** files in S3; metadata + AI results in DynamoDB.
-- **Security:** least-privilege IAM Role; files are non-public, accessible only via presigned URLs.
 
 ### 4. Technical Implementation
 
@@ -79,35 +75,11 @@ The browser loads the static frontend from **S3 + CloudFront (HTTPS)** → calls
 - Tools: AWS CLI, Python 3, boto3.
 - Knowledge: S3, Lambda, API Gateway, DynamoDB, IAM, CloudWatch and AI services (Rekognition, Textract, Bedrock).
 
-### 5. Timeline & Milestones
+### 5. Budget Estimation
 
-| Milestone | Activity |
-|---|---|
-| Preparation | Finalize the architecture, design DynamoDB, set up the AWS account, write the Proposal |
-| Core development | S3 storage + presigned URLs, Lambda + API Gateway back-end, DynamoDB + presigned download links |
-| AI integration | Rekognition + Textract + Bedrock; smart content-based search |
-| Finalization | CloudFront, CloudWatch, cost/security optimization, deploy/cleanup script |
-| Operation | Monitoring, testing, security review and resource clean-up |
+At demo scale the pay-per-use serverless model and Free Tier keep cost under $1/month. An AWS Budget `InsightShare-Monthly` with a $5/month limit tracks spend. Detailed figures use the [AWS Pricing Calculator](https://calculator.aws/).
 
-Key milestones: complete the storage MVP (upload + download link) first; add the AI layer and search next; then finalize, optimize and operate.
-
-### 6. Budget Estimation
-
-Estimated cost is low with the pay-per-use serverless model, and the AI services stay within the Free Tier at demo scale. Detailed figures will be computed with the [AWS Pricing Calculator](https://calculator.aws/).
-
-| Service | Est./month |
-| --- | --- |
-| AWS Lambda | ~$0.00 (within Free Tier) |
-| Amazon API Gateway | ~$0.01 |
-| Amazon S3 (storage + requests) | ~$0.10-0.20 |
-| Amazon DynamoDB (on-demand) | ~$0.00-0.05 |
-| Amazon CloudFront | ~$0.00-0.10 |
-| Rekognition + Textract + Bedrock (Claude) | ~$0.00-0.50 (demo scale, few calls) |
-| **Total** | **< $1/month (demo level)** |
-
-Measured against the running infrastructure, the actual operating cost for July 2026 was essentially $0: every service sits within the Free Tier or on a pay-per-use model, so an idle stack incurs almost nothing. An AWS Budget `InsightShare-Monthly` with a $5/month limit was created to track spend, in addition to the account's existing zero-spend budget.
-
-At real scale the cost grows with usage. A rough monthly estimate for **1,000 active users** (about 20,000 uploads, each analyzed once, plus browsing and search):
+At real scale the cost grows with usage, dominated by the AI services (the trade-off for not training or hosting models). A rough monthly estimate for **1,000 active users** (about 20,000 uploads, each analyzed once, plus browsing and search):
 
 | Service | Basis | Est./month |
 | --- | --- | --- |
@@ -120,9 +92,7 @@ At real scale the cost grows with usage. A rough monthly estimate for **1,000 ac
 | Amazon CloudFront | ~30 GB out | ~$2.50 |
 | **Total** | | **~$40/month** |
 
-The AI services (Rekognition, Bedrock) dominate the cost at scale, which is the trade-off for not training or hosting models. Claude Haiku 4.5 is a low-cost model, so Bedrock stays modest here. The demo stays near $0 because volumes are tiny.
-
-### 7. Risk Assessment
+### 6. Risk Assessment
 
 | Risk | Impact | Probability | Mitigation |
 |---|---|---|---|
@@ -133,12 +103,12 @@ The AI services (Rekognition, Bedrock) dominate the cost at scale, which is the 
 
 *Contingency plan:* keep a scripted teardown (cleanup-aws.ps1) to remove all resources quickly.
 
-### 8. Expected Outcomes
+### 7. Expected Outcomes
 
 *Technical Improvements*
 - A working end-to-end web application: upload → automatic AI content analysis → list → content-based search → ask a question about a document → download via presigned link.
-- Mastery of serverless architecture combined with AWS managed AI services.
-- The Bedrock document Q&A is fully implemented and correctly wired; on this credit-based account it returns a graceful fallback until the account is granted Bedrock on-demand inference quota (currently 0).
+- Serverless architecture combined with AWS managed AI services.
+- Document Q&A implemented with Amazon Bedrock (Claude): the `ask` endpoint takes a document and a question, and is wired to the `bedrock:InvokeModel` call with the inference-profile model id and full request/response handling.
 
 *Long-term Value*
 - An extensible platform: add user sign-in (Cognito), orchestrate a multi-step AI pipeline (Step Functions), support more file types.

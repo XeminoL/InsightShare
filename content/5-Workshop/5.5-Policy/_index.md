@@ -10,7 +10,7 @@ pre: " <b> 5.5. </b> "
 
 Two final pieces: **monitoring** (CloudWatch) and **security** (IAM least-privilege).
 
-#### Monitoring with CloudWatch
+#### Step 1: Monitoring with CloudWatch
 
 - **CloudWatch Logs**: the Lambda automatically writes to the log group `/aws/lambda/insightshare-api`. This is where the runtime errors during development showed up (the `Decimal`, presigned-URL and IAM issues were all diagnosed from these logs).
 - **CloudWatch Metrics**: Lambda emits Invocations, Errors and Duration; API Gateway emits request count and 4xx/5xx counts.
@@ -32,6 +32,10 @@ aws cloudwatch put-metric-alarm \
   --threshold 1 --comparison-operator GreaterThanOrEqualToThreshold
 ```
 
+![Console: CloudWatch alarms created](/images/5-Workshop/5.5-Policy/cloudwatch-alarms.png)
+
+_Screenshot: your AWS Console showing the `insightshare-lambda-errors` and `insightshare-lambda-throttles` alarms (screenshot to add)._
+
 - **CloudWatch Dashboard**: a dashboard `insightshare-monitoring` collects the operational views in one place. It has three widgets: Lambda invocations/errors, Lambda duration, and API Gateway request count.
 
 ```bash
@@ -40,7 +44,11 @@ aws cloudwatch put-dashboard \
   --dashboard-body file://dashboard.json
 ```
 
-#### Security with IAM (least-privilege)
+![Console: CloudWatch monitoring dashboard](/images/5-Workshop/5.5-Policy/cloudwatch-dashboard.png)
+
+_Screenshot: your AWS Console showing the `insightshare-monitoring` dashboard widgets (screenshot to add)._
+
+#### Step 2: Security with IAM (least-privilege)
 
 The Lambda uses a dedicated least-privilege execution role, `insightshare-lambda-role`, confirmed active (its "Last activity" updates whenever the function runs):
 
@@ -91,7 +99,3 @@ The attached policy grants only what each service needs. S3 and DynamoDB are sco
 {{% notice note %}}
 The permission set was tuned during real testing: `dynamodb:UpdateItem` and `s3:ListBucket` were added after `analyze` failed with `AccessDeniedException`. This is least-privilege in practice: start narrow, then grant exactly the missing action rather than opening broad access.
 {{% /notice %}}
-
-#### Summary
-
-InsightShare is monitored with CloudWatch (the `/aws/lambda/insightshare-api` log group, the `insightshare-lambda-errors` and `insightshare-lambda-throttles` alarms, and the `insightshare-monitoring` dashboard) and secured with an IAM role scoped to exactly the resources it needs.

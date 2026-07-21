@@ -10,7 +10,7 @@ pre: " <b> 5.4.1 </b> "
 
 One **Python Lambda function** for InsightShare's back-end. A single function dispatches all routes by HTTP method and path: upload, list, search, analyze, ask, get, delete.
 
-#### Create the function
+#### Step 1: Create the function
 
 Create a Lambda function in region `ap-southeast-1`:
 
@@ -37,7 +37,7 @@ The function overview shows the API Gateway trigger wired to the function:
 
 ![Lambda function created](/images/5-Workshop/5.4-serverless-backend/lambda-function.png)
 
-#### The handler
+#### Step 2: The handler
 
 The handler reads the HTTP method and path from the API Gateway event (payload format v2) and routes to the right function. `boto3` ships with the Lambda runtime, so no extra packaging is needed.
 
@@ -85,7 +85,7 @@ def create_upload(event):
     return _resp(200, {"id": file_id, "upload_url": put_url, "key": key})
 ```
 
-#### Deploy & test
+#### Step 3: Deploy & test
 
 Package the single file and test it with a fake API Gateway event:
 

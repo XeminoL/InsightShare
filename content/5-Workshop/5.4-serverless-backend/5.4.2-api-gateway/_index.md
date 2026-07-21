@@ -10,7 +10,7 @@ pre: " <b> 5.4.2 </b> "
 
 Create an **API Gateway (HTTP API)** as the public entry point through which the frontend calls Lambda. HTTP API is cheaper and simpler than REST API and is enough here.
 
-#### Create the API
+#### Step 1: Create the API
 
 Because the Lambda already dispatches by method and path internally, a single **`$default`** route forwarding everything to Lambda is all that is needed:
 
@@ -37,7 +37,7 @@ The Routes view shows the single `$default` route managed by API Gateway, integr
 
 ![API Gateway routes](/images/5-Workshop/5.4-serverless-backend/apigateway-routes.png)
 
-#### Routes handled by the Lambda
+#### Step 2: Routes handled by the Lambda
 
 | Method | Path | Purpose |
 |---|---|---|
@@ -50,7 +50,7 @@ The Routes view shows the single `$default` route managed by API Gateway, integr
 | GET | `/files/{id}` | One file's metadata + presigned download URL |
 | DELETE | `/files/{id}` | Delete the object + metadata |
 
-#### Test the API
+#### Step 3: Test the API
 
 ```bash
 API="https://<api-id>.execute-api.ap-southeast-1.amazonaws.com"
