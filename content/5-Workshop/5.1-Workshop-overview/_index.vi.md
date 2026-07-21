@@ -40,7 +40,7 @@ InsightShare hoạt động theo luồng serverless hoàn toàn. Các bước đ
 5. **Lambda → DynamoDB**: metadata của file, nhãn AI và văn bản trích được ghi vào **Amazon DynamoDB**, phục vụ tìm kiếm theo nội dung.
 6. **Giám sát & bảo mật**: **Amazon CloudWatch** thu thập log và số liệu; **IAM Role** cấp quyền tối thiểu cho từng dịch vụ.
 
-![Kiến trúc InsightShare](/images/5-Workshop/5.1-Workshop-overview/insightshare_architecture-v5.png)
+![Kiến trúc InsightShare](/images/5-Workshop/5.1-Workshop-overview/insightshare_architecture-v6.png)
 
 #### Các dịch vụ AWS sử dụng
 
