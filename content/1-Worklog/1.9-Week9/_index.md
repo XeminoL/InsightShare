@@ -15,7 +15,7 @@ pre: " <b> 1.9. </b> "
 
 | Day | Task | Start | End | Reference |
 | --- | --- | --- | --- | --- |
-| Mon | Study the FCJ AI services workshop; settle how to call Rekognition and Textract from boto3 and where to trigger them in the upload flow. | 27/07/2026 | 27/07/2026 | [AI services](https://000056.awsstudygroup.com) |
+| Mon | Study the FCAJ AI services workshop; settle how to call Rekognition and Textract from boto3 and where to trigger them in the upload flow. | 27/07/2026 | 27/07/2026 | [AI services](https://000056.awsstudygroup.com) |
 | Tue | Call Rekognition `detect_labels` (MaxLabels=10, MinConfidence=70) to tag images on upload; store the labels for search. | 28/07/2026 | 28/07/2026 |  |
 | Wed | Call Textract `detect_document_text` to extract text from PDFs and scanned images; read `.txt` files straight from the S3 object. | 29/07/2026 | 29/07/2026 |  |
 | Thu | Add the `POST /files/{id}/ask` endpoint: send the extracted text plus a question to a Claude model on Amazon Bedrock (`invoke_model`) and return the answer in the same language as the question; with no question, summarize instead. | 30/07/2026 | 30/07/2026 | [Bedrock](https://docs.aws.amazon.com/bedrock/) |

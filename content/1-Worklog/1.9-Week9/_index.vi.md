@@ -15,7 +15,7 @@ pre: " <b> 1.9. </b> "
 
 | Thứ | Công việc | Bắt đầu | Hoàn thành | Nguồn tài liệu |
 | --- | --- | --- | --- | --- |
-| 2 | Học workshop AI services của FCJ; chốt cách gọi Rekognition và Textract từ boto3 và vị trí kích hoạt trong luồng upload. | 27/07/2026 | 27/07/2026 | [AI services](https://000056.awsstudygroup.com) |
+| 2 | Học workshop AI services của FCAJ; chốt cách gọi Rekognition và Textract từ boto3 và vị trí kích hoạt trong luồng upload. | 27/07/2026 | 27/07/2026 | [AI services](https://000056.awsstudygroup.com) |
 | 3 | Gọi Rekognition `detect_labels` (MaxLabels=10, MinConfidence=70) gắn nhãn ảnh khi upload; lưu nhãn để tìm kiếm. | 28/07/2026 | 28/07/2026 |  |
 | 4 | Gọi Textract `detect_document_text` trích text từ PDF và ảnh chữ; file `.txt` đọc thẳng từ object trên S3. | 29/07/2026 | 29/07/2026 |  |
 | 5 | Thêm endpoint `POST /files/{id}/ask`: gửi văn bản đã trích kèm câu hỏi tới một model Claude trên Amazon Bedrock (`invoke_model`) và trả về câu trả lời theo ngôn ngữ câu hỏi; không có câu hỏi thì tóm tắt. | 30/07/2026 | 30/07/2026 | [Bedrock](https://docs.aws.amazon.com/bedrock/) |

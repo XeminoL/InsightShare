@@ -126,4 +126,4 @@ curl -X POST "$API/files/<id>/ask" -d '{"question":"Tai lieu noi ve gi?"}'
 
 Tìm kiếm trả về đúng ảnh nhờ một nhãn AI không nằm trong tên file. Với tài liệu `.txt`, `ask` trả về câu trả lời dựa trên nội dung tài liệu, do Amazon Bedrock (Claude) sinh ra.
 
-> Tham khảo lab FCJ về AI services (Rekognition/Textract): https://000056.awsstudygroup.com
+> Tham khảo lab FCAJ về AI services (Rekognition/Textract): https://000056.awsstudygroup.com
