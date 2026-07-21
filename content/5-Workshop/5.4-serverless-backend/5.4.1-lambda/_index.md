@@ -8,17 +8,17 @@ pre: " <b> 5.4.1 </b> "
 
 #### Goal
 
-One **Python Lambda function** for InsightShare's back-end. A single function dispatches all routes by HTTP method and path: upload, list, search, analyze, ask, get, delete.
+The Lambda is the only compute in InsightShare: API Gateway forwards every request to it, and it holds all business logic (presigning, metadata, AI calls) so no server is provisioned or patched. One **Python Lambda function** serves the whole back-end, dispatching all routes by HTTP method and path: upload, list, search, analyze, ask, get, delete. Keeping it in one function means one deploy artifact and one place for the shared S3/DynamoDB clients.
 
 #### Step 1: Create the function
 
 Create a Lambda function in region `ap-southeast-1`:
 
-- **Runtime**: Python 3.13
-- **Handler**: `lambda_function.handler`
-- **Execution role**: `insightshare-lambda-role` (least-privilege, created in section 5.5)
-- **Timeout**: 30s, **Memory**: 256 MB
-- **Environment variables**: `BUCKET=insightshare-files-khang-2352464`, `TABLE=insightshare-files`
+- **Runtime**: Python 3.13, matching the code and giving `boto3` in the runtime with no packaging.
+- **Handler**: `lambda_function.handler`, the `handler` function in `lambda_function.py` that Lambda invokes per request.
+- **Execution role**: `insightshare-lambda-role`, the least-privilege role the function assumes to reach S3, DynamoDB and the AI services (created in section 5.5).
+- **Timeout**: 30s, high enough for a Textract or Bedrock call to finish; **Memory**: 256 MB, enough for JSON and a single file's text.
+- **Environment variables**: `BUCKET=insightshare-files-khang-2352464` and `TABLE=insightshare-files`, so the bucket and table names stay out of the code.
 
 With the AWS CLI:
 
@@ -37,9 +37,11 @@ The function overview shows the API Gateway trigger wired to the function:
 
 ![Lambda function created](/images/5-Workshop/5.4-serverless-backend/lambda-function.png)
 
+The screenshot confirms the function exists with the API Gateway trigger attached, so requests reaching the API are routed into this function.
+
 #### Step 2: The handler
 
-The handler reads the HTTP method and path from the API Gateway event (payload format v2) and routes to the right function. `boto3` ships with the Lambda runtime, so no extra packaging is needed.
+Because API Gateway is set up with a single `$default` route (section 5.4.2), the handler itself does the routing. It reads the HTTP method and path from the API Gateway event (payload format v2, where the method is under `requestContext.http` and the path under `rawPath`) and dispatches to the matching function. `boto3` ships with the Lambda runtime, so no extra packaging is needed.
 
 ```python
 def handler(event, context):
@@ -64,7 +66,7 @@ def handler(event, context):
     return _resp(404, {"error": "route not found"})
 ```
 
-The upload handler generates a presigned URL (section 5.3.2) and writes the initial metadata row:
+The upload handler is the entry point of the whole pipeline. It mints a unique `file_id`, builds the S3 key as `{file_id}/{filename}`, generates a presigned PUT URL (section 5.3.2), and writes an initial metadata row so the file is tracked before its bytes even arrive. `labels`, `text` and `search_blob` start empty and are filled in later by `analyze`:
 
 ```python
 def create_upload(event):
@@ -87,7 +89,7 @@ def create_upload(event):
 
 #### Step 3: Deploy & test
 
-Package the single file and test it with a fake API Gateway event:
+Because there are no third-party dependencies, deploying is zipping the one source file. The test sends a hand-written API Gateway event so the function runs without the API in front of it:
 
 ```bash
 zip function.zip lambda_function.py

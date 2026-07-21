@@ -8,7 +8,7 @@ pre: " <b> 5.6. </b> "
 
 #### Clean up resources
 
-Delete everything created in the workshop to stop any further charges (region `ap-southeast-1`). The teardown is scripted in `cleanup-aws.ps1`, which removes every resource in one run (with a `-Force` flag to skip the confirmation prompt). It deletes, in order: the API Gateway HTTP API, the Lambda function, the DynamoDB table, both S3 buckets (files and web), the CloudFront distribution, the CloudWatch alarms/dashboard/log group, and the IAM role. The equivalent CLI commands:
+Delete everything created in the workshop to stop any further charges (region `ap-southeast-1`). The teardown is scripted in `cleanup-aws.ps1`, which removes every resource in one run (with a `-Force` flag to skip the confirmation prompt). It deletes, in order: the API Gateway HTTP API, the Lambda function, the DynamoDB table, both S3 buckets (files and web), the CloudFront distribution, the CloudWatch alarms/dashboard/log group, and the IAM role. The order matters where resources depend on each other: the IAM role is removed last because the Lambda uses it, and each S3 bucket is emptied (`s3 rm --recursive`) before it can be deleted, since S3 refuses to delete a non-empty bucket. The equivalent CLI commands:
 
 ```bash
 aws apigatewayv2 delete-api --api-id <api-id>

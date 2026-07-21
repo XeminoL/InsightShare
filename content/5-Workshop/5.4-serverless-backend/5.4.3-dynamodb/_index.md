@@ -15,11 +15,13 @@ Store each file's **metadata** in **Amazon DynamoDB** so InsightShare can list, 
 Open the DynamoDB console (region `ap-southeast-1`) and choose **Create table**:
 
 - **Table name**: `insightshare-files`
-- **Partition key**: `id` (String)
-- No sort key
-- Capacity mode: **On-demand** (`PAY_PER_REQUEST`), no capacity to tune
+- **Partition key**: `id` (String), the same unique hex id used as the S3 key prefix, so one file maps to exactly one item and every read is a direct key lookup.
+- No sort key, because each file is a single standalone item with no parent-child grouping.
+- Capacity mode: **On-demand** (`PAY_PER_REQUEST`), which bills per request and needs no provisioned throughput, fitting the unpredictable, low-volume access of a demo.
 
 ![DynamoDB table](/images/5-Workshop/5.4-serverless-backend/dynamodb-table.png)
+
+The screenshot confirms the table is Active with `id` as its partition key.
 
 CLI equivalent:
 
@@ -43,7 +45,7 @@ Each item stores one file's information:
 
 #### Step 3: Wire Lambda to DynamoDB
 
-Lambda uses the `boto3` DynamoDB resource. `put_item` on upload, `update_item` after AI analysis, and `scan` for list/search:
+The metadata row is written once on upload and updated once after analysis, so the table always reflects the file's current state. Lambda uses the `boto3` DynamoDB resource: `put_item` on upload (the empty row from 5.4.1), `update_item` after AI analysis to fill in labels and text, and `scan` for list/search:
 
 ```python
 ddb = boto3.resource("dynamodb", region_name="ap-southeast-1")
@@ -60,7 +62,7 @@ table.update_item(
 )
 ```
 
-Note the `ExpressionAttributeNames={"#t": "text"}`: `text` is a DynamoDB reserved word, so it must be aliased in the update expression.
+Note the `ExpressionAttributeNames={"#t": "text"}`: `text` is a reserved word in DynamoDB expressions, so writing `SET text=:t` directly is rejected. Aliasing it to the placeholder `#t` and mapping `#t` back to `text` lets the update run while still writing the attribute literally named `text`.
 
 #### Step 4: Test
 
@@ -72,6 +74,8 @@ aws dynamodb scan --table-name insightshare-files --select COUNT
 
 ![Console: item in the DynamoDB table](/images/5-Workshop/5.4-serverless-backend/dynamodb-item.png)
 
+The screenshot confirms the upload created one item keyed by its `id`, with the metadata attributes populated.
+
 {{% notice info %}}
-**Technical note.** The execution role granted `PutItem`/`GetItem`/`Query`/`Scan` but not `UpdateItem`, so `analyze` returned `AccessDeniedException ... not authorized to perform: dynamodb:UpdateItem`. Adding `dynamodb:UpdateItem` (and `s3:ListBucket`) to the role's policy resolves it. A running Lambda caches its credentials, so an IAM policy change takes effect only after the function is updated to spin up a fresh execution environment.
+**Technical note.** The execution role initially granted `PutItem`/`GetItem`/`Query`/`Scan` but not `UpdateItem`, so `analyze` (which calls `update_item`) returned `AccessDeniedException ... not authorized to perform: dynamodb:UpdateItem`. Adding `dynamodb:UpdateItem` (and `s3:ListBucket`, needed elsewhere) to the role policy resolves it. The change did not take effect immediately: a warm Lambda execution environment caches the role credentials, so the new permission applied only after the function was updated and a fresh environment started. This is a caching effect, not a policy error, and is worth knowing when an IAM fix seems not to work.
 {{% /notice %}}

@@ -12,9 +12,9 @@ Phục vụ giao diện web tĩnh của InsightShare từ **Amazon S3** và phâ
 
 #### Bước 1: Frontend
 
-Giao diện là một file `index.html` tĩnh (HTML/CSS/JS thuần): upload file, hiển thị danh sách kèm nhãn AI, có ô tìm kiếm theo nội dung, link tải cho từng file (một presigned GET URL), và ô đặt câu hỏi về một tài liệu. Nó chỉ nói chuyện với endpoint API Gateway, nên cùng một trang chạy được cả ở local lẫn trên CloudFront.
+Frontend là nửa phía client của mọi endpoint đã dựng đến giờ; nó không có logic riêng ngoài việc gọi API và render JSON. Giao diện là một file `index.html` tĩnh (HTML/CSS/JS thuần): upload file, hiển thị danh sách kèm nhãn AI, có ô tìm kiếm theo nội dung, link tải cho từng file (một presigned GET URL), và ô đặt câu hỏi về một tài liệu. Nó chỉ nói chuyện với endpoint API Gateway, nên cùng một trang chạy được cả ở local lẫn trên CloudFront mà không cần build lại.
 
-Luồng upload trên trình duyệt gồm hai lời gọi: xin presigned URL từ API, rồi PUT file thẳng lên S3.
+Luồng upload trên trình duyệt là hai lời gọi từ 5.3.2: xin presigned URL từ API, PUT file thẳng lên S3, rồi kích hoạt `analyze` để lớp AI xử lý object vừa upload.
 
 ```javascript
 const r = await fetch(`${API}/files`, {
@@ -49,7 +49,7 @@ const { answer } = await res.json();
 
 #### Bước 2: Host frontend trên S3
 
-Web tĩnh được host trên một S3 bucket riêng có bật website hosting:
+Một bucket thứ hai phục vụ web tĩnh, tách khỏi bucket file để hai bên có policy truy cập ngược nhau: bucket file luôn hoàn toàn private còn bucket web này cho cả thế giới đọc. Bật website hosting để S3 phục vụ `index.html` tại website endpoint của bucket:
 
 ```bash
 aws s3api create-bucket --bucket insightshare-web-khang-2352464 --region ap-southeast-1 \
@@ -58,13 +58,13 @@ aws s3 website s3://insightshare-web-khang-2352464/ --index-document index.html
 aws s3 cp index.html s3://insightshare-web-khang-2352464/index.html --content-type text/html
 ```
 
-Chỉ bucket web này áp bucket policy public-read (bucket file ở 5.3 vẫn private). Trang chạy tại:
+Chỉ bucket web này áp bucket policy public-read, vì trang phải tải được cho bất kỳ ai có URL; bucket file ở 5.3 vẫn bật hết Block Public Access và không bao giờ public. Trang chạy tại:
 
 `http://insightshare-web-khang-2352464.s3-website-ap-southeast-1.amazonaws.com`
 
 #### Bước 3: Phân phối qua CloudFront
 
-Một **CloudFront distribution** đã được tạo với origin là endpoint website S3 và `ViewerProtocolPolicy` đặt `redirect-to-https`, nên trang được phân phối qua HTTPS và CDN edge cache.
+Website endpoint của S3 chỉ có HTTP và phục vụ từ một region; CloudFront đặt một lớp HTTPS, cache toàn cầu đứng trước nó. Một **CloudFront distribution** đã được tạo với origin là endpoint website S3 và `ViewerProtocolPolicy` đặt `redirect-to-https`, nên request HTTP thuần bị chuyển sang HTTPS và trang được cache tại edge CDN gần khách nhất.
 
 ```bash
 aws cloudfront create-distribution \
@@ -76,9 +76,13 @@ Distribution đã ở trạng thái `Deployed` và phục vụ trang qua HTTPS.
 
 ![Console: CloudFront distribution Deployed](/images/5-Workshop/5.4-serverless-backend/cloudfront-distribution.png)
 
+Ảnh chụp xác nhận distribution ở trạng thái `Deployed` với domain HTTPS.
+
 Trang web đang chạy, có dải thống kê, nhãn AI, ảnh thu nhỏ và bộ lọc theo nhãn:
 
 ![Trang web InsightShare đang chạy](/images/5-Workshop/5.4-serverless-backend/web-live-v4.png)
+
+Ảnh chụp xác nhận trang đã deploy render file thật đã upload kèm nhãn AI của chúng, nên frontend và back-end đã nối với nhau đầu-cuối.
 
 #### Bước 4: Test end-to-end
 

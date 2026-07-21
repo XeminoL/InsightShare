@@ -12,11 +12,11 @@ Việc xây dựng và triển khai InsightShare cần các công cụ, tài kho
 
 #### Bước 1. Tài khoản AWS và credentials
 
-Làm việc bằng một IAM user riêng có bật MFA, không dùng tài khoản root. Cấu hình CLI về `ap-southeast-1` và giữ access key ngoài repository (dự án này gitignore chúng trong `_private-keys/`).
+Mọi lệnh và lần deploy trong workshop chạy trên một tài khoản AWS ở một region, nên identity và region được cố định trước tiên. Làm việc bằng một IAM user riêng có bật MFA, không dùng tài khoản root, để một key bị lộ cũng không đụng được billing hay xóa tài khoản. Cấu hình CLI về `ap-southeast-1`, region chứa toàn bộ tài nguyên InsightShare, và giữ access key ngoài repository (dự án này gitignore chúng trong `_private-keys/`).
 
 ![Console: IAM user đã bật MFA](/images/5-Workshop/5.2-Prerequiste/iam-user-mfa.png)
 
-Cấu hình CLI, rồi kiểm tra identity trỏ đúng IAM user:
+Cấu hình CLI, rồi kiểm tra identity trỏ đúng IAM user. `aws sts get-caller-identity` trả về ARN mà CLI đang đóng vai, phải là IAM user chứ không phải tài khoản root:
 
 ```bash
 aws configure
@@ -53,7 +53,7 @@ Tài khoản dùng để triển khai cần quyền tạo và xóa các dịch v
 - **Amazon CloudWatch và CloudWatch Logs**: xem log, tạo alarm
 - **AWS IAM**: tạo execution role cho Lambda
 
-Execution role của Lambda chỉ được cấp đúng các action cần khi chạy (chi tiết ở phần 5.5):
+Các quyền tài khoản ở trên là dành cho người deploy stack. Tách biệt với đó, Lambda function assume execution role riêng khi chạy, chỉ được cấp đúng các action mà code gọi (chi tiết ở phần 5.5). Hai thứ này khác nhau: người deploy tạo tài nguyên, còn role cho function đang chạy chạm tới chúng:
 
 ```json
 {

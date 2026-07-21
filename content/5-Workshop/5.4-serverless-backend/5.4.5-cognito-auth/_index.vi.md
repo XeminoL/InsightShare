@@ -12,7 +12,7 @@ Thêm đăng nhập để mỗi người chỉ thấy file của chính mình. *
 
 #### Bước 1: Tạo user pool và app client
 
-Tạo một Cognito user pool, một app client và một Hosted UI domain. App client dùng OAuth2 implicit flow nên frontend tĩnh không cần SDK và không cần secret ở backend.
+Tạo một Cognito user pool, một app client và một Hosted UI domain. User pool là danh bạ tài khoản; app client đại diện cho web app này với pool; Hosted UI domain là trang đăng nhập do AWS phục vụ. App client dùng OAuth2 implicit flow với scope `openid email profile`, nên token được trả thẳng về trình duyệt trong URL fragment và frontend tĩnh không cần SDK, không cần server, không cần client secret để hoàn tất đăng nhập.
 
 ```bash
 aws cognito-idp create-user-pool \
@@ -36,9 +36,11 @@ aws cognito-idp create-user-pool-domain \
 
 ![Console: Cognito user pool](/images/5-Workshop/5.4-serverless-backend/cognito-user-pool.png)
 
+Ảnh chụp xác nhận user pool đã tồn tại và là danh bạ mà JWT authorizer tin cậy.
+
 #### Bước 2: Thêm JWT authorizer trên API Gateway
 
-Gắn một JWT authorizer vào HTTP API. Issuer là user pool và audience là app client, nên API Gateway kiểm tra chữ ký và hạn của token trước khi request tới Lambda.
+Authorizer đưa việc kiểm tra token ra khỏi Lambda và vào gateway, nên token chưa xác thực hay hết hạn bị từ chối 401 trước khi bất kỳ code nào chạy. Gắn một JWT authorizer vào HTTP API: `Issuer` là user pool (nên chỉ token do pool đó phát mới được nhận) và `Audience` là app client (nên chỉ token phát cho app này mới qua), và API Gateway kiểm tra chữ ký và hạn của token trong mọi request.
 
 ```bash
 aws apigatewayv2 create-authorizer \
@@ -53,9 +55,11 @@ Các claim đã kiểm tra được đặt tại `event["requestContext"]["autho
 
 ![Console: JWT authorizer trên HTTP API](/images/5-Workshop/5.4-serverless-backend/cognito-jwt-authorizer.png)
 
+Ảnh chụp xác nhận JWT authorizer đã gắn vào HTTP API với issuer là user pool.
+
 #### Bước 3: Lambda gán dữ liệu theo người dùng
 
-Lambda lấy người dùng hiện tại từ claim `sub`, và trả về `public` khi không có authorizer:
+Vì token đã được kiểm tra ở phía trên, Lambda chỉ cần đọc người gọi là ai. Nó lấy người dùng hiện tại từ claim `sub` (id duy nhất ổn định của tài khoản Cognito), và trả về `public` khi không có authorizer, chính là thứ giữ hành vi fail-open:
 
 ```python
 def current_user(event):

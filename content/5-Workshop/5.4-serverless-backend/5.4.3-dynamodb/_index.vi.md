@@ -15,11 +15,13 @@ Lưu **metadata** của mỗi file vào **Amazon DynamoDB** để InsightShare l
 Mở DynamoDB console (region `ap-southeast-1`) và chọn **Create table**:
 
 - **Table name**: `insightshare-files`
-- **Partition key**: `id` (String)
-- Không có sort key
-- Chế độ dung lượng: **On-demand** (`PAY_PER_REQUEST`), không phải tinh chỉnh capacity
+- **Partition key**: `id` (String), cùng mã hex duy nhất dùng làm tiền tố key S3, nên một file ứng đúng một item và mọi lần đọc là tra key trực tiếp.
+- Không có sort key, vì mỗi file là một item độc lập, không có gom nhóm cha-con.
+- Chế độ dung lượng: **On-demand** (`PAY_PER_REQUEST`), tính tiền theo request và không cần cấp phát throughput, hợp với mức truy cập thất thường, lượng thấp của bản demo.
 
 ![Bảng DynamoDB](/images/5-Workshop/5.4-serverless-backend/dynamodb-table.png)
+
+Ảnh chụp xác nhận bảng ở trạng thái Active với partition key `id`.
 
 Lệnh CLI tương đương:
 
@@ -43,7 +45,7 @@ Mỗi item lưu thông tin một file:
 
 #### Bước 3: Nối Lambda với DynamoDB
 
-Lambda dùng DynamoDB resource của `boto3`. `put_item` khi upload, `update_item` sau khi phân tích AI, và `scan` cho list/search:
+Dòng metadata được ghi một lần khi upload và cập nhật một lần sau khi phân tích, nên bảng luôn phản ánh trạng thái hiện tại của file. Lambda dùng DynamoDB resource của `boto3`: `put_item` khi upload (dòng rỗng từ 5.4.1), `update_item` sau khi phân tích AI để điền nhãn và văn bản, và `scan` cho list/search:
 
 ```python
 ddb = boto3.resource("dynamodb", region_name="ap-southeast-1")
@@ -60,7 +62,7 @@ table.update_item(
 )
 ```
 
-Lưu ý `ExpressionAttributeNames={"#t": "text"}`: `text` là từ khóa dành riêng của DynamoDB, nên phải đặt bí danh trong update expression.
+Lưu ý `ExpressionAttributeNames={"#t": "text"}`: `text` là từ khóa dành riêng trong expression của DynamoDB, nên viết thẳng `SET text=:t` sẽ bị từ chối. Đặt bí danh `#t` rồi ánh xạ `#t` về `text` cho phép update chạy mà vẫn ghi đúng thuộc tính tên `text`.
 
 #### Bước 4: Test
 
@@ -72,6 +74,8 @@ aws dynamodb scan --table-name insightshare-files --select COUNT
 
 ![Console: item trong bảng DynamoDB](/images/5-Workshop/5.4-serverless-backend/dynamodb-item.png)
 
+Ảnh chụp xác nhận lần upload đã tạo một item khóa theo `id` của nó, với các thuộc tính metadata đã điền.
+
 {{% notice info %}}
-**Ghi chú kỹ thuật.** Execution role có `PutItem`/`GetItem`/`Query`/`Scan` nhưng thiếu `UpdateItem`, nên gọi `analyze` trả về `AccessDeniedException ... not authorized to perform: dynamodb:UpdateItem`. Thêm `dynamodb:UpdateItem` (và `s3:ListBucket`) vào policy của role để xử lý. Lambda đang chạy giữ credentials cache, nên thay đổi policy IAM chỉ có hiệu lực sau khi cập nhật lại function để tạo môi trường chạy mới.
+**Ghi chú kỹ thuật.** Execution role ban đầu có `PutItem`/`GetItem`/`Query`/`Scan` nhưng thiếu `UpdateItem`, nên gọi `analyze` (vốn gọi `update_item`) trả về `AccessDeniedException ... not authorized to perform: dynamodb:UpdateItem`. Thêm `dynamodb:UpdateItem` (và `s3:ListBucket`, cần ở nơi khác) vào policy của role để xử lý. Thay đổi không có hiệu lực ngay: môi trường chạy Lambda còn ấm giữ cache credentials của role, nên quyền mới chỉ áp dụng sau khi cập nhật lại function và một môi trường mới khởi tạo. Đây là hiệu ứng cache, không phải lỗi policy, và đáng biết khi một bản sửa IAM có vẻ chưa ăn.
 {{% /notice %}}

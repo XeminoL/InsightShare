@@ -18,7 +18,7 @@ Rekognition and Textract are ready-to-call, no model training. Bedrock runs a ho
 
 #### Step 1: Image → Rekognition labels
 
-After an image is uploaded, `analyze` calls Rekognition on the S3 object:
+`analyze` branches on file type: images go to Rekognition, documents to text extraction. For an image, Rekognition reads the object straight from S3 (no bytes pass through Lambda) and returns content labels, which are what makes an image findable by what it shows rather than its filename. `MaxLabels=10` caps how many labels are kept, and `MinConfidence=55` drops any label Rekognition is less than 55% sure of:
 
 ```python
 if fname.endswith(IMAGE_EXTS):
@@ -38,13 +38,15 @@ For a test image, Rekognition returned labels such as `Diagram`, `Text`, `Networ
 
 ![Console: Rekognition labels on the uploaded image](/images/5-Workshop/5.4-serverless-backend/rekognition-labels.png)
 
+The screenshot confirms Rekognition returned concrete labels for the uploaded image, which are then stored for search.
+
 {{% notice note %}}
-`MinConfidence` started at 70 and returned no labels for a diagram-style image (few real-world objects). Lowering it to 55 produced accurate labels, so the threshold is worth tuning to the kind of content you expect.
+`MinConfidence` is the minimum confidence percentage a label must reach to be returned. It started at 70 and returned no labels for a diagram-style image (few real-world objects to recognize with high confidence). Lowering it to 55 let the accurate-but-less-certain labels through, so the threshold is worth tuning to the kind of content expected: higher for photos of objects, lower for diagrams and screenshots.
 {{% /notice %}}
 
 #### Step 2: Document → text extraction
 
-For a `.txt` file the content is read directly from S3 (no OCR needed). For a PDF or scanned image, `analyze` calls Textract:
+For documents the goal is the same as for images: turn the file into searchable, question-answerable text. A `.txt` file already is text, so it is read directly from S3 with no OCR. A PDF or scanned image is not, so `analyze` calls Textract, which keeps only the `LINE` blocks and joins them into the document text:
 
 ```python
 elif fname.endswith(DOC_EXTS):
@@ -70,7 +72,7 @@ elif fname.endswith(DOC_EXTS):
 
 #### Step 3: Bedrock (Claude) answers questions about the document
 
-The flagship feature is a document Q&A endpoint, `POST /files/{id}/ask`. It takes the text already extracted into DynamoDB, wraps it with the question in a prompt, and calls a Claude model on Amazon Bedrock. Answers come back in Vietnamese. With no `question` in the body, the same handler summarizes the document instead.
+This step consumes the text the previous two steps produced: the labels and extracted text sitting in DynamoDB become the context the model reasons over. The flagship feature is a document Q&A endpoint, `POST /files/{id}/ask`. It reads the text already extracted into DynamoDB, wraps it with the question inside a prompt that instructs the model to answer only from that document and in Vietnamese, and calls a Claude model on Amazon Bedrock. With no `question` in the body, the same handler summarizes the document instead.
 
 There is also a library-wide endpoint, `POST /ask`. It scans every file in DynamoDB, ranks them by keyword overlap with the question, joins the text of the relevant files (each numbered so it can be cited), and calls Bedrock. The answer comes back with the list of files it came from, so you find the right file without opening each one.
 
@@ -94,7 +96,7 @@ out = bedrock.invoke_model(modelId=MODEL_ID, body=json.dumps(payload))
 answer = json.loads(out["body"].read())["content"][0]["text"]
 ```
 
-The model id lives in the `BEDROCK_MODEL_ID` environment variable (default `global.anthropic.claude-haiku-4-5-20251001-v1:0`), so the model can change without editing code. The document text is capped at 20,000 characters before it goes into the prompt.
+The model id lives in the `BEDROCK_MODEL_ID` environment variable (default `global.anthropic.claude-haiku-4-5-20251001-v1:0`), so the model can change without editing code. The document text is capped at 20,000 characters before it goes into the prompt, which bounds the token count and cost per call and keeps the request within the model's context window.
 
 {{% notice note %}}
 **Design note.** The Bedrock integration uses the IAM `bedrock:InvokeModel` permission and an inference-profile model id (`global.anthropic.claude-haiku-4-5-20251001-v1:0`) read from an environment variable, so the model can be swapped without a code change. The `ask` handler wraps the `invoke_model` call: on success it returns the Claude answer, and on error it returns HTTP 200 with a short Vietnamese message instead of a 500, so a demo never crashes on a transient service error.
@@ -102,7 +104,7 @@ The model id lives in the `BEDROCK_MODEL_ID` environment variable (default `glob
 
 #### Step 4: Store labels/text in DynamoDB
 
-The AI results are written back to the metadata item (section 5.4.3); the `search_blob` attribute (labels + text, lowercased) powers content search, and the stored `text` is what the Bedrock Q&A reads:
+Persisting the AI output is what makes `analyze` a one-time cost: search and Q&A later read from DynamoDB instead of re-calling Rekognition, Textract or Bedrock. The results are written back to the metadata item (section 5.4.3); the `search_blob` attribute (labels + text, lowercased) powers content search, and the stored `text` is what the Bedrock Q&A reads. `size` is aliased with `#sz` for the same reserved-word reason as `text`:
 
 ```python
 table.update_item(

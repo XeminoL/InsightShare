@@ -14,7 +14,7 @@ Two final pieces: **monitoring** (CloudWatch) and **security** (IAM least-privil
 
 - **CloudWatch Logs**: the Lambda automatically writes to the log group `/aws/lambda/insightshare-api`. This is where the runtime errors during development showed up (the `Decimal`, presigned-URL and IAM issues were all diagnosed from these logs).
 - **CloudWatch Metrics**: Lambda emits Invocations, Errors and Duration; API Gateway emits request count and 4xx/5xx counts.
-- **CloudWatch Alarms**: two alarms are created on the `insightshare-api` function. `insightshare-lambda-errors` fires when the Lambda `Errors` metric reaches the threshold; `insightshare-lambda-throttles` fires when the function is throttled.
+- **CloudWatch Alarms**: two alarms watch the `insightshare-api` function so a fault is noticed without reading logs. `insightshare-lambda-errors` fires when the `Errors` metric reaches the threshold (a `--threshold 1` over a `--period 300` window means one failed invocation in five minutes trips it), catching code or permission faults; `insightshare-lambda-throttles` fires on the `Throttles` metric, catching concurrency-limit hits under load.
 
 ```bash
 aws cloudwatch put-metric-alarm \
@@ -34,6 +34,8 @@ aws cloudwatch put-metric-alarm \
 
 ![Console: CloudWatch alarms created](/images/5-Workshop/5.5-Policy/cloudwatch-alarms.png)
 
+The screenshot confirms both alarms exist against the function.
+
 - **CloudWatch Dashboard**: a dashboard `insightshare-monitoring` collects the operational views in one place. It has three widgets: Lambda invocations/errors, Lambda duration, and API Gateway request count.
 
 ```bash
@@ -44,11 +46,15 @@ aws cloudwatch put-dashboard \
 
 ![Console: CloudWatch monitoring dashboard](/images/5-Workshop/5.5-Policy/cloudwatch-dashboard.png)
 
+The screenshot confirms the dashboard with its three operational widgets.
+
 #### Step 2: Security with IAM (least-privilege)
 
 The Lambda uses a dedicated least-privilege execution role, `insightshare-lambda-role`, confirmed active (its "Last activity" updates whenever the function runs):
 
 ![IAM execution role](/images/5-Workshop/5.5-Policy/iam-role.png)
+
+The screenshot confirms the role exists and its Last activity updates as the function runs.
 
 The attached policy grants only what each service needs. S3 and DynamoDB are scoped to the specific bucket and table ARNs (not `"Resource": "*"`); the AI actions use `"*"` because Rekognition, Textract and Bedrock do not support resource-level permissions (Bedrock can optionally be scoped to the Claude foundation-model ARN):
 

@@ -12,7 +12,7 @@ Add sign-in so each user sees only their own files. **Amazon Cognito** provides 
 
 #### Step 1: Create a user pool and app client
 
-Create a Cognito user pool, an app client, and a Hosted UI domain. The app client uses the OAuth2 implicit flow so the static frontend needs no SDK and no backend secret.
+Create a Cognito user pool, an app client, and a Hosted UI domain. The user pool is the directory of accounts; the app client represents this web app to the pool; the Hosted UI domain is the AWS-served sign-in page. The app client uses the OAuth2 implicit flow with scopes `openid email profile`, so the token is returned directly to the browser in the URL fragment and the static frontend needs no SDK, no server, and no client secret to complete sign-in.
 
 ```bash
 aws cognito-idp create-user-pool \
@@ -36,9 +36,11 @@ aws cognito-idp create-user-pool-domain \
 
 ![Console: Cognito user pool](/images/5-Workshop/5.4-serverless-backend/cognito-user-pool.png)
 
+The screenshot confirms the user pool exists and is the directory the JWT authorizer trusts.
+
 #### Step 2: Add a JWT authorizer on API Gateway
 
-Attach a JWT authorizer to the HTTP API. Its issuer is the user pool and its audience is the app client, so API Gateway verifies the token signature and expiry before the request reaches Lambda.
+The authorizer moves token checking out of the Lambda and into the gateway, so an unauthenticated or expired token is rejected with 401 before any code runs. Attach a JWT authorizer to the HTTP API: its `Issuer` is the user pool (so only tokens minted by that pool are accepted) and its `Audience` is the app client (so only tokens issued for this app pass), and API Gateway verifies the token signature and expiry on every request.
 
 ```bash
 aws apigatewayv2 create-authorizer \
@@ -53,9 +55,11 @@ The verified claims are placed at `event["requestContext"]["authorizer"]["jwt"][
 
 ![Console: JWT authorizer on the HTTP API](/images/5-Workshop/5.4-serverless-backend/cognito-jwt-authorizer.png)
 
+The screenshot confirms the JWT authorizer is attached to the HTTP API with the user pool as issuer.
+
 #### Step 3: Lambda scopes data per user
 
-The Lambda derives the current user from the `sub` claim and falls back to `public` when no authorizer is present:
+With the token verified upstream, the Lambda only needs to read who the caller is. It derives the current user from the `sub` claim (the stable unique id of the Cognito account) and falls back to `public` when no authorizer is present, which is what keeps the fail-open behavior:
 
 ```python
 def current_user(event):

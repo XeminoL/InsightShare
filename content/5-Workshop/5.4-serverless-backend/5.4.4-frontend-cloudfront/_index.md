@@ -12,9 +12,9 @@ Serve InsightShare's static web interface from **Amazon S3** and deliver it over
 
 #### Step 1: The frontend
 
-The interface is a single static `index.html` (vanilla HTML/CSS/JS): it uploads a file, shows the list with AI labels, offers a content-search box, a per-file download link (a presigned GET URL), and a box to ask a question about a document. It talks only to the API Gateway endpoint, so the same page works locally or on CloudFront.
+The frontend is the client half of every endpoint built so far; it has no logic of its own beyond calling the API and rendering the JSON. The interface is a single static `index.html` (vanilla HTML/CSS/JS): it uploads a file, shows the list with AI labels, offers a content-search box, a per-file download link (a presigned GET URL), and a box to ask a question about a document. It talks only to the API Gateway endpoint, so the same page works locally or on CloudFront with no rebuild.
 
-The upload flow in the browser is a two-step call: ask the API for a presigned URL, then PUT the file straight to S3.
+The upload flow in the browser is the two-step call from 5.3.2: ask the API for a presigned URL, PUT the file straight to S3, then trigger `analyze` so the AI layer processes the object just uploaded.
 
 ```javascript
 const r = await fetch(`${API}/files`, {
@@ -49,7 +49,7 @@ const { answer } = await res.json();
 
 #### Step 2: Host the frontend on S3
 
-The static site is hosted on a separate S3 bucket with website hosting enabled:
+A second bucket serves the static site, kept separate from the file bucket so the two have opposite access policies: the file bucket stays fully private while this web bucket is world-readable. Website hosting is enabled so S3 serves `index.html` at the bucket's website endpoint:
 
 ```bash
 aws s3api create-bucket --bucket insightshare-web-khang-2352464 --region ap-southeast-1 \
@@ -58,13 +58,13 @@ aws s3 website s3://insightshare-web-khang-2352464/ --index-document index.html
 aws s3 cp index.html s3://insightshare-web-khang-2352464/index.html --content-type text/html
 ```
 
-A public-read bucket policy is applied to this web bucket only (the file bucket in 5.3 stays private). The site is live at:
+A public-read bucket policy is applied to this web bucket only, because the page must load for anyone with the URL; the file bucket in 5.3 keeps all Block Public Access on and is never made public. The site is live at:
 
 `http://insightshare-web-khang-2352464.s3-website-ap-southeast-1.amazonaws.com`
 
 #### Step 3: Distribute through CloudFront
 
-A **CloudFront distribution** was created with the S3 website endpoint as the origin and `ViewerProtocolPolicy` set to `redirect-to-https`, so the site is delivered over HTTPS and the CDN edge cache.
+The S3 website endpoint is HTTP only and served from one region; CloudFront puts an HTTPS, globally cached layer in front of it. A **CloudFront distribution** was created with the S3 website endpoint as the origin and `ViewerProtocolPolicy` set to `redirect-to-https`, so a plain HTTP request is redirected to HTTPS and the page is cached at the CDN edge closest to the visitor.
 
 ```bash
 aws cloudfront create-distribution \
@@ -76,9 +76,13 @@ The distribution reached the `Deployed` state and serves the page over HTTPS.
 
 ![Console: CloudFront distribution Deployed](/images/5-Workshop/5.4-serverless-backend/cloudfront-distribution.png)
 
+The screenshot confirms the distribution is `Deployed` with an HTTPS domain.
+
 The live site, showing the stats bar, AI labels, thumbnails and label filter:
 
 ![InsightShare live site](/images/5-Workshop/5.4-serverless-backend/web-live-v4.png)
+
+The screenshot confirms the deployed page renders real uploaded files with their AI labels, so the frontend and back-end are connected end to end.
 
 #### Step 4: End-to-end test
 

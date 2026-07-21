@@ -12,7 +12,7 @@ Create an **API Gateway (HTTP API)** as the public entry point through which the
 
 #### Step 1: Create the API
 
-Because the Lambda already dispatches by method and path internally, a single **`$default`** route forwarding everything to Lambda is all that is needed:
+API Gateway is the public HTTPS front door: it terminates TLS, applies CORS, and (once the authorizer is added in 5.4.5) checks the Cognito token before any request reaches Lambda. Because the Lambda already dispatches by method and path internally, a single **`$default`** route forwarding everything to Lambda is all that is needed, so routes do not have to be declared twice. The `--cors-configuration` here lets the browser call the API cross-origin, mirroring the S3 CORS in 5.3:
 
 ```bash
 aws apigatewayv2 create-api \
@@ -22,7 +22,7 @@ aws apigatewayv2 create-api \
   --cors-configuration "AllowOrigins=*,AllowMethods=GET,POST,DELETE,OPTIONS,AllowHeaders=*"
 ```
 
-Using `--target` auto-creates the Lambda integration, the `$default` route and the `$default` stage (auto-deploy). Then grant API Gateway permission to invoke the Lambda:
+Using `--target` auto-creates the Lambda integration, the `$default` route and the `$default` stage (auto-deploy). API Gateway still needs an explicit resource-based permission on the function before it may invoke it; the `--source-arn` scopes that permission to this one API so no other API can call the function:
 
 ```bash
 aws lambda add-permission \
@@ -37,7 +37,11 @@ The Routes view shows the single `$default` route managed by API Gateway, integr
 
 ![API Gateway routes](/images/5-Workshop/5.4-serverless-backend/apigateway-routes.png)
 
+The screenshot confirms the one `$default` route pointing at the Lambda integration.
+
 #### Step 2: Routes handled by the Lambda
+
+These are the logical endpoints the frontend uses; all arrive through the single `$default` route and are separated inside the Lambda. Together they form the pipeline: upload a file, analyze it, then list, search or ask over the results.
 
 | Method | Path | Purpose |
 |---|---|---|
@@ -62,7 +66,7 @@ curl "$API/files"
 ```
 
 {{% notice info %}}
-**Technical note.** DynamoDB returns numbers (such as `uploaded_at`) as Python `Decimal`, which `json.dumps` cannot serialize, producing `Object of type Decimal is not JSON serializable`. A custom JSON encoder converts `Decimal` to `int`/`float` and is used in every response.
+**Technical note.** The `boto3` DynamoDB resource returns every stored number (such as `uploaded_at` and `size`) as a Python `Decimal` to preserve precision. `json.dumps` has no rule for `Decimal`, so the first `GET /files` failed with `Object of type Decimal is not JSON serializable`. A custom JSON encoder converts `Decimal` to `int` (or `float` when it has a fractional part) and is passed to `json.dumps` in every response, so the API always returns valid JSON numbers.
 
 ```python
 class _DecimalEncoder(json.JSONEncoder):

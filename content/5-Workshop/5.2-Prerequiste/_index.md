@@ -12,11 +12,11 @@ Building and deploying InsightShare requires the following tools, accounts and p
 
 #### Step 1. AWS account and credentials
 
-Work from a dedicated IAM user with MFA, not the root account. Configure the CLI to `ap-southeast-1` and keep access keys out of the repository (this project gitignores them under `_private-keys/`).
+Every command and deploy in the workshop runs against one AWS account in one region, so the identity and region are fixed before anything else. Work from a dedicated IAM user with MFA, not the root account, so a leaked key cannot touch billing or delete the account. Configure the CLI to `ap-southeast-1`, the region all InsightShare resources live in, and keep access keys out of the repository (this project gitignores them under `_private-keys/`).
 
 ![Console: IAM user with MFA enabled](/images/5-Workshop/5.2-Prerequiste/iam-user-mfa.png)
 
-Configure the CLI, then confirm the identity resolves to the IAM user:
+Configure the CLI, then confirm the identity resolves to the IAM user. `aws sts get-caller-identity` returns the ARN the CLI is acting as, which must be the IAM user and not the root account:
 
 ```bash
 aws configure
@@ -53,7 +53,7 @@ The account used for deployment needs permission to create and delete the follow
 - **Amazon CloudWatch and CloudWatch Logs**: view logs, create alarms
 - **AWS IAM**: create the Lambda execution role
 
-The Lambda execution role is granted only the runtime actions it needs (detailed in section 5.5):
+The account permissions above are for the person deploying the stack. Separately, the Lambda function assumes its own execution role at runtime, granted only the actions the code calls (detailed in section 5.5). The two are distinct: the deployer creates resources, the role lets the running function reach them:
 
 ```json
 {

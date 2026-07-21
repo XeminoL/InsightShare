@@ -8,17 +8,17 @@ pre: " <b> 5.4.1 </b> "
 
 #### Mục tiêu
 
-Một **Lambda function Python** cho back-end của InsightShare. Một function duy nhất điều hướng mọi route theo HTTP method và path: upload, list, search, analyze, ask, get, delete.
+Lambda là phần compute duy nhất của InsightShare: API Gateway chuyển mọi request tới nó, và nó giữ toàn bộ nghiệp vụ (presign, metadata, gọi AI) nên không phải cấp phát hay vá server nào. Một **Lambda function Python** phục vụ cả back-end, điều hướng mọi route theo HTTP method và path: upload, list, search, analyze, ask, get, delete. Gộp trong một function nghĩa là một artifact deploy và một chỗ dùng chung các client S3/DynamoDB.
 
 #### Bước 1: Tạo function
 
 Tạo Lambda function trong region `ap-southeast-1`:
 
-- **Runtime**: Python 3.13
-- **Handler**: `lambda_function.handler`
-- **Execution role**: `insightshare-lambda-role` (least-privilege, tạo ở phần 5.5)
-- **Timeout**: 30s, **Memory**: 256 MB
-- **Biến môi trường**: `BUCKET=insightshare-files-khang-2352464`, `TABLE=insightshare-files`
+- **Runtime**: Python 3.13, khớp với code và cho sẵn `boto3` trong runtime, không phải đóng gói.
+- **Handler**: `lambda_function.handler`, hàm `handler` trong `lambda_function.py` mà Lambda gọi cho mỗi request.
+- **Execution role**: `insightshare-lambda-role`, role least-privilege mà function assume để chạm S3, DynamoDB và các dịch vụ AI (tạo ở phần 5.5).
+- **Timeout**: 30s, đủ cho một lời gọi Textract hoặc Bedrock hoàn tất; **Memory**: 256 MB, đủ cho JSON và văn bản của một file.
+- **Biến môi trường**: `BUCKET=insightshare-files-khang-2352464` và `TABLE=insightshare-files`, để tên bucket và bảng nằm ngoài code.
 
 Bằng AWS CLI:
 
@@ -37,9 +37,11 @@ Màn Function overview cho thấy trigger API Gateway đã nối vào function:
 
 ![Đã tạo Lambda function](/images/5-Workshop/5.4-serverless-backend/lambda-function.png)
 
+Ảnh chụp xác nhận function đã tồn tại kèm trigger API Gateway, nên request tới API được route vào function này.
+
 #### Bước 2: Handler
 
-Handler đọc HTTP method và path từ sự kiện API Gateway (payload format v2) rồi điều hướng tới đúng hàm. `boto3` có sẵn trong runtime Lambda nên không cần đóng gói thêm.
+Vì API Gateway được cấu hình với một route `$default` duy nhất (phần 5.4.2), chính handler làm việc điều hướng. Nó đọc HTTP method và path từ sự kiện API Gateway (payload format v2, method nằm dưới `requestContext.http` và path dưới `rawPath`) rồi dispatch tới đúng hàm. `boto3` có sẵn trong runtime Lambda nên không cần đóng gói thêm.
 
 ```python
 def handler(event, context):
@@ -64,7 +66,7 @@ def handler(event, context):
     return _resp(404, {"error": "route not found"})
 ```
 
-Hàm upload sinh presigned URL (phần 5.3.2) và ghi dòng metadata ban đầu:
+Hàm upload là điểm khởi đầu của cả pipeline. Nó sinh một `file_id` duy nhất, dựng key S3 dạng `{file_id}/{filename}`, sinh presigned PUT URL (phần 5.3.2), và ghi dòng metadata ban đầu để file được theo dõi trước cả khi bytes tới. `labels`, `text` và `search_blob` khởi tạo rỗng và được `analyze` điền về sau:
 
 ```python
 def create_upload(event):
@@ -87,7 +89,7 @@ def create_upload(event):
 
 #### Bước 3: Deploy & test
 
-Đóng gói file rồi test bằng một sự kiện API Gateway giả:
+Vì không có phụ thuộc bên thứ ba, deploy chỉ là zip một file nguồn. Bài test gửi một sự kiện API Gateway viết tay để function chạy mà không cần API đứng trước:
 
 ```bash
 zip function.zip lambda_function.py

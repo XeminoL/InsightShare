@@ -12,7 +12,7 @@ pre: " <b> 5.3.2 </b> "
 
 #### Bước 1: Sinh presigned URL bằng boto3
 
-Lambda tạo S3 client rồi sinh URL PUT để upload và URL GET để download, hết hạn sau 15 phút (`PRESIGN_EXPIRY = 900`).
+Presigned URL mang sẵn chữ ký của Lambda role trong query string, nên trình duyệt gọi thẳng S3 cho đúng một object và một verb mà không cần bất kỳ credential AWS nào của mình. Hạn ngắn 15 phút (`PRESIGN_EXPIRY = 900`) giới hạn thời gian một link bị lộ còn dùng được. Client ép endpoint theo region và Signature V4 vì lý do ở ghi chú kỹ thuật bên dưới.
 
 ```python
 from botocore.config import Config
@@ -38,12 +38,12 @@ get_url = s3.generate_presigned_url(
 ```
 
 {{% notice info %}}
-**Ghi chú kỹ thuật.** S3 client mặc định dùng endpoint toàn cầu (`s3.amazonaws.com`), trả về **HTTP 307** khi upload lên bucket ở Singapore. Ép endpoint theo region kèm Signature V4 (như trên) để upload trả về HTTP 200.
+**Ghi chú kỹ thuật.** S3 client mặc định ký theo endpoint toàn cầu (`s3.amazonaws.com`). Bucket ở `ap-southeast-1` đáp lại endpoint đó bằng **HTTP 307 Temporary Redirect** trỏ về host theo region, và trình duyệt bỏ các header đã ký khi redirect, nên lệnh `PUT` thất bại. Đặt `endpoint_url` thành `https://s3.ap-southeast-1.amazonaws.com` để S3 trả lời thẳng không redirect, và `signature_version="s3v4"` ký bằng SigV4 mà endpoint theo region yêu cầu. Kết hợp cả hai làm upload trả về HTTP 200 ngay lần request đầu.
 {{% /notice %}}
 
 #### Bước 2: Test upload qua presigned URL
 
-Xin URL upload, rồi PUT file lên URL đó:
+Đây chính là luồng upload hai lời gọi mà trình duyệt thực hiện: `POST /files` xin Lambda một URL đã ký, rồi một lệnh `PUT` gửi bytes thẳng lên S3. Cờ `-w "HTTP %{http_code}"` in ra mã trạng thái để thấy được 200.
 
 ```bash
 curl -X POST "$API/files" -H "Content-Type: application/json" \
@@ -55,11 +55,13 @@ curl -X PUT "<upload_url>" -H "Content-Type: text/plain" \
 
 #### Bước 3: Kiểm tra object trong S3
 
-Xác nhận file đã vào bucket:
+Object xuất hiện dưới tiền tố `{file_id}/{filename}` của nó, chứng minh lệnh PUT presigned đã vào được bucket private mà bucket không cần public. Chính object vừa upload này là thứ lớp AI (phần 5.4.6) đọc về sau để sinh nhãn và văn bản.
 
 ```bash
 aws s3 ls s3://insightshare-files-khang-2352464/ --recursive
 ```
 
 ![Console: object đã upload trong S3 bucket](/images/5-Workshop/5.3-S3-storage/s3-object-uploaded.png)
+
+Ảnh chụp xác nhận object đã upload nằm trong bucket dưới tiền tố theo file-id.
 

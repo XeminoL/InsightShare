@@ -12,7 +12,7 @@ A **presigned URL** is a signed link to one S3 object, valid for a limited time,
 
 #### Step 1: Generate a presigned URL with boto3
 
-Lambda creates the S3 client and generates a PUT URL for uploads and a GET URL for downloads, expiring after 15 minutes (`PRESIGN_EXPIRY = 900`).
+The presigned URL carries the Lambda role's signature in its query string, so the browser can call S3 directly for one specific object and verb without any AWS credentials of its own. A short 15-minute expiry (`PRESIGN_EXPIRY = 900`) limits how long a leaked link stays usable. The client pins the regional endpoint and Signature V4 for the reason in the technical note below.
 
 ```python
 from botocore.config import Config
@@ -38,12 +38,12 @@ get_url = s3.generate_presigned_url(
 ```
 
 {{% notice info %}}
-**Technical note.** The default S3 client uses the global endpoint (`s3.amazonaws.com`), which returns **HTTP 307** when uploading to a bucket in Singapore. Pinning the regional endpoint plus Signature V4 (as above) makes the upload return HTTP 200.
+**Technical note.** The default S3 client signs against the global endpoint (`s3.amazonaws.com`). A bucket in `ap-southeast-1` answers that endpoint with an **HTTP 307 Temporary Redirect** to its regional host, and the browser drops the signed headers on the redirect, so the `PUT` fails. Setting `endpoint_url` to `https://s3.ap-southeast-1.amazonaws.com` makes S3 answer directly with no redirect, and `signature_version="s3v4"` signs with SigV4, which the regional endpoint requires. Together they make the upload return HTTP 200 on the first request.
 {{% /notice %}}
 
 #### Step 2: Test upload through the presigned URL
 
-Request an upload URL, then PUT a file to it:
+This is the two-call upload the browser performs: `POST /files` asks the Lambda for a signed URL, then a single `PUT` sends the bytes straight to S3. The `-w "HTTP %{http_code}"` prints the status so the 200 is visible.
 
 ```bash
 curl -X POST "$API/files" -H "Content-Type: application/json" \
@@ -55,11 +55,13 @@ curl -X PUT "<upload_url>" -H "Content-Type: text/plain" \
 
 #### Step 3: Check the object in S3
 
-Confirm the file landed in the bucket:
+The object appears under its `{file_id}/{filename}` prefix, which proves the presigned PUT reached the private bucket without the bucket being public. This uploaded object is what the AI layer (section 5.4.6) later reads to produce labels and text.
 
 ```bash
 aws s3 ls s3://insightshare-files-khang-2352464/ --recursive
 ```
 
 ![Console: uploaded object in the S3 bucket](/images/5-Workshop/5.3-S3-storage/s3-object-uploaded.png)
+
+The screenshot confirms the uploaded object sits in the bucket under its file-id prefix.
 
