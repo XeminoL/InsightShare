@@ -227,4 +227,4 @@ div.notices.info p {
   background: #fff2db;
 }
 
-#sidebar .select-style { margin-left: 8px; }
+#sidebar #prefooter .select-style { margin-left: 4px; vertical-align: middle; }
