@@ -60,7 +60,7 @@ aws s3 cp index.html s3://insightshare-web-khang-2352464/index.html --content-ty
 
 Chỉ bucket web này áp bucket policy public-read, vì trang phải tải được cho bất kỳ ai có URL; bucket file vẫn bật hết Block Public Access và không bao giờ public. Trang chạy tại:
 
-`http://insightshare-web-khang-2352464.s3-website-ap-southeast-1.amazonaws.com`
+`https://insightshare.dangthaikhang34.workers.dev`
 
 #### Bước 3: Phân phối qua CloudFront
 
