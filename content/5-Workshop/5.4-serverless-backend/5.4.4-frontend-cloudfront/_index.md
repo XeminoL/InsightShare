@@ -60,7 +60,7 @@ aws s3 cp index.html s3://insightshare-web-khang-2352464/index.html --content-ty
 
 A public-read bucket policy is applied to this web bucket only, because the page must load for anyone with the URL; the file bucket keeps all Block Public Access on and is never made public. The site is live at:
 
-`https://insightshare.dangthaikhang34.workers.dev`
+`https://insightshare.dangthaikhang34.workers.dev` (hosted on Cloudflare Workers for a stable HTTPS domain)
 
 #### Step 3: Distribute through CloudFront
 
