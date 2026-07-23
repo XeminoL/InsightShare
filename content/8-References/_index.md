@@ -10,11 +10,11 @@ pre: " <b> 8. </b> "
 
 | Resource | Link |
 | --- | --- |
-| Source code (GitHub repository) | [github.com/XeminoL/InsightShare](https://github.com/XeminoL/InsightShare) |
-| Live application (demo) | [insightshare.dangthaikhang34.workers.dev](https://insightshare.dangthaikhang34.workers.dev) |
+| Source code | [github.com/XeminoL/InsightShare](https://github.com/XeminoL/InsightShare) |
+| Live application | [insightshare.dangthaikhang34.workers.dev](https://insightshare.dangthaikhang34.workers.dev) |
 
-### What I read while building
+### Documentation
 
-- AWS Study Group labs (cloudjourney.awsstudygroup.com): the S3, serverless back-end and AI-services labs, which I followed for the account setup and the first working versions of each layer.
-- boto3 reference for the calls I used: `generate_presigned_url`, DynamoDB `put_item`/`update_item`/`scan`, `detect_labels`, `detect_document_text` and Bedrock `invoke_model`.
-- AWS docs I checked when something did not work: the S3 presigned-URL page (for the 307 / SigV4 issue) and the DynamoDB reserved-words list (for the `text` attribute).
+- [AWS Study Group labs](https://cloudjourney.awsstudygroup.com/) - S3, serverless back-end and AI services
+- [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) - AWS SDK for Python
+- [Amazon S3 presigned URLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-presigned-url.html), [DynamoDB reserved words](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ReservedWords.html)
