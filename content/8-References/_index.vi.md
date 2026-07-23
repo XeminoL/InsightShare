@@ -12,13 +12,9 @@ pre: " <b> 8. </b> "
 | --- | --- |
 | Mã nguồn (GitHub repository) | [github.com/XeminoL/InsightShare](https://github.com/XeminoL/InsightShare) |
 | Ứng dụng chạy thật (demo) | [insightshare.dangthaikhang34.workers.dev](https://insightshare.dangthaikhang34.workers.dev) |
-| Trang báo cáo (báo cáo này) | [xeminol.github.io/InsightShare](https://xeminol.github.io/InsightShare/) |
 
-### Tài liệu AWS
+### Những tài liệu em đã đọc khi làm
 
-- [Amazon S3](https://docs.aws.amazon.com/s3/) - lưu trữ object và presigned URL
-- [AWS Lambda](https://docs.aws.amazon.com/lambda/) - hàm serverless
-- [Amazon API Gateway](https://docs.aws.amazon.com/apigateway/) - HTTP API và JWT authorizer
-- [Amazon DynamoDB](https://docs.aws.amazon.com/dynamodb/) - cơ sở dữ liệu NoSQL
-- [Amazon Cognito](https://docs.aws.amazon.com/cognito/) - đăng nhập người dùng
-- [Amazon Rekognition](https://docs.aws.amazon.com/rekognition/), [Amazon Textract](https://docs.aws.amazon.com/textract/), [Amazon Bedrock](https://docs.aws.amazon.com/bedrock/) - các dịch vụ AI
+- Các lab AWS Study Group (cloudjourney.awsstudygroup.com): lab S3, lab back-end serverless và lab AI services, em làm theo để dựng tài khoản và bản chạy đầu tiên của từng lớp.
+- Tài liệu boto3 cho các lời gọi em dùng: `generate_presigned_url`, DynamoDB `put_item`/`update_item`/`scan`, `detect_labels`, `detect_document_text` và Bedrock `invoke_model`.
+- Tài liệu AWS em tra khi gặp lỗi: trang presigned URL của S3 (lỗi 307 / SigV4) và danh sách từ khóa dành riêng của DynamoDB (thuộc tính `text`).

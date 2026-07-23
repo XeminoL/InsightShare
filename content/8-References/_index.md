@@ -12,13 +12,9 @@ pre: " <b> 8. </b> "
 | --- | --- |
 | Source code (GitHub repository) | [github.com/XeminoL/InsightShare](https://github.com/XeminoL/InsightShare) |
 | Live application (demo) | [insightshare.dangthaikhang34.workers.dev](https://insightshare.dangthaikhang34.workers.dev) |
-| Report site (this report) | [xeminol.github.io/InsightShare](https://xeminol.github.io/InsightShare/) |
 
-### AWS documentation
+### What I read while building
 
-- [Amazon S3](https://docs.aws.amazon.com/s3/) - object storage and presigned URLs
-- [AWS Lambda](https://docs.aws.amazon.com/lambda/) - serverless functions
-- [Amazon API Gateway](https://docs.aws.amazon.com/apigateway/) - HTTP API and JWT authorizer
-- [Amazon DynamoDB](https://docs.aws.amazon.com/dynamodb/) - NoSQL database
-- [Amazon Cognito](https://docs.aws.amazon.com/cognito/) - user sign-in
-- [Amazon Rekognition](https://docs.aws.amazon.com/rekognition/), [Amazon Textract](https://docs.aws.amazon.com/textract/), [Amazon Bedrock](https://docs.aws.amazon.com/bedrock/) - AI services
+- AWS Study Group labs (cloudjourney.awsstudygroup.com): the S3, serverless back-end and AI-services labs, which I followed for the account setup and the first working versions of each layer.
+- boto3 reference for the calls I used: `generate_presigned_url`, DynamoDB `put_item`/`update_item`/`scan`, `detect_labels`, `detect_document_text` and Bedrock `invoke_model`.
+- AWS docs I checked when something did not work: the S3 presigned-URL page (for the 307 / SigV4 issue) and the DynamoDB reserved-words list (for the `text` attribute).
