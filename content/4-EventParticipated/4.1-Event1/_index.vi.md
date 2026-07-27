@@ -1,6 +1,6 @@
 ---
 title: "Sự kiện 1"
-date: 2026-06-06
+date: 2026-07-25
 weight: 1
 chapter: false
 pre: " <b> 4.1. </b> "
@@ -8,20 +8,25 @@ pre: " <b> 4.1. </b> "
 
 | Trường | Chi tiết |
 | --- | --- |
-| Tên sự kiện | Saturday Meetup - First Cloud AI Journey |
-| Thời gian | 06/06/2026, 09:00-12:00 |
+| Tên sự kiện | FCAJ - Agentic AI Build Week (buổi chia sẻ) |
+| Thời gian | 25/07/2026, 08:30-12:00 |
 | Địa điểm | Tầng 26, tòa nhà Bitexco Financial Tower, số 2 Hải Triều, phường Sài Gòn, TP. Hồ Chí Minh |
 | Vai trò | Người tham dự |
 
 ### Nội dung chính
-Một buổi meetup cộng đồng ngày thứ Bảy, các thành viên chia sẻ những bài ngắn về chủ đề tự chọn nên phạm vi khá rộng. Sáu phần chia sẻ:
+Buổi chia sẻ của các đội FCAJ nổi bật tại Agentic AI Build Week, được giới thiệu là buildathon về agentic AI lớn nhất ASEAN; các đội trình bày sản phẩm đã làm và cách họ làm. Hội trường kín người. Bốn phần chia sẻ:
 
-- **Anh Bảo Huỳnh** nói về Docker và containerization, cơ bản về cách đóng gói một app để nó chạy giống nhau ở mọi nơi.
-- **Anh Lê Hoàng Gia Đại** nói về kết hợp AWS WAF với machine learning để phát hiện tấn công mạng.
-- **Anh Nguyễn Quốc Bảo** nói về game nhiều người chơi, kết nối client game Godot qua AWS WebSockets.
-- **Anh Trương Phước** nói về cách làm teamwork cho thật sự hiệu quả.
-- **Anh Việt Phát** nói về AWS Neptune và dùng graph database để xây knowledge base cho GraphRAG.
-- **Anh Vinh Trần** nói về hành trình nghề của anh từ IT support lên senior systems administration và bước chuyển sang cloud và DevOps.
+- **Hackathon Journey (đội 3KA)** kể buildathon thực sự diễn ra thế nào, từ lập đội tới hoàn thành và pitch trong áp lực thời gian.
+- **SignalScout** về một AI agent giúp tăng tốc quy trình phòng chống rửa tiền (AML), thứ mà hiện nay một ngân hàng mất vài giờ mỗi hồ sơ cho KYC, phân tích giao dịch và dựng báo cáo.
+- **SA Professional Native App** về xây một native app kiểu production với góc nhìn solution architect trong thiết kế.
+- **OneTeam Community Day** về phần cộng đồng của chương trình và cách các đội làm việc cùng nhau.
 
 ### Điều em học được
-Điều em thích ở buổi này là các chủ đề rất trộn lẫn, từ Docker tới game networking tới một câu chuyện nghề cá nhân, nên nó ít giống một buổi giảng mà giống việc mọi người chia sẻ thứ họ đang theo. Phần WAF kết hợp machine learning là phần gần với đồ án của em nhất, vì nó cũng ghép một dịch vụ AWS với một lớp AI để làm được điều mà một dịch vụ đơn lẻ không làm được. Câu chuyện nghề của anh Vinh là một nhắc nhở hữu ích rằng con đường vào cloud không phải lúc nào cũng thẳng, và bắt đầu từ chỗ như IT support không phải là ngõ cụt.
+Buổi này gần với đồ án của em hơn em nghĩ, vì nó xoay quanh agentic AI trên AWS. Phần SignalScout đọng lại với em: họ lấy một quy trình back-office chậm, làm thủ công, rồi để một agent gánh phần nặng còn con người vẫn là người ký duyệt cuối, đúng ý tưởng em dùng trong InsightShare nơi AI phân tích và trả lời còn người dùng vẫn giữ quyền quyết định. Nhìn các đội show up, làm ra thứ chạy được trong thời gian ngắn rồi pitch là một cú hích để em tiếp tục làm chứ không chỉ học.
+
+### Hình ảnh
+![FCAJ - Agentic AI Build Week](/images/4-Event/event1-1.jpg)
+
+![FCAJ - Agentic AI Build Week](/images/4-Event/event1-2.jpg)
+
+![FCAJ - Agentic AI Build Week](/images/4-Event/event1-3.jpg)

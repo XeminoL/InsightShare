@@ -1,6 +1,6 @@
 ---
 title: "Event 1"
-date: 2026-06-06
+date: 2026-07-25
 weight: 1
 chapter: false
 pre: " <b> 4.1. </b> "
@@ -8,20 +8,25 @@ pre: " <b> 4.1. </b> "
 
 | Field | Detail |
 | --- | --- |
-| Event name | Saturday Meetup - First Cloud AI Journey |
-| Date & time | 06/06/2026, 09:00-12:00 |
+| Event name | FCAJ - Agentic AI Build Week (sharing session) |
+| Date & time | 25/07/2026, 08:30-12:00 |
 | Location | Floor 26, Bitexco Financial Tower, 2 Hai Trieu St, Saigon Ward, HCMC |
 | Role | Attendee |
 
 ### Main content
-A Saturday community meetup where members shared short talks on topics they picked themselves, so the range was wide. Six talks:
+A sharing session where the FCAJ teams that stood out at the Agentic AI Build Week, billed as the largest agentic AI buildathon in ASEAN, presented the products they built and how they built them. The room was full. Four talks:
 
-- **Mr. Bao Huynh** on Docker and containerization, the basics of packaging an app so it runs the same everywhere.
-- **Mr. Le Hoang Gia Dai** on combining AWS WAF with machine learning to detect cyber attacks.
-- **Mr. Nguyen Quoc Bao** on multiplayer games, connecting Godot game clients through AWS WebSockets.
-- **Mr. Truong Phuoc** on ways to make teamwork actually work.
-- **Mr. Viet Phat** on AWS Neptune and using a graph database to build a knowledge base for GraphRAG.
-- **Mr. Vinh Tran** on his career path from IT support to senior systems administration and the move into cloud and DevOps.
+- **Hackathon Journey (Team 3KA)** on what the buildathon was actually like, from forming the team to shipping and pitching under time pressure.
+- **SignalScout** on an agentic AI that speeds up the anti-money-laundering (AML) workflow, which today takes a bank a few hours per case across KYC screening, transaction analysis and report building.
+- **SA Professional Native App** on building a production-style native app with a solution-architect view of the design.
+- **OneTeam Community Day** on the community side of the program and how the teams worked together.
 
 ### What I learned
-What I liked about this one was how mixed the topics were, from Docker to game networking to a personal career story, so it felt less like a lecture and more like people sharing what they happened to be into. The talk on WAF with machine learning was the closest to my own project, since it also puts an AWS service together with an AI layer to do something a single service cannot. Mr. Vinh's career story was a useful reminder that the path into cloud is not always straight, and that starting somewhere like IT support is not a dead end.
+This one was closer to my own project than I expected, since it was all about agentic AI on AWS. The SignalScout talk stuck with me: they took a slow, manual back-office workflow and had an agent do the heavy lifting while a person still signs off, which is the same idea I used in InsightShare where the AI analyzes and answers but the user stays in control. Seeing teams show up, build something real in a short time and pitch it was a push to keep building rather than just studying.
+
+### Photos
+![FCAJ - Agentic AI Build Week](/images/4-Event/event1-1.jpg)
+
+![FCAJ - Agentic AI Build Week](/images/4-Event/event1-2.jpg)
+
+![FCAJ - Agentic AI Build Week](/images/4-Event/event1-3.jpg)
