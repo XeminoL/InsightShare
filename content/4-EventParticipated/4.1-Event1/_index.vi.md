@@ -1,6 +1,6 @@
 ---
 title: "Sự kiện 1"
-date: 2026-07-25
+date: 2026-06-27
 weight: 1
 chapter: false
 pre: " <b> 4.1. </b> "
@@ -8,25 +8,24 @@ pre: " <b> 4.1. </b> "
 
 | Trường | Chi tiết |
 | --- | --- |
-| Tên sự kiện | FCAJ - Agentic AI Build Week (buổi chia sẻ) |
-| Thời gian | 25/07/2026, 09:00-12:00 |
+| Tên sự kiện | FCAJ Community Day - June 2026 |
+| Thời gian | 27/06/2026, 09:00-12:00 |
 | Địa điểm | Tầng 26, tòa nhà Bitexco Financial Tower, số 2 Hải Triều, phường Sài Gòn, TP. Hồ Chí Minh |
 | Vai trò | Người tham dự |
 
 ### Nội dung chính
-Buổi chia sẻ của các đội FCAJ nổi bật tại Agentic AI Build Week, được giới thiệu là buildathon về agentic AI lớn nhất ASEAN; các đội trình bày sản phẩm đã làm và cách họ làm. Hội trường kín người. Bốn phần chia sẻ:
+Sự kiện cộng đồng hàng tháng, các diễn giả từ vài công ty chia sẻ cách họ xây và vận hành AI trên AWS. Năm phần chia sẻ, phần lớn có demo ngắn ở cuối:
 
-- **Hackathon Journey (đội 3KA)** kể buildathon thực sự diễn ra thế nào, từ lập đội tới hoàn thành và pitch trong áp lực thời gian.
-- **SignalScout** về một AI agent giúp tăng tốc quy trình phòng chống rửa tiền (AML), thứ mà hiện nay một ngân hàng mất vài giờ mỗi hồ sơ cho KYC, phân tích giao dịch và dựng báo cáo.
-- **SA Professional Native App** về xây một native app kiểu production với góc nhìn solution architect trong thiết kế.
-- **OneTeam Community Day** về phần cộng đồng của chương trình và cách các đội làm việc cùng nhau.
+- **Anh Steve Trần (Cloud Thinker)** mở đầu bằng câu chuyện nghề của anh, rồi tới sản phẩm **Cloud Thinker**, một AI agent hỗ trợ kỹ sư cloud những việc như truy tìm sự cố và review thay đổi trước khi lên production.
+- **Anh Nghị, anh Kiệt, anh Trung (Renova Cloud / RhoAI)** nói về **RhoAI**, trợ lý giọng nói tiếng Việt cho tổng đài. Điều em nhớ là vì sao họ chuyển giọng nói thành text trước thay vì voice-to-voice: hợp với tiếng Việt hơn và kiểm soát được con bot nói gì.
+- **Chị Bảo, anh Nguyên (Cloud Kinetic)** nói về **AWS DevOps Agent**, nó học hệ thống của mình rồi tự điều tra sự cố và gợi ý cách sửa. Anh chị demo trên một trang web tự nhiên chậm và nó tìm ra nguyên nhân.
+- **Anh Trường, chị Minh Anh (Noventiq)** nói về **Amazon Quick** cho HR: đọc một loạt CV đối chiếu với mô tả công việc rồi chấm điểm, để nhà tuyển dụng đỡ mất thời gian sàng lọc.
+- **Anh Toàn (Renova Cloud)** nói về cách kết nối **Amazon Quick** tới một dịch vụ khác theo hướng riêng tư, để dữ liệu không đi qua internet công khai.
 
 ### Điều em học được
-Buổi này gần với đồ án của em hơn em nghĩ, vì nó xoay quanh agentic AI trên AWS. Phần SignalScout đọng lại với em: họ lấy một quy trình back-office chậm, làm thủ công, rồi để một agent gánh phần nặng còn con người vẫn là người ký duyệt cuối, đúng ý tưởng em dùng trong InsightShare nơi AI phân tích và trả lời còn người dùng vẫn giữ quyền quyết định. Nhìn các đội show up, làm ra thứ chạy được trong thời gian ngắn rồi pitch là một cú hích để em tiếp tục làm chứ không chỉ học.
+Điều đọng lại với em, lặp qua các phần chia sẻ, là những công cụ AI này hỗ trợ kỹ sư chứ không thay thế: chúng gợi ý hoặc soạn nháp, còn con người vẫn là người quyết định. Điều đó gần với cách đồ án của em hoạt động, nơi AI phân tích và trả lời còn người dùng vẫn giữ quyền quyết định. Em cũng nhận ra một điều từ phần của anh Toàn mà trước đó em chưa nghĩ tới, rằng nối AI vào một dịch vụ chưa phải toàn bộ công việc trong một doanh nghiệp, giữ kết nối đó nằm ngoài internet công khai cũng quan trọng không kém. Vài diễn giả làm ở vai trò solution và sale chứ không thuần kỹ thuật, cho em một góc nhìn rộng hơn về nơi kiến thức cloud có thể dẫn tới.
 
 ### Hình ảnh
-![FCAJ - Agentic AI Build Week](/images/4-Event/event1-1.jpg)
+![FCAJ Community Day - June 2026](/images/4-Event/event2-1.jpg)
 
-![FCAJ - Agentic AI Build Week](/images/4-Event/event1-2.jpg)
-
-![FCAJ - Agentic AI Build Week](/images/4-Event/event1-3.jpg)
+![FCAJ Community Day - June 2026](/images/4-Event/event2-2.jpg)

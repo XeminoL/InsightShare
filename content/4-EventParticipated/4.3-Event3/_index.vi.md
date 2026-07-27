@@ -1,6 +1,6 @@
 ---
 title: "Sự kiện 3"
-date: 2026-06-20
+date: 2026-07-25
 weight: 3
 chapter: false
 pre: " <b> 4.3. </b> "
@@ -8,24 +8,25 @@ pre: " <b> 4.3. </b> "
 
 | Trường | Chi tiết |
 | --- | --- |
-| Tên sự kiện | AWS: Enterprise Cloud Architectures and Industry Application (featuring Cloud Kinetics & Renova Cloud) |
-| Thời gian | 04/07/2026, 09:00-12:00 |
+| Tên sự kiện | FCAJ - Agentic AI Build Week (buổi chia sẻ) |
+| Thời gian | 25/07/2026, 09:00-12:00 |
 | Địa điểm | Tầng 26, tòa nhà Bitexco Financial Tower, số 2 Hải Triều, phường Sài Gòn, TP. Hồ Chí Minh |
 | Vai trò | Người tham dự |
 
 ### Nội dung chính
-Một buổi study tour tại AWS Việt Nam, những người đang làm trong ngành chia sẻ về thị trường việc làm cloud và công việc thực tế ra sao, hướng tới sinh viên. Năm phần chia sẻ:
+Buổi chia sẻ của các đội FCAJ nổi bật tại Agentic AI Build Week, được giới thiệu là buildathon về agentic AI lớn nhất ASEAN; các đội trình bày sản phẩm đã làm và cách họ làm. Hội trường kín người. Bốn phần chia sẻ:
 
-- **Anh Nguyễn Trần Minh Duy (Swinburne Việt Nam)** mở đầu về mối liên kết giữa Swinburne và AWS cùng tinh thần của cộng đồng FCAJ, nơi người đi trước quay lại hỗ trợ người đi sau.
-- **Anh Nguyễn Gia Hưng (Head of Solution Architect, AWS Việt Nam, founder FCAJ)** vẽ bức tranh thị trường. Điều em nhớ: xét cả ngành thì số việc không giảm, nhưng nhu cầu tuyển junior giảm, nên yêu cầu với sinh viên mới ra trường cao hơn nhiều vì AI. Anh khuyên nhắm vào một ngành (ngân hàng, bán lẻ, sản xuất) chứ không chỉ một vai trò, và xây visibility qua cộng đồng thay vì chờ tin tuyển, vì phần lớn vị trí tuyển qua giới thiệu.
-- **Anh Bành Cẩm Vĩnh (Data Engineer, Renova Cloud)** nói về khoảng cách giữa học ở trường và đi làm: ở trường data sạch và yêu cầu cố định, còn đi làm data đến từ nhiều nguồn và yêu cầu thay đổi liên tục. Lời khuyên em nhớ là học kiến trúc chứ không chỉ học tool, vì tool đổi theo từng công ty còn cấu trúc thì vẫn vậy.
-- **Chị Như Trần (Account Manager, AWS Việt Nam)** nói về nỗi sợ và giao tiếp, thiên về cá nhân hơn kỹ thuật. Chị kể mình apply Amazon mười một lần mới đậu, và phần lớn hiểu lầm không phải vì ai đó sai mà vì hai người diễn đạt cùng một ý theo hai cách khác nhau.
-- **Anh Khang Nguyễn (Solution Architect, Cloud Kinetics, cựu sinh viên Swinburne)** khép lại về kỹ năng và tư duy khi làm việc trong thời AI, chia sẻ với tư cách người vừa ngồi ghế nhà trường không lâu trước đó.
+- **Hackathon Journey (đội 3KA)** kể buildathon thực sự diễn ra thế nào, từ lập đội tới hoàn thành và pitch trong áp lực thời gian.
+- **SignalScout** về một AI agent giúp tăng tốc quy trình phòng chống rửa tiền (AML), thứ mà hiện nay một ngân hàng mất vài giờ mỗi hồ sơ cho KYC, phân tích giao dịch và dựng báo cáo.
+- **SA Professional Native App** về xây một native app kiểu production với góc nhìn solution architect trong thiết kế.
+- **OneTeam Community Day** về phần cộng đồng của chương trình và cách các đội làm việc cùng nhau.
 
 ### Điều em học được
-Buổi này ít về sản phẩm mà nhiều về con đường phía trước, nên cái em giữ lại chủ yếu là về định hướng. Điều đọng lại là ý của anh Hưng, rằng tổng lượng việc không co lại mà dịch về phía senior, nghĩa là sinh viên mới ra trường bị đẩy phải trưởng thành nhanh hơn và phải dùng AI để giải những bài toán trước đây làm bằng tay. Ý của anh Vĩnh về học kiến trúc thay vì học tool khớp với cách em cố xây đồ án của mình, giữ nguyên cấu trúc kể cả khi các thành phần đổi. Câu chuyện chị Như apply mười một lần là một nhắc nhở hữu ích rằng sự kiên trì quan trọng ngang với năng lực.
+Buổi này gần với đồ án của em hơn em nghĩ, vì nó xoay quanh agentic AI trên AWS. Phần SignalScout đọng lại với em: họ lấy một quy trình back-office chậm, làm thủ công, rồi để một agent gánh phần nặng còn con người vẫn là người ký duyệt cuối, đúng ý tưởng em dùng trong InsightShare nơi AI phân tích và trả lời còn người dùng vẫn giữ quyền quyết định. Nhìn các đội show up, làm ra thứ chạy được trong thời gian ngắn rồi pitch là một cú hích để em tiếp tục làm chứ không chỉ học.
 
 ### Hình ảnh
-![Enterprise Cloud Architectures and Industry Application](/images/4-Event/event3-1.jpg)
+![FCAJ - Agentic AI Build Week](/images/4-Event/event1-1.jpg)
 
-![Enterprise Cloud Architectures and Industry Application](/images/4-Event/event3-2.jpg)
+![FCAJ - Agentic AI Build Week](/images/4-Event/event1-2.jpg)
+
+![FCAJ - Agentic AI Build Week](/images/4-Event/event1-3.jpg)
