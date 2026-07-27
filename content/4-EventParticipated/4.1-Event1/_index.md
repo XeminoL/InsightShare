@@ -9,7 +9,7 @@ pre: " <b> 4.1. </b> "
 | Field | Detail |
 | --- | --- |
 | Event name | FCAJ - Agentic AI Build Week (sharing session) |
-| Date & time | 25/07/2026, 08:30-12:00 |
+| Date & time | 25/07/2026, 09:00-12:00 |
 | Location | Floor 26, Bitexco Financial Tower, 2 Hai Trieu St, Saigon Ward, HCMC |
 | Role | Attendee |
 
