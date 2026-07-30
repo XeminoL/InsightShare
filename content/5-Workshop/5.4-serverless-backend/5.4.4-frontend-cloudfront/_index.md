@@ -78,7 +78,7 @@ The distribution reached the `Deployed` state and serves the page over HTTPS.
 **About the demo URL.** The CloudFront domain changes whenever the distribution is recreated, and the distribution is torn down with the rest of the stack after grading. So the same `index.html` is also published to a fixed address, `https://insightshare.dangthaikhang34.workers.dev`, and that is the link used in the report and the demo. It is only a place to serve one static file; every API call from it still goes to API Gateway, Lambda and S3 on AWS.
 {{% /notice %}}
 
-The live site, showing the stats bar, AI labels, thumbnails and label filter:
+The live site on a fresh account, before anything is uploaded: the stats bar reads zero, and the upload box is the entry point.
 
 ![InsightShare live site](/images/5-Workshop/5.4-serverless-backend/web-live-v4.png)
 

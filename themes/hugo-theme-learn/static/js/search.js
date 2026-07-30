@@ -86,11 +86,14 @@ $(document).ready(function () {
     /* renderItem displays individual search results */
     renderItem: function (item, term) {
       var numContextWords = 2;
+      // escape regex metacharacters: typing "(" or "*" in the box would
+      // otherwise throw a SyntaxError and kill the suggestion list
+      var safeTerm = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       var text = item.content.match(
         "(?:\\s?(?:[\\w]+)\\s?){0," +
           numContextWords +
           "}" +
-          term +
+          safeTerm +
           "(?:\\s?(?:[\\w]+)\\s?){0," +
           numContextWords +
           "}",

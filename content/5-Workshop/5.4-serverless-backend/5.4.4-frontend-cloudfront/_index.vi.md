@@ -78,7 +78,7 @@ Distribution đã ở trạng thái `Deployed` và phục vụ trang qua HTTPS.
 **Về link demo.** Tên miền CloudFront đổi mỗi lần tạo lại distribution, và distribution sẽ bị xóa cùng cả stack sau khi chấm. Nên cùng file `index.html` đó cũng được đưa lên một địa chỉ cố định, `https://insightshare.dangthaikhang34.workers.dev`, và đây là link dùng trong báo cáo và bản demo. Nó chỉ là chỗ phục vụ một file tĩnh; mọi lời gọi API từ trang này vẫn đi tới API Gateway, Lambda và S3 trên AWS.
 {{% /notice %}}
 
-Trang web đang chạy, có dải thống kê, nhãn AI, ảnh thu nhỏ và bộ lọc theo nhãn:
+Trang web đang chạy trên một tài khoản mới, trước khi upload gì: dải thống kê còn số 0, và ô upload là chỗ bắt đầu.
 
 ![Trang web InsightShare đang chạy](/images/5-Workshop/5.4-serverless-backend/web-live-v4.png)
 

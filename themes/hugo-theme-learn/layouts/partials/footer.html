@@ -67,11 +67,14 @@
     <script src="{{"js/learn.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
     <script src="{{"js/hugo-learn.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
 
+    {{/* mermaid.js is 1.7 MB; only load it on pages that actually contain a diagram */}}
+    {{ if or (findRE "(?i)language-mermaid|class=\"mermaid\"" .Content) .Params.mermaid }}
     <link href="{{"mermaid/mermaid.css" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet" />
     <script src="{{"mermaid/mermaid.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
+    {{ end }}
     {{ partial "custom-footer.html" . }}
   </body>
 </html>
