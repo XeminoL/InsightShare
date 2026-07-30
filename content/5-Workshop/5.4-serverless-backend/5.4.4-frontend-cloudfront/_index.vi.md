@@ -72,7 +72,7 @@ aws cloudfront create-distribution \
 
 Distribution đã ở trạng thái `Deployed` và phục vụ trang qua HTTPS.
 
-![Console: CloudFront distribution Deployed](/images/5-Workshop/5.4-serverless-backend/cloudfront-distribution.png)
+![Console: CloudFront distribution, trạng thái Enabled](/images/5-Workshop/5.4-serverless-backend/cloudfront-distribution.png)
 
 {{% notice note %}}
 **Về link demo.** Tên miền CloudFront đổi mỗi lần tạo lại distribution, và distribution sẽ bị xóa cùng cả stack sau khi chấm. Nên cùng file `index.html` đó cũng được đưa lên một địa chỉ cố định, `https://insightshare.dangthaikhang34.workers.dev`, và đây là link dùng trong báo cáo và bản demo. Nó chỉ là chỗ phục vụ một file tĩnh; mọi lời gọi API từ trang này vẫn đi tới API Gateway, Lambda và S3 trên AWS.

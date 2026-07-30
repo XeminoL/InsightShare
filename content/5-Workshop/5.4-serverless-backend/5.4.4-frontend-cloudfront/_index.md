@@ -72,7 +72,7 @@ aws cloudfront create-distribution \
 
 The distribution reached the `Deployed` state and serves the page over HTTPS.
 
-![Console: CloudFront distribution Deployed](/images/5-Workshop/5.4-serverless-backend/cloudfront-distribution.png)
+![Console: the CloudFront distribution, Enabled](/images/5-Workshop/5.4-serverless-backend/cloudfront-distribution.png)
 
 {{% notice note %}}
 **About the demo URL.** The CloudFront domain changes whenever the distribution is recreated, and the distribution is torn down with the rest of the stack after grading. So the same `index.html` is also published to a fixed address, `https://insightshare.dangthaikhang34.workers.dev`, and that is the link used in the report and the demo. It is only a place to serve one static file; every API call from it still goes to API Gateway, Lambda and S3 on AWS.

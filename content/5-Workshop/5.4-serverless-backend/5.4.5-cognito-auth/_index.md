@@ -26,7 +26,9 @@ aws cognito-idp create-user-pool-client \
   --explicit-auth-flows ALLOW_USER_PASSWORD_AUTH ALLOW_REFRESH_TOKEN_AUTH
 ```
 
-![Console: Cognito user pool](/images/5-Workshop/5.4-serverless-backend/cognito-user-pool.png)
+![Console: the Cognito user pool](/images/5-Workshop/5.4-serverless-backend/cognito-user-pool.png)
+
+The pool in the screenshot was created through the Console first, so it kept the name the Console generated. The pool id is what the rest of the setup refers to, not the display name.
 
 #### Step 2: Add a JWT authorizer on API Gateway
 

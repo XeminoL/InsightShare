@@ -42,7 +42,7 @@ aws cloudwatch put-dashboard \
   --dashboard-body file://dashboard.json
 ```
 
-![Console: CloudWatch monitoring dashboard](/images/5-Workshop/5.5-Policy/cloudwatch-dashboard.png)
+![Console: the CloudWatch dashboard, showing the first two of its three widgets](/images/5-Workshop/5.5-Policy/cloudwatch-dashboard.png)
 
 #### Step 2: Security with IAM (least-privilege)
 

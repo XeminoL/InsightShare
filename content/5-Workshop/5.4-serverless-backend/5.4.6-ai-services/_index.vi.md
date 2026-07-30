@@ -34,12 +34,12 @@ if fname.endswith(IMAGE_EXTS):
         text = rec["filename"]
 ```
 
-Với một ảnh test, Rekognition trả về các nhãn như `Diagram`, `Text`, `Network`, `Chart`, `Webpage`. Các nhãn này lưu trong DynamoDB và tìm kiếm được, nên tra `diagram` vẫn ra ảnh dù từ đó không nằm trong tên file.
+Với một ảnh chụp bên trong kho hàng, Rekognition trả về mười nhãn: `Architecture`, `Building`, `Warehouse`, `Box`, `Cardboard`, `Carton`, `Factory`, `Package Delivery`, `Person`, `Indoors`. Các nhãn này lưu trong DynamoDB, nên tra `warehouse` hay `carton` vẫn ra đúng file dù hai từ đó không nằm trong tên file (`20260619_092010.jpg`).
 
-![Console: nhãn Rekognition trên ảnh đã upload](/images/5-Workshop/5.4-serverless-backend/rekognition-labels.png)
+![Ảnh đã upload cùng các nhãn Rekognition, xem trên app](/images/5-Workshop/5.4-serverless-backend/rekognition-labels.png)
 
 {{% notice note %}}
-`MinConfidence` là phần trăm độ tin cậy tối thiểu để một nhãn được trả về. Ban đầu để 70 và không ra nhãn nào cho ảnh dạng sơ đồ (ít vật thể thực để nhận với độ tin cậy cao). Hạ xuống 55 thì lọt các nhãn chính xác nhưng kém chắc chắn hơn. Tinh chỉnh ngưỡng theo loại nội dung: cao hơn cho ảnh chụp vật thể, thấp hơn cho sơ đồ và ảnh chụp màn hình.
+`MinConfidence` là phần trăm độ tin cậy tối thiểu để một nhãn được trả về, còn `MaxLabels=10` là lý do ở đây ra đúng mười nhãn. Ngưỡng ban đầu để 70 thì không ra nhãn nào với một ảnh chụp màn hình sơ đồ: trong đó có ít vật thể thực để Rekognition chắc chắn. Hạ xuống 55 thì lọt các nhãn chính xác nhưng kém chắc chắn hơn. Ảnh phía trên là trường hợp ngược lại, đầy vật thể thực, nên chạm luôn giới hạn mười nhãn.
 {{% /notice %}}
 
 #### Bước 2: Tài liệu → trích văn bản
@@ -123,11 +123,11 @@ table.update_item(
 ```bash
 curl -X POST "$API/files/<id>/analyze"
 
-curl "$API/files/search?q=diagram"
+curl "$API/files/search?q=warehouse"
 
 curl -X POST "$API/files/<id>/ask" -d '{"question":"Tai lieu noi ve gi?"}'
 ```
 
-Tìm kiếm trả về ảnh đó từ nhãn `Diagram`. Với tài liệu `.txt`, `ask` trả về câu trả lời lấy từ nội dung tài liệu, do Amazon Bedrock (Claude) sinh ra.
+Tìm kiếm trả về ảnh đó từ nhãn `Warehouse`. Với tài liệu `.txt`, `ask` trả về câu trả lời lấy từ nội dung tài liệu, do Amazon Bedrock (Claude) sinh ra.
 
 > Tham khảo lab FCAJ về AI services (Rekognition/Textract): https://000056.awsstudygroup.com

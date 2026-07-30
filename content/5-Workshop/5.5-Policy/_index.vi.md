@@ -42,7 +42,7 @@ aws cloudwatch put-dashboard \
   --dashboard-body file://dashboard.json
 ```
 
-![Console: dashboard giám sát CloudWatch](/images/5-Workshop/5.5-Policy/cloudwatch-dashboard.png)
+![Console: dashboard CloudWatch, thấy hai trong ba widget](/images/5-Workshop/5.5-Policy/cloudwatch-dashboard.png)
 
 #### Bước 2: Bảo mật với IAM (least-privilege)
 
