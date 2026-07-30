@@ -11,7 +11,7 @@ pre: " <b> 2. </b> "
 
 ### 1. Tóm tắt
 
-InsightShare là một ứng dụng web để tải lên, phân tích và chia sẻ ảnh/tài liệu. Khi file được tải lên, các dịch vụ AI của AWS gắn nhãn ảnh, trích văn bản từ tài liệu, và trả lời câu hỏi hoặc tóm tắt tài liệu theo ngôn ngữ câu hỏi, nhờ đó tìm file được theo nội dung chứ không chỉ theo tên. Toàn bộ theo kiến trúc **serverless** trên AWS (region `ap-southeast-1`): không phải quản lý máy chủ, tính phí theo lượt gọi, tự mở rộng theo tải. Nền tảng dùng S3, Lambda, API Gateway, DynamoDB, CloudFront và Cognito, cùng ba dịch vụ AI Rekognition, Textract và Bedrock (Claude). Amazon Cognito lo phần đăng nhập, và claim `sub` trong JWT gán mỗi file cho đúng chủ nên người dùng chỉ thấy file của mình.
+InsightShare là một ứng dụng web để tải lên, phân tích và chia sẻ ảnh/tài liệu. Sau khi file được tải lên, các dịch vụ AI của AWS gắn nhãn ảnh, trích văn bản từ tài liệu, và trả lời câu hỏi hoặc tóm tắt tài liệu theo ngôn ngữ câu hỏi, nhờ đó một từ nằm bên trong file cũng tìm ra được file đó. Toàn bộ theo kiến trúc **serverless** trên AWS (region `ap-southeast-1`): không phải quản lý máy chủ, tính phí theo lượt gọi, tự mở rộng theo tải. Nền tảng dùng S3, Lambda, API Gateway, DynamoDB, CloudFront và Cognito, cùng ba dịch vụ AI Rekognition, Textract và Bedrock (Claude). Amazon Cognito lo phần đăng nhập, và claim `sub` trong JWT gán mỗi file cho đúng chủ nên người dùng chỉ thấy file của mình.
 
 ### 2. Tuyên bố vấn đề
 
@@ -25,18 +25,18 @@ InsightShare là một ứng dụng web để tải lên, phân tích và chia s
 InsightShare tập trung dữ liệu và xử lý trên một stack serverless thống nhất:
 - **Lưu trữ & chia sẻ:** S3 lưu file (bucket private), chia sẻ qua presigned URL có thời hạn; metadata lưu trong DynamoDB.
 - **Xử lý nghiệp vụ:** Lambda + API Gateway sinh presigned URL, điều phối phân tích AI, ghi/đọc dữ liệu.
-- **Hiểu nội dung bằng AI:** Rekognition gắn nhãn ảnh, Textract trích văn bản tài liệu, và Bedrock (một model Claude) trả lời câu hỏi và tóm tắt tài liệu theo ngôn ngữ câu hỏi. Tất cả đều là dịch vụ gọi sẵn, không huấn luyện mô hình.
+- **Hiểu nội dung bằng AI:** Rekognition gắn nhãn ảnh, Textract trích văn bản tài liệu, và Bedrock (một model Claude) trả lời câu hỏi và tóm tắt tài liệu theo ngôn ngữ câu hỏi. Cả ba đều gọi qua API, không có bước huấn luyện nào.
 - **Tìm kiếm thông minh:** nhãn và văn bản trích được lưu vào DynamoDB để tìm file theo nội dung.
 
 *Lợi ích*
 - Mô hình serverless trả theo lượng dùng; ở mức demo tổng chi phí dưới 1 USD/tháng.
-- File không public, quyền theo IAM least-privilege, và CloudWatch giám sát hệ thống.
-- Nhãn AI và văn bản trích giúp tìm file theo nội dung bên trong, không chỉ theo tên.
+- File người dùng không public và chỉ vào được qua link ký có thời hạn; bucket public duy nhất là bucket chứa trang web tĩnh. Quyền theo IAM least-privilege và CloudWatch giám sát hệ thống.
+- Tìm kiếm chạy trên nhãn AI và văn bản trích, nên một từ nằm bên trong file cũng ra được file đó.
 
 ### 3. Kiến trúc giải pháp
 
 *Tổng quan*
-Trình duyệt tải giao diện tĩnh từ **S3 + CloudFront (HTTPS)** → đăng nhập qua **Amazon Cognito** → gọi **API Gateway** → **Lambda (Python)**. API Gateway chạy một JWT authorizer kiểm tra token Cognito, và Lambda đọc claim `sub` để gán mỗi file cho đúng chủ sở hữu. Lambda sinh presigned URL để trình duyệt upload/download trực tiếp với **S3**. Sau khi upload, Lambda gọi các dịch vụ AI (**Rekognition / Textract / Bedrock**) và lưu kết quả vào **DynamoDB** phục vụ tìm kiếm. **CloudWatch** giám sát log/metric; **IAM** kiểm soát quyền theo least-privilege.
+Trình duyệt tải giao diện tĩnh từ **S3 + CloudFront** qua HTTPS, đăng nhập qua **Cognito**, rồi gọi **API Gateway**, cổng này chuyển tới **Lambda**. API Gateway chạy một JWT authorizer kiểm tra token Cognito, và Lambda đọc claim `sub` để gán mỗi file cho đúng chủ sở hữu. Lambda sinh presigned URL để trình duyệt truyền file trực tiếp với S3. Sau khi upload, Lambda gọi Rekognition, Textract hoặc Bedrock và lưu kết quả vào DynamoDB phục vụ tìm kiếm. CloudWatch thu log và metric; IAM kiểm soát quyền theo least-privilege.
 
 ![Kiến trúc InsightShare](/images/2-Proposal/insightshare_architecture-v6.png)
 
@@ -47,18 +47,18 @@ Trình duyệt tải giao diện tĩnh từ **S3 + CloudFront (HTTPS)** → đă
 | Amazon S3 | Lưu file người dùng; host giao diện web tĩnh |
 | Amazon CloudFront | CDN phân phối web, HTTPS, tăng tốc |
 | Amazon API Gateway | Cổng API công khai cho ứng dụng; một JWT authorizer kiểm tra token Cognito |
-| Amazon Cognito | Đăng nhập người dùng (Hosted UI); claim `sub` trong JWT gán mỗi file cho đúng chủ sở hữu để cô lập theo người dùng |
+| Amazon Cognito | Đăng nhập người dùng; claim `sub` trong JWT gán mỗi file cho đúng chủ sở hữu để cô lập theo người dùng |
 | AWS Lambda | Xử lý nghiệp vụ (Python/boto3); một handler điều hướng request API Gateway HTTP API theo method và path |
 | Amazon DynamoDB | Lưu metadata + nhãn AI + văn bản trích, phục vụ tìm kiếm |
 | Amazon Rekognition | Gắn nhãn ảnh (DetectLabels) |
-| Amazon Textract | Trích văn bản từ PDF/ảnh chữ (DetectDocumentText) |
+| Amazon Textract | Trích văn bản từ PDF và ảnh scan (DetectDocumentText) |
 | Amazon Bedrock (Claude) | Hỏi đáp và tóm tắt tài liệu, trả lời theo ngôn ngữ câu hỏi (InvokeModel) |
 | Amazon CloudWatch | Log, metric, alarm giám sát hệ thống |
 | AWS IAM | Phân quyền least-privilege cho Lambda và từng dịch vụ AI |
 
 *Thiết kế thành phần*
 - **Frontend:** trang web tĩnh (HTML/JS) chọn file, hiển thị danh sách kèm nhãn AI, ô tìm kiếm theo nội dung, ô đặt câu hỏi về một tài liệu.
-- **API:** các endpoint yêu cầu URL upload, xác nhận upload (kích hoạt phân tích AI), liệt kê/tìm kiếm file, lấy URL download, và hỏi đáp về một tài liệu.
+- **API:** các endpoint yêu cầu URL upload, chạy phân tích AI, liệt kê/tìm kiếm file, lấy URL download, hỏi đáp về một tài liệu, và hỏi đáp trên toàn thư viện.
 
 ### 4. Triển khai kỹ thuật
 
@@ -100,8 +100,8 @@ Trình duyệt tải giao diện tĩnh từ **S3 + CloudFront (HTTPS)** → đă
 |---|---|---|---|
 | Cấu hình IAM/policy sai gây lỗi truy cập | Trung bình | Trung bình | Least-privilege, kiểm thử kỹ trước khi mở rộng quyền |
 | Phát sinh chi phí ngoài dự kiến (gọi AI nhiều) | Thấp | Thấp | Budget Alert, giới hạn kích thước/loại file gửi AI, dọn tài nguyên sau test |
-| File lớn gây timeout Lambda/API Gateway | Trung bình | Thấp | Presigned URL upload trực tiếp S3; gọi AI bất đồng bộ qua S3 event |
-| Dịch vụ AI chậm hoặc kết quả chưa chính xác | Thấp | Trung bình | Phân tích AI bất đồng bộ, file vẫn tải được kể cả khi chưa phân tích xong |
+| File lớn gây timeout Lambda/API Gateway | Trung bình | Thấp | Presigned URL upload trực tiếp lên S3, nội dung file không đi qua Lambda hay API Gateway |
+| Dịch vụ AI chậm hoặc không sẵn sàng | Thấp | Trung bình | Phân tích là một lời gọi riêng tách khỏi upload và mỗi lời gọi AI đều fail-soft, nên file vẫn nằm trong danh sách và tải được dù phân tích không xong |
 
 *Kế hoạch dự phòng:* giữ một script dọn dẹp (cleanup-aws.ps1) để xóa toàn bộ tài nguyên nhanh chóng.
 
@@ -113,5 +113,5 @@ Trình duyệt tải giao diện tĩnh từ **S3 + CloudFront (HTTPS)** → đă
 - Hỏi đáp tài liệu bằng Amazon Bedrock (Claude): endpoint `ask` nhận một tài liệu và một câu hỏi, được nối vào lệnh gọi `bedrock:InvokeModel` với model id theo inference-profile cùng phần xử lý request/response đầy đủ.
 
 *Giá trị dài hạn*
-- Nền tảng có thể mở rộng: thêm đăng nhập người dùng (Cognito), điều phối pipeline AI nhiều bước (Step Functions), hỗ trợ thêm loại file.
+- Nền tảng có thể mở rộng: điều phối pipeline AI nhiều bước (Step Functions), kích hoạt phân tích từ S3 event thay vì để client gọi, hỗ trợ thêm loại file.
 - Tài liệu workshop chi tiết để người khác có thể làm theo và phát triển tiếp.

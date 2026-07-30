@@ -22,10 +22,10 @@ Weekly log of the First Cloud AI Journey internship.
 
 **Week 7**: [DynamoDB, the NoSQL model & presigned download links](1.7-week7/)
 
-**Week 8**: [AI layer: Rekognition, Textract, Bedrock/Claude for file content analysis](1.8-week8/)
+**Week 8**: [Amazon Cognito sign-in, JWT authorizer & per-user data isolation](1.8-week8/)
 
-**Week 9**: [Smart search, CloudFront/CloudWatch & cost/security optimization](1.9-week9/)
+**Week 9**: [AI layer: Rekognition, Textract, Bedrock/Claude for file content analysis](1.9-week9/)
 
-**Week 10**: [Repeatable deploy, full testing, performance measurement & optimization](1.10-week10/)
+**Week 10**: [Content search, frontend on S3 + CloudFront & CloudWatch monitoring](1.10-week10/)
 
-**Week 11**: [Advanced features, UX polish & studying Cognito, Step Functions](1.11-week11/)
+**Week 11**: [End-to-end testing, performance tuning & scripted teardown](1.11-week11/)

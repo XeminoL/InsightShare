@@ -35,7 +35,7 @@ aws sts get-caller-identity
 #### Step 3. Cloud Account & Region
 - **An AWS account** with permission to create and delete the resources used in this workshop.
 - Deployment region: **Asia Pacific (Singapore), `ap-southeast-1`**.
-- An **S3 bucket** for uploaded files, and a second use of S3 to host the static frontend.
+- Two **S3 buckets**: one for uploaded files, one to host the static frontend.
 - Access configured for the AWS CLI, verified with `aws sts get-caller-identity` pointing to your IAM user (not the root account).
 
 #### Step 4. Required IAM permissions
@@ -61,13 +61,26 @@ The account permissions above are for the person deploying the stack. Separately
     {
       "Sid": "S3FilesAccess",
       "Effect": "Allow",
-      "Action": ["s3:GetObject", "s3:PutObject"],
+      "Action": ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
       "Resource": "arn:aws:s3:::insightshare-files-*/*"
+    },
+    {
+      "Sid": "S3ListBucket",
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket"],
+      "Resource": "arn:aws:s3:::insightshare-files-*"
     },
     {
       "Sid": "DynamoDBAccess",
       "Effect": "Allow",
-      "Action": ["dynamodb:PutItem", "dynamodb:GetItem", "dynamodb:Query", "dynamodb:Scan"],
+      "Action": [
+        "dynamodb:PutItem",
+        "dynamodb:GetItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:Query",
+        "dynamodb:Scan"
+      ],
       "Resource": "arn:aws:dynamodb:ap-southeast-1:*:table/insightshare-files"
     },
     {

@@ -13,7 +13,8 @@ The storage layer keeps user files in a **private Amazon S3 bucket** (not public
 Main steps in this section:
 
 + Create the S3 bucket for files (region `ap-southeast-1`).
-+ Block public access and enable encryption.
++ Block public access; S3 applies SSE-S3 (`AES256`) encryption by default.
++ Enable versioning so an overwritten object can still be recovered.
 + Configure **CORS** so the browser can call the bucket.
 + Generate a **presigned URL** with **boto3** and test upload/download.
 

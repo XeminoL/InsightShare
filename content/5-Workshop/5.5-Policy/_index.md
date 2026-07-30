@@ -14,7 +14,7 @@ Two final pieces: **monitoring** (CloudWatch) and **security** (IAM least-privil
 
 - **CloudWatch Logs**: the Lambda automatically writes to the log group `/aws/lambda/insightshare-api`. This is where the runtime errors during development showed up (the `Decimal`, presigned-URL and IAM issues were all diagnosed from these logs).
 - **CloudWatch Metrics**: Lambda emits Invocations, Errors and Duration; API Gateway emits request count and 4xx/5xx counts.
-- **CloudWatch Alarms**: two alarms watch the `insightshare-api` function so a fault is noticed without reading logs. `insightshare-lambda-errors` fires when the `Errors` metric reaches the threshold (a `--threshold 1` over a `--period 300` window means one failed invocation in five minutes trips it), catching code or permission faults; `insightshare-lambda-throttles` fires on the `Throttles` metric, catching concurrency-limit hits under load.
+- **CloudWatch Alarms**: two alarms watch the `insightshare-api` function so a fault is noticed without reading logs. `insightshare-lambda-errors` fires when the `Errors` metric reaches the threshold: `--threshold 1` over `--period 300` means one failed invocation in five minutes trips it. It catches code and permission faults. `insightshare-lambda-throttles` fires on the `Throttles` metric, catching concurrency-limit hits under load.
 
 ```bash
 aws cloudwatch put-metric-alarm \
@@ -97,5 +97,5 @@ The permission set was tuned during real testing: `dynamodb:UpdateItem` and `s3:
 {{% /notice %}}
 
 {{% notice info %}}
-The Cognito sign-in (see [5.4.5](../5.4-serverless-backend/5.4.5-cognito-auth/)) needs no extra permission in this Lambda role. The JWT authorizer on API Gateway verifies the token and passes the `sub` claim to the function, so per-user scoping runs on the existing DynamoDB permissions above.
+Cognito sign-in needs no extra permission in this Lambda role. The JWT authorizer on API Gateway verifies the token and passes the `sub` claim to the function, so per-user scoping runs on the existing DynamoDB permissions above.
 {{% /notice %}}

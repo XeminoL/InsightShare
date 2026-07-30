@@ -22,10 +22,10 @@ Nhật ký thực tập theo tuần của chương trình First Cloud AI Journey
 
 **Tuần 7**: [DynamoDB, mô hình NoSQL & link tải bằng presigned URL](1.7-week7/)
 
-**Tuần 8**: [Lớp AI: Rekognition, Textract, Bedrock/Claude phân tích nội dung file](1.8-week8/)
+**Tuần 8**: [Đăng nhập Amazon Cognito, JWT authorizer & cô lập dữ liệu theo người dùng](1.8-week8/)
 
-**Tuần 9**: [Tìm kiếm thông minh, CloudFront/CloudWatch & tối ưu chi phí/bảo mật](1.9-week9/)
+**Tuần 9**: [Lớp AI: Rekognition, Textract, Bedrock/Claude phân tích nội dung file](1.9-week9/)
 
-**Tuần 10**: [Deploy lặp lại được, kiểm thử end-to-end, đo lường & tối ưu hiệu năng](1.10-week10/)
+**Tuần 10**: [Tìm kiếm theo nội dung, frontend trên S3 + CloudFront & giám sát CloudWatch](1.10-week10/)
 
-**Tuần 11**: [Tính năng nâng cao, tối ưu trải nghiệm & học thêm Cognito, Step Functions](1.11-week11/)
+**Tuần 11**: [Kiểm thử end-to-end, tinh chỉnh hiệu năng & script dọn tài nguyên](1.11-week11/)

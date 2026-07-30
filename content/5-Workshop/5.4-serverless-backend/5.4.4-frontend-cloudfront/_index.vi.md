@@ -12,9 +12,9 @@ Phục vụ giao diện web tĩnh của InsightShare từ **Amazon S3** và phâ
 
 #### Bước 1: Frontend
 
-Frontend không có logic riêng ngoài việc gọi API và render JSON. Giao diện là một file `index.html` tĩnh (HTML/CSS/JS thuần): upload file, hiển thị danh sách kèm nhãn AI, có ô tìm kiếm theo nội dung, link tải cho từng file (một presigned GET URL), và ô đặt câu hỏi về một tài liệu. Nó chỉ nói chuyện với endpoint API Gateway, nên cùng một trang chạy được cả ở local lẫn trên CloudFront mà không cần build lại.
+Frontend không có logic riêng ngoài việc gọi API và render JSON. Giao diện là một file `index.html` tĩnh (HTML/CSS/JS thuần): upload file, hiển thị danh sách kèm nhãn AI, có ô tìm kiếm theo nội dung, link tải cho từng file (một presigned GET URL), và ô đặt câu hỏi về một tài liệu. Trang chỉ gọi endpoint API Gateway, nên cùng một file chạy được ở local và trên CloudFront mà không cần build lại.
 
-Luồng upload trên trình duyệt là hai lời gọi: xin presigned URL từ API, PUT file thẳng lên S3, rồi kích hoạt `analyze` để lớp AI xử lý object vừa upload.
+Luồng upload trên trình duyệt là ba lời gọi: xin presigned URL từ API, PUT file thẳng lên S3, rồi kích hoạt `analyze` để lớp AI xử lý object vừa upload.
 
 ```javascript
 const r = await fetch(`${API}/files`, {
@@ -58,9 +58,7 @@ aws s3 website s3://insightshare-web-khang-2352464/ --index-document index.html
 aws s3 cp index.html s3://insightshare-web-khang-2352464/index.html --content-type text/html
 ```
 
-Chỉ bucket web này áp bucket policy public-read, vì trang phải tải được cho bất kỳ ai có URL; bucket file vẫn bật hết Block Public Access và không bao giờ public. Trang chạy tại:
-
-`https://insightshare.dangthaikhang34.workers.dev` (host trên Cloudflare Workers để có tên miền HTTPS ổn định)
+Chỉ bucket web này áp bucket policy public-read, vì trang phải tải được cho bất kỳ ai có URL; bucket file vẫn bật hết Block Public Access và không bao giờ public.
 
 #### Bước 3: Phân phối qua CloudFront
 
@@ -76,6 +74,10 @@ Distribution đã ở trạng thái `Deployed` và phục vụ trang qua HTTPS.
 
 ![Console: CloudFront distribution Deployed](/images/5-Workshop/5.4-serverless-backend/cloudfront-distribution.png)
 
+{{% notice note %}}
+**Về link demo.** Tên miền CloudFront đổi mỗi lần tạo lại distribution, và distribution sẽ bị xóa cùng cả stack sau khi chấm. Nên cùng file `index.html` đó cũng được đưa lên một địa chỉ cố định, `https://insightshare.dangthaikhang34.workers.dev`, và đây là link dùng trong báo cáo và bản demo. Nó chỉ là chỗ phục vụ một file tĩnh; mọi lời gọi API từ trang này vẫn đi tới API Gateway, Lambda và S3 trên AWS.
+{{% /notice %}}
+
 Trang web đang chạy, có dải thống kê, nhãn AI, ảnh thu nhỏ và bộ lọc theo nhãn:
 
 ![Trang web InsightShare đang chạy](/images/5-Workshop/5.4-serverless-backend/web-live-v4.png)
@@ -88,4 +90,4 @@ Toàn bộ luồng được kiểm chứng từ trang web đã deploy qua API Ga
 - `POST /files/{id}/analyze` trả về nhãn Rekognition thật.
 - `GET /files/search?q=diagram` trả về ảnh theo nhãn AI của nó, không phải theo tên file.
 - `POST /files/{id}/ask` trả về câu trả lời trên một tài liệu `.txt`, do Amazon Bedrock (Claude) sinh ra từ văn bản đã lưu.
-- Các bước này chạy trực tiếp từ trình duyệt trên trang web đang hoạt động, nên upload, phân tích AI, tìm kiếm theo nội dung và hỏi đáp tài liệu đều chạy đầu-cuối trên AWS.
+- Bốn bước trên sau đó được lặp lại từ trình duyệt trên trang web đang chạy.

@@ -11,8 +11,8 @@ pre: " <b> 5.4. </b> "
 Phần này gồm phần lõi của InsightShare: back-end serverless và frontend.
 
 + **Lambda (Python)** xử lý nghiệp vụ: nhận yêu cầu, sinh presigned URL, ghi metadata.
-+ **API Gateway** expose các API để frontend gọi, kèm một JWT authorizer cho token Cognito.
-+ **Amazon Cognito** đăng nhập người dùng qua Hosted UI, để mỗi người chỉ thấy file của mình.
++ **API Gateway** công khai các API để frontend gọi, kèm một JWT authorizer cho token Cognito.
++ **Amazon Cognito** đăng nhập người dùng, để mỗi người chỉ thấy file của mình.
 + **DynamoDB** lưu metadata của từng file (tên, thời gian, kích thước, nhãn AI, text trích...).
 + **Lớp AI** (Rekognition, Textract, Bedrock/Claude) gắn nhãn ảnh, trích văn bản tài liệu, và trả lời câu hỏi về một tài liệu.
 + **Frontend** (web tĩnh) được host trên **S3 + CloudFront**.

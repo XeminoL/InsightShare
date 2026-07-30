@@ -13,7 +13,8 @@ Tầng lưu trữ giữ file người dùng trong một **Amazon S3 bucket priva
 Các bước chính của phần này:
 
 + Tạo S3 bucket lưu file (region `ap-southeast-1`).
-+ Tắt public access và bật mã hóa.
++ Tắt public access; S3 tự áp mã hóa SSE-S3 (`AES256`) theo mặc định.
++ Bật versioning để object bị ghi đè vẫn lấy lại được.
 + Cấu hình **CORS** để trình duyệt gọi được tới bucket.
 + Sinh **presigned URL** bằng **boto3** và kiểm tra upload/download.
 

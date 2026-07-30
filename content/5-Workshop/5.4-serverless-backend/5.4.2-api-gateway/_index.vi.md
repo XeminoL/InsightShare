@@ -22,7 +22,7 @@ aws apigatewayv2 create-api \
   --cors-configuration "AllowOrigins=*,AllowMethods=GET,POST,DELETE,OPTIONS,AllowHeaders=*"
 ```
 
-Dùng `--target` sẽ tự tạo integration Lambda, route `$default` và stage `$default` (auto-deploy). API Gateway vẫn cần một resource-based permission rõ ràng trên function trước khi được gọi; `--source-arn` giới hạn quyền đó về đúng API này nên không API nào khác gọi được function:
+Dùng `--target` sẽ tự tạo integration Lambda, route `$default` và stage `$default` (auto-deploy). Function vẫn cần một resource-based permission khai báo rõ để API Gateway gọi được nó; `--source-arn` giới hạn quyền đó về đúng API này nên không API nào khác gọi được function:
 
 ```bash
 aws lambda add-permission \

@@ -11,7 +11,7 @@ pre: " <b> 5.3.1 </b> "
 Bucket này là nơi duy nhất lưu mọi file được upload; về sau Lambda đọc/ghi object ở đây và sinh presigned URL trỏ vào nó. Mở **S3 console** (region `ap-southeast-1`) và chọn **Create bucket**:
 
 - **Bucket name**: `insightshare-files-khang-2352464` (tên S3 là duy nhất toàn cầu, nên thêm hậu tố cá nhân để tránh trùng).
-- **Region**: Asia Pacific (Singapore) `ap-southeast-1`, cùng region với Lambda để request nằm trong region và presign dùng endpoint theo region.
+- **Region**: Asia Pacific (Singapore) `ap-southeast-1`, cùng region với Lambda, nên request không đi ra ngoài region và presigned URL ký theo endpoint của region đó.
 
 Sau khi tạo, bucket mở ra ở trạng thái trống:
 
@@ -49,7 +49,11 @@ aws s3api get-bucket-versioning --bucket insightshare-files-khang-2352464
 
 #### Bước 4: Cấu hình CORS
 
-Trình duyệt tải file trực tiếp lên và tải xuống từ S3 qua presigned URL, và các request đó phát từ origin của trang web chứ không phải từ domain của S3, nên S3 từ chối trừ khi CORS cho phép rõ origin đó. `AllowedMethods` liệt kê `PUT` cho upload và `GET` cho download, hai verb duy nhất presigned URL dùng ở đây; `ExposeHeaders` trả về `ETag` để trình duyệt đọc được hash của object vừa upload; `MaxAgeSeconds` cache preflight CORS trong 3000 giây để tránh thêm một vòng request mỗi lần. Áp cấu hình CORS sau (mức demo cho phép mọi origin; khi lên production nên giới hạn `AllowedOrigins` về đúng domain web):
+Trình duyệt truyền file trực tiếp với S3 qua presigned URL. Các request đó phát từ origin của trang web, không phải từ domain của S3, nên S3 từ chối nếu CORS không cho phép origin đó.
+
+`AllowedMethods` chỉ liệt kê `PUT` và `GET`, hai verb mà presigned URL dùng. `ExposeHeaders` trả `ETag` để trình duyệt đọc được hash của object vừa upload. `MaxAgeSeconds` cache preflight 3000 giây, nên request sau trình duyệt khỏi hỏi lại.
+
+Áp cấu hình sau (mức demo cho phép mọi origin; lên production nên giới hạn `AllowedOrigins` về đúng domain web):
 
 ```json
 {

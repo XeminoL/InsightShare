@@ -43,7 +43,7 @@ get_url = s3.generate_presigned_url(
 
 #### Bước 2: Test upload qua presigned URL
 
-Đây chính là luồng upload hai lời gọi mà trình duyệt thực hiện: `POST /files` xin Lambda một URL đã ký, rồi một lệnh `PUT` gửi bytes thẳng lên S3. Cờ `-w "HTTP %{http_code}"` in ra mã trạng thái để thấy được 200.
+Đưa bytes lên S3 mất hai lời gọi: `POST /files` xin Lambda một URL đã ký, rồi một lệnh `PUT` gửi bytes thẳng lên S3. Sau đó frontend gọi thêm một lần nữa để chạy phân tích AI. Cờ `-w "HTTP %{http_code}"` in ra mã trạng thái để thấy được 200.
 
 ```bash
 curl -X POST "$API/files" -H "Content-Type: application/json" \

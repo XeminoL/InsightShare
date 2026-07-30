@@ -6,11 +6,11 @@ chapter: false
 pre: " <b> 6. </b> "
 ---
 
-The internship at **Amazon Web Services Vietnam Co., Ltd.** (First Cloud AI Journey program) ran from **June 1, 2026** to **August 15, 2026**.
+The internship at **Amazon Web Services Vietnam Co., Ltd.** (First Cloud AI Journey program) runs from **June 1, 2026** to **August 15, 2026**.
 
-The main deliverable is **InsightShare**, a serverless web application for uploading and sharing images and documents on AWS. The work involved S3, Lambda, API Gateway, DynamoDB, CloudFront, IAM and CloudWatch; Python (boto3); and bilingual technical documentation.
+The main deliverable is **InsightShare**, a serverless web application for uploading and sharing images and documents on AWS. The work involved S3, Lambda, API Gateway, DynamoDB, Cognito, CloudFront, IAM and CloudWatch, the AI services Rekognition, Textract and Bedrock (Claude), Python (boto3), and bilingual technical documentation.
 
-The table below is a self-assessment against eight criteria, one rating each: Good / Fair.
+The table below is a self-assessment on eight criteria, each rated Good or Fair.
 
 | No. | Criteria | Good | Fair | Comment |
 | --- | --- | --- | --- | --- |
@@ -20,8 +20,8 @@ The table below is a self-assessment against eight criteria, one rating each: Go
 | 4 | **Discipline** | | x | Kept a fixed office schedule and delivered the weekly worklog on time. |
 | 5 | **Communication** | x | | Reported work clearly in writing and in bilingual technical documentation. |
 | 6 | **Teamwork** | | x | Integrated with the team, asked mentors when blocked, and helped when needed. |
-| 7 | **Problem-solving** | x | | Diagnosed integration issues (CORS, IAM, cold start, S3 307, DynamoDB `Decimal`) from CloudWatch logs. |
-| 8 | **Contribution to the project** | x | | Implemented InsightShare end-to-end and added extra features (delete, expiring links, upload limits). |
+| 7 | **Problem-solving** | x | | Diagnosed integration issues (CORS, IAM, cached role credentials on a warm Lambda, S3 307, DynamoDB `Decimal`) from CloudWatch logs. |
+| 8 | **Contribution to the project** | x | | Implemented InsightShare end-to-end and added extra features (delete, expiring links, per-user isolation). |
 
 ### Lessons Learned
 

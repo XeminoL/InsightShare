@@ -8,7 +8,7 @@ pre: " <b> 5.4.1 </b> "
 
 #### Goal
 
-The Lambda is the only compute in InsightShare: API Gateway forwards every request to it, and it holds all business logic (presigning, metadata, AI calls) so no server is provisioned or patched. One **Python Lambda function** serves the whole back-end, dispatching all routes by HTTP method and path: upload, list, search, analyze, ask, get, delete. Keeping it in one function means one deploy artifact and one place for the shared S3/DynamoDB clients.
+The Lambda is the only compute in InsightShare: API Gateway forwards every request to it, and it holds all business logic (presigning, metadata, AI calls). One **Python Lambda function** serves the whole back-end, dispatching by HTTP method and path: upload, list, search, analyze, ask about one document, ask across the library, get, delete. It is one deploy artifact, and the S3 and DynamoDB clients are created once at module level.
 
 #### Step 1: Create the function
 
@@ -47,22 +47,34 @@ def handler(event, context):
     path = event.get("rawPath", "/")
     parts = [p for p in path.split("/") if p]
 
-    if parts == ["files"] and method == "POST":
-        return create_upload(event)
-    if parts == ["files"] and method == "GET":
-        return list_files(event)
-    if parts == ["files", "search"] and method == "GET":
-        return search_files(event)
-    if len(parts) == 3 and parts[2] == "analyze" and method == "POST":
-        return analyze(event, parts[1])
-    if len(parts) == 3 and parts[2] == "ask" and method == "POST":
-        return ask_document(event, parts[1])
-    if len(parts) == 2 and parts[0] == "files" and method == "GET":
-        return get_file(event, parts[1])
-    if len(parts) == 2 and parts[0] == "files" and method == "DELETE":
-        return delete_file(event, parts[1])
-    return _resp(404, {"error": "route not found"})
+    if method == "OPTIONS":
+        return _resp(200, {})
+
+    try:
+        if parts == ["ask"] and method == "POST":
+            return ask_library(event)
+        if parts == ["files"] and method == "POST":
+            return create_upload(event)
+        if parts == ["files"] and method == "GET":
+            return list_files(event)
+        if parts == ["files", "search"] and method == "GET":
+            return search_files(event)
+        if len(parts) == 3 and parts[2] == "analyze" and method == "POST":
+            return analyze(event, parts[1])
+        if len(parts) == 3 and parts[2] == "ask" and method == "POST":
+            return ask_document(event, parts[1])
+        if len(parts) == 2 and parts[0] == "files" and method == "GET":
+            return get_file(event, parts[1])
+        if len(parts) == 2 and parts[0] == "files" and method == "DELETE":
+            return delete_file(event, parts[1])
+        return _resp(404, {"error": "route not found"})
+    except ClientError as e:
+        code = e.response.get("Error", {}).get("Code", "ClientError")
+        return _resp(200, {"error": "The service returned an error (" + code + ").",
+                           "code": code})
 ```
+
+`OPTIONS` is answered before anything else so the browser's CORS preflight is not routed into a handler. The literal `["files", "search"]` check comes before the generic two-part `["files", {id}]` check, otherwise `/files/search` would be read as a file with the id `search`.
 
 The upload handler starts the pipeline. It mints a unique `file_id`, builds the S3 key as `{file_id}/{filename}`, generates a presigned PUT URL, and writes an initial metadata row so the file is tracked before its bytes arrive. `labels`, `text` and `search_blob` start empty and are filled in later by `analyze`:
 

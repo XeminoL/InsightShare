@@ -22,7 +22,7 @@ Buổi chia sẻ của các đội FCAJ nổi bật tại Agentic AI Build Week,
 - **OneTeam Community Day** về phần cộng đồng của chương trình và cách các đội làm việc cùng nhau.
 
 ### Điều em học được
-Buổi này gần với đồ án của em hơn em nghĩ, vì nó xoay quanh agentic AI trên AWS. Phần SignalScout đọng lại với em: họ lấy một quy trình back-office chậm, làm thủ công, rồi để một agent gánh phần nặng còn con người vẫn là người ký duyệt cuối, đúng ý tưởng em dùng trong InsightShare nơi AI phân tích và trả lời còn người dùng vẫn giữ quyền quyết định. Nhìn các đội show up, làm ra thứ chạy được trong thời gian ngắn rồi pitch là một cú hích để em tiếp tục làm chứ không chỉ học.
+Buổi này gần với đồ án hơn em tưởng, vì nó xoay quanh agentic AI trên AWS. Phần SignalScout đọng lại: họ lấy một quy trình back-office đang làm tay rồi để agent làm lượt đầu, người ký duyệt cuối. InsightShare đứng đúng chỗ đó, AI đọc file còn người dùng quyết định làm gì với nó. Nhìn các đội có mặt đầy đủ, làm ra thứ chạy được trong thời gian ngắn rồi pitch, là một cú hích để tiếp tục làm.
 
 ### Hình ảnh
 ![FCAJ - Agentic AI Build Week](/images/4-Event/event1-1.jpg)

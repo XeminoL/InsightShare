@@ -4,10 +4,12 @@ date: 2026-06-29
 weight: 1
 chapter: false
 ---
-# Báo cáo thực tập 
+# Báo cáo thực tập
 
 ### Thông tin sinh viên:
 &emsp; **Họ và tên:** Đặng Thái Khang
+
+&emsp; **MSSV:** 2352464
 
 &emsp; **Số điện thoại:** 0395134543
 
@@ -35,3 +37,4 @@ chapter: false
 5.  [Workshop](5-Workshop/)
 6.  [Tự đánh giá](6-Self-evaluation/)
 7.  [Chia sẻ, đóng góp ý kiến](7-Feedback/)
+8.  [Tài liệu tham khảo](8-References/)

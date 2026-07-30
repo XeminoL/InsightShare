@@ -14,7 +14,7 @@ Hai mảng cuối: **giám sát** (CloudWatch) và **bảo mật** (IAM least-pr
 
 - **CloudWatch Logs**: Lambda tự động ghi vào log group `/aws/lambda/insightshare-api`. Đây chính là nơi các lỗi runtime lúc phát triển hiện ra (các lỗi `Decimal`, presigned URL và IAM đều được chẩn đoán từ log này).
 - **CloudWatch Metrics**: Lambda phát Invocations, Errors, Duration; API Gateway phát request count và số 4xx/5xx.
-- **CloudWatch Alarm**: hai alarm theo dõi function `insightshare-api` để phát hiện sự cố mà không phải đọc log. `insightshare-lambda-errors` kích hoạt khi metric `Errors` chạm ngưỡng (`--threshold 1` trên cửa sổ `--period 300` nghĩa là một lần gọi lỗi trong năm phút là bật), bắt lỗi code hoặc lỗi quyền; `insightshare-lambda-throttles` kích hoạt trên metric `Throttles`, bắt việc chạm giới hạn concurrency khi tải cao.
+- **CloudWatch Alarm**: hai alarm theo dõi function `insightshare-api` để phát hiện sự cố mà không phải đọc log. `insightshare-lambda-errors` bật khi metric `Errors` chạm ngưỡng: `--threshold 1` với `--period 300` nghĩa là một lần gọi lỗi trong năm phút là alarm kêu. Nó bắt lỗi code và lỗi quyền. `insightshare-lambda-throttles` bật trên metric `Throttles`, bắt lúc chạm giới hạn concurrency khi tải cao.
 
 ```bash
 aws cloudwatch put-metric-alarm \
@@ -97,5 +97,5 @@ Tập quyền được tinh chỉnh trong lúc test thật: `dynamodb:UpdateItem
 {{% /notice %}}
 
 {{% notice info %}}
-Đăng nhập Cognito (xem [5.4.5](../5.4-serverless-backend/5.4.5-cognito-auth/)) không cần thêm quyền nào cho role Lambda này. JWT authorizer trên API Gateway kiểm tra token và truyền claim `sub` vào hàm, nên việc gán dữ liệu theo người dùng chạy trên đúng các quyền DynamoDB ở trên.
+Đăng nhập Cognito không cần thêm quyền nào cho role Lambda này. JWT authorizer trên API Gateway kiểm tra token và truyền claim `sub` vào hàm, nên việc gán dữ liệu theo người dùng chạy trên đúng các quyền DynamoDB ở trên.
 {{% /notice %}}

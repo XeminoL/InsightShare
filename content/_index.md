@@ -9,11 +9,13 @@ chapter: false
 ### Student Information:
 &emsp; **Full Name:** Dang Thai Khang
 
+&emsp; **Student ID:** 2352464
+
 &emsp; **Phone Number:** 0395134543
 
 &emsp; **Email:** dangthaikhang34@gmail.com
 
-&emsp; **University:** Ho Chi Minh City University of Technology 
+&emsp; **University:** Ho Chi Minh City University of Technology
 
 &emsp; **Major:** Computer Engineering
 
@@ -35,3 +37,4 @@ chapter: false
 5.  [Workshop](5-Workshop/)
 6.  [Self-evaluation](6-Self-evaluation/)
 7.  [Sharing and Feedback](7-Feedback/)
+8.  [References](8-References/)

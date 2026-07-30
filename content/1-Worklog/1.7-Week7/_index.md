@@ -15,10 +15,10 @@ pre: " <b> 1.7. </b> "
 
 | Day | Task | Start | End | Reference |
 | --- | --- | --- | --- | --- |
-| Mon | Create an on-demand DynamoDB table with fileId as the partition key; design keys around the access patterns (list by owner, look up by id). | 13/07/2026 | 13/07/2026 | [DynamoDB lab](https://000078.awsstudygroup.com) |
-| Tue | Have Lambda write metadata with `put_item` on upload and read it back with `query`/`get_item` when listing files. | 14/07/2026 | 14/07/2026 |  |
-| Wed | Handle S3-DynamoDB consistency: only write the DynamoDB item after the S3 upload succeeds, to avoid files without metadata. | 15/07/2026 | 15/07/2026 |  |
-| Thu | Add scoped dynamodb:PutItem/GetItem/Query permissions for the table to the Lambda IAM Role. | 16/07/2026 | 16/07/2026 |  |
+| Mon | Create an on-demand DynamoDB table with `id` as the partition key; design the item around the access patterns (look up by id, list and filter by owner). | 13/07/2026 | 13/07/2026 | [DynamoDB lab](https://000078.awsstudygroup.com) |
+| Tue | Have Lambda write metadata with `put_item` on upload, read one item back with `get_item`, and list with `scan`. | 14/07/2026 | 14/07/2026 |  |
+| Wed | Handle S3-DynamoDB consistency: write the metadata item first so an upload is always tracked, and mark it analyzed only after the object is in S3. | 15/07/2026 | 15/07/2026 |  |
+| Thu | Add scoped dynamodb PutItem/GetItem/UpdateItem/DeleteItem/Query/Scan permissions for the table to the Lambda IAM Role. | 16/07/2026 | 16/07/2026 |  |
 | Fri | Return a short-lived presigned GET URL from `get_file` so the frontend can view/download a file; test end-to-end. | 17/07/2026 | 17/07/2026 |  |
 
 ### Results achieved

@@ -6,7 +6,7 @@ chapter: false
 pre: " <b> 5.2. </b> "
 ---
 
-#### Chuẩn bị
+#### Cần có trước khi bắt đầu
 
 Việc xây dựng và triển khai InsightShare cần các công cụ, tài khoản và quyền sau.
 
@@ -35,7 +35,7 @@ aws sts get-caller-identity
 #### Bước 3. Tài khoản Cloud & Region
 - **Một tài khoản AWS** có quyền tạo và xóa các tài nguyên dùng trong workshop.
 - Region triển khai: **Asia Pacific (Singapore), `ap-southeast-1`**.
-- Một **S3 bucket** cho file người dùng tải lên, cùng một bucket S3 để host frontend tĩnh.
+- Hai **S3 bucket**: một cho file người dùng tải lên, một để host frontend tĩnh.
 - Đã cấu hình AWS CLI, kiểm tra bằng `aws sts get-caller-identity` trỏ đúng IAM user (không dùng tài khoản root).
 
 #### Bước 4. Quyền IAM cần thiết
@@ -52,7 +52,7 @@ Tài khoản dùng để triển khai cần quyền tạo và xóa các dịch v
 - **Amazon CloudWatch và CloudWatch Logs**: xem log, tạo alarm
 - **AWS IAM**: tạo execution role cho Lambda
 
-Các quyền tài khoản ở trên là dành cho người deploy stack. Tách biệt với đó, Lambda function assume execution role riêng khi chạy, chỉ được cấp đúng các action mà code gọi. Hai thứ này khác nhau: người deploy tạo tài nguyên, còn role cho function đang chạy chạm tới chúng:
+Các quyền tài khoản ở trên là dành cho người deploy stack. Tách biệt với đó, Lambda function assume execution role riêng khi chạy, chỉ được cấp đúng các action mà code gọi. Hai thứ này khác nhau: người deploy tạo tài nguyên, còn execution role cho phép function lúc chạy truy cập các tài nguyên đó:
 
 ```json
 {
@@ -61,13 +61,26 @@ Các quyền tài khoản ở trên là dành cho người deploy stack. Tách b
     {
       "Sid": "S3FilesAccess",
       "Effect": "Allow",
-      "Action": ["s3:GetObject", "s3:PutObject"],
+      "Action": ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
       "Resource": "arn:aws:s3:::insightshare-files-*/*"
+    },
+    {
+      "Sid": "S3ListBucket",
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket"],
+      "Resource": "arn:aws:s3:::insightshare-files-*"
     },
     {
       "Sid": "DynamoDBAccess",
       "Effect": "Allow",
-      "Action": ["dynamodb:PutItem", "dynamodb:GetItem", "dynamodb:Query", "dynamodb:Scan"],
+      "Action": [
+        "dynamodb:PutItem",
+        "dynamodb:GetItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:Query",
+        "dynamodb:Scan"
+      ],
       "Resource": "arn:aws:dynamodb:ap-southeast-1:*:table/insightshare-files"
     },
     {

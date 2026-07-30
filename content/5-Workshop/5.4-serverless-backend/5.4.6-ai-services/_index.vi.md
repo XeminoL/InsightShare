@@ -18,7 +18,7 @@ Rekognition và Textract là dịch vụ gọi sẵn, không cần train model. 
 
 #### Bước 1: Ảnh → Rekognition gắn nhãn
 
-`analyze` rẽ nhánh theo loại file: ảnh đưa sang Rekognition, tài liệu sang trích văn bản. Với ảnh, Rekognition đọc object thẳng từ S3 (không có bytes nào đi qua Lambda) và trả về nhãn nội dung, chính là thứ giúp tìm ảnh theo cái nó thể hiện thay vì theo tên file. `MaxLabels=10` giới hạn số nhãn giữ lại, và `MinConfidence=55` loại mọi nhãn mà Rekognition chắc dưới 55%:
+`analyze` rẽ nhánh theo loại file: ảnh đưa sang Rekognition, tài liệu sang trích văn bản. Với ảnh, Rekognition đọc object thẳng từ S3 (không có bytes nào đi qua Lambda) và trả về nhãn nội dung. `MaxLabels=10` giới hạn số nhãn giữ lại, và `MinConfidence=55` loại mọi nhãn có độ tin cậy dưới 55%:
 
 ```python
 if fname.endswith(IMAGE_EXTS):
@@ -65,14 +65,14 @@ elif fname.endswith(DOC_EXTS):
 ```
 
 {{% notice note %}}
-**Ghi chú thiết kế.** Lời gọi Textract được bọc lại để phần trích văn bản xử lý mềm: file `.txt` đọc trực tiếp từ S3, còn PDF hoặc ảnh scan thì lấy kết quả `DetectDocumentText` làm văn bản tài liệu. Nếu lời gọi ném `ClientError`, `analyze` lùi về dùng tên file và giữ phần còn lại của luồng vẫn chạy thay vì trả về 500.
+**Ghi chú thiết kế.** Lời gọi Textract được bọc trong `try/except` để khi nó lỗi thì luồng vẫn đi tiếp: file `.txt` đọc thẳng từ S3, còn PDF hoặc ảnh scan lấy kết quả `DetectDocumentText` làm văn bản tài liệu. Nếu lời gọi ném `ClientError`, `analyze` lùi về dùng tên file thay vì trả 500.
 {{% /notice %}}
 
 #### Bước 3: Bedrock (Claude) hỏi đáp về tài liệu
 
 Bước này dùng văn bản mà hai bước trước lưu trong DynamoDB làm ngữ cảnh cho model. Tính năng chính là endpoint hỏi đáp tài liệu, `POST /files/{id}/ask`. Nó đọc phần văn bản đã trích từ DynamoDB, ghép cùng câu hỏi trong một prompt yêu cầu model chỉ trả lời dựa trên tài liệu đó và theo ngôn ngữ câu hỏi, rồi gọi một model Claude trên Amazon Bedrock. Nếu body không có `question`, chính handler đó tóm tắt tài liệu.
 
-Ngoài ra có endpoint hỏi đáp toàn thư viện, `POST /ask`. Nó quét mọi tệp trong DynamoDB, xếp hạng theo độ trùng từ khóa với câu hỏi, ghép văn bản các tệp liên quan (mỗi tệp đánh số để trích nguồn) rồi gọi Bedrock. Câu trả lời kèm danh sách tệp chứa thông tin, giúp tìm đúng tệp mà không phải mở từng cái.
+Ngoài ra có endpoint hỏi đáp toàn thư viện, `POST /ask`. Nó quét mọi file trong DynamoDB, xếp hạng theo độ trùng từ khóa với câu hỏi, ghép văn bản các file liên quan (mỗi file đánh số để trích nguồn) rồi gọi Bedrock. Response trả kèm danh sách file đã đánh số mà câu trả lời lấy từ đó.
 
 ```python
 MODEL_ID = os.environ.get("BEDROCK_MODEL_ID",
@@ -81,9 +81,13 @@ bedrock = boto3.client("bedrock-runtime", region_name=REGION)
 
 doc_text = (rec.get("text") or "").strip()[:20000]
 prompt = (
-    "Ban la tro ly tai lieu. Chi tra loi DUA TREN noi dung tai lieu duoi day, "
-    "bang tieng Viet.\n\n<document>\n" + doc_text + "\n</document>\n\n"
-    "Cau hoi: " + question
+    "You are a document assistant. Answer ONLY based on the document below. "
+    "Answer in the SAME LANGUAGE as the question. If the question is empty, "
+    "summarize the document in the same language as its content, defaulting to "
+    "English if the language is unclear. If the document does not contain the "
+    "answer, say so clearly in the language of the question.\n\n"
+    "<document>\n" + doc_text + "\n</document>\n\n"
+    "Question: " + question
 )
 payload = {
     "anthropic_version": "bedrock-2023-05-31",
@@ -102,7 +106,7 @@ Model id nằm trong biến môi trường `BEDROCK_MODEL_ID` (mặc định `gl
 
 #### Bước 4: Lưu nhãn/văn bản vào DynamoDB
 
-Lưu lại output AI chính là điều khiến `analyze` chỉ tốn một lần: về sau tìm kiếm và hỏi đáp đọc từ DynamoDB thay vì gọi lại Rekognition, Textract hay Bedrock. Kết quả được ghi trở lại item metadata; thuộc tính `search_blob` (nhãn + văn bản, viết thường) phục vụ tìm kiếm theo nội dung, và phần `text` được lưu chính là thứ mà hỏi đáp Bedrock đọc. `size` được đặt bí danh `#sz` cùng lý do từ khóa dành riêng như `text`:
+Output AI được ghi lại một lần, nên về sau tìm kiếm và hỏi đáp đọc DynamoDB thay vì gọi lại Rekognition, Textract hay Bedrock. Kết quả ghi trở lại item metadata: thuộc tính `search_blob` (nhãn + văn bản, viết thường) phục vụ tìm kiếm theo nội dung, còn phần `text` được lưu là thứ mà hỏi đáp Bedrock đọc. `size` cũng phải đặt bí danh `#sz` vì nó là từ khóa dành riêng của DynamoDB giống `text`:
 
 ```python
 table.update_item(
@@ -124,6 +128,6 @@ curl "$API/files/search?q=diagram"
 curl -X POST "$API/files/<id>/ask" -d '{"question":"Tai lieu noi ve gi?"}'
 ```
 
-Tìm kiếm trả về đúng ảnh nhờ một nhãn AI không nằm trong tên file. Với tài liệu `.txt`, `ask` trả về câu trả lời dựa trên nội dung tài liệu, do Amazon Bedrock (Claude) sinh ra.
+Tìm kiếm trả về ảnh đó từ nhãn `Diagram`. Với tài liệu `.txt`, `ask` trả về câu trả lời lấy từ nội dung tài liệu, do Amazon Bedrock (Claude) sinh ra.
 
 > Tham khảo lab FCAJ về AI services (Rekognition/Textract): https://000056.awsstudygroup.com

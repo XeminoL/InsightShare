@@ -11,7 +11,7 @@ pre: " <b> 2. </b> "
 
 ### 1. Executive Summary
 
-InsightShare is a web application for uploading, analyzing and sharing images/documents. On upload, AWS AI services label images, extract document text, and answer questions or summarize a document in the same language as the question, so files can be found by content and not only by name. It is fully **serverless** on AWS (region `ap-southeast-1`): no servers to manage, per-request billing, scaling with load. It uses S3, Lambda, API Gateway, DynamoDB, CloudFront and Cognito, with three AI services: Rekognition, Textract and Bedrock (Claude). Amazon Cognito handles sign-in, and the JWT `sub` claim scopes each file to its owner so users see only their own files.
+InsightShare is a web application for uploading, analyzing and sharing images/documents. After a file is uploaded, AWS AI services label images, extract document text, and answer questions or summarize a document in the same language as the question, so a file can be found from a word that appears inside it. It is fully **serverless** on AWS (region `ap-southeast-1`): no servers to manage, per-request billing, scaling with load. It uses S3, Lambda, API Gateway, DynamoDB, CloudFront and Cognito, with three AI services: Rekognition, Textract and Bedrock (Claude). Amazon Cognito handles sign-in, and the JWT `sub` claim scopes each file to its owner so users see only their own files.
 
 ### 2. Problem Statement
 
@@ -25,18 +25,18 @@ InsightShare is a web application for uploading, analyzing and sharing images/do
 InsightShare centralizes data and processing on a unified serverless stack:
 - **Storage & sharing:** S3 stores files (private bucket), shared via time-limited presigned URLs; metadata lives in DynamoDB.
 - **Business logic:** Lambda + API Gateway generate presigned URLs, orchestrate AI analysis, and read/write data.
-- **Content understanding with AI:** Rekognition labels images, Textract extracts document text, and Bedrock (a Claude model) answers questions and summarizes documents in the same language as the question. All are ready-to-call services, with no model training.
+- **Content understanding with AI:** Rekognition labels images, Textract extracts document text, and Bedrock (a Claude model) answers questions and summarizes documents in the same language as the question. All three are called through the API with no training step.
 - **Smart search:** labels and extracted text are stored in DynamoDB to find files by content.
 
 *Benefits*
 - The serverless model bills per use; at demo scale the total stays under $1/month.
-- Files are non-public, permissions follow IAM least-privilege, and CloudWatch monitors the system.
-- AI labels and extracted text let files be found by what is inside them, not only by name.
+- User files are non-public and reachable only through expiring signed links; the only public bucket is the one holding the static web page. Permissions follow IAM least-privilege and CloudWatch monitors the system.
+- Search runs over the AI labels and the extracted text, so a file turns up from a word that appears inside it.
 
 ### 3. Solution Architecture
 
 *Overview*
-The browser loads the static frontend from **S3 + CloudFront (HTTPS)** → signs in through **Amazon Cognito** → calls **API Gateway** → **Lambda (Python)**. API Gateway runs a JWT authorizer that validates the Cognito token, and Lambda reads the `sub` claim to scope every file to its owner. Lambda generates presigned URLs so the browser uploads/downloads directly to **S3**. After upload, Lambda calls the AI services (**Rekognition / Textract / Bedrock**) and stores results in **DynamoDB** for search. **CloudWatch** monitors logs/metrics; **IAM** enforces least-privilege access.
+The browser loads the static frontend from **S3 + CloudFront** over HTTPS, signs in through **Cognito**, then calls **API Gateway**, which forwards to **Lambda**. API Gateway runs a JWT authorizer that validates the Cognito token, and Lambda reads the `sub` claim to scope every file to its owner. Lambda generates presigned URLs so the browser transfers files directly with S3. After upload, Lambda calls Rekognition, Textract or Bedrock and stores the results in DynamoDB for search. CloudWatch collects logs and metrics; IAM enforces least-privilege access.
 
 ![InsightShare Architecture](/images/2-Proposal/insightshare_architecture-v6.png)
 
@@ -47,7 +47,7 @@ The browser loads the static frontend from **S3 + CloudFront (HTTPS)** → signs
 | Amazon S3 | Store user files; host the static web frontend |
 | Amazon CloudFront | CDN for the web, HTTPS, faster delivery |
 | Amazon API Gateway | Public API gateway for the application; a JWT authorizer validates Cognito tokens |
-| Amazon Cognito | User sign-in (Hosted UI); the JWT `sub` claim scopes each file to its owner for per-user isolation |
+| Amazon Cognito | User sign-in; the JWT `sub` claim scopes each file to its owner for per-user isolation |
 | AWS Lambda | Business logic (Python/boto3); a single handler routes API Gateway HTTP API requests by method and path |
 | Amazon DynamoDB | Store metadata + AI labels + extracted text for search |
 | Amazon Rekognition | Image labeling (DetectLabels) |
@@ -58,7 +58,7 @@ The browser loads the static frontend from **S3 + CloudFront (HTTPS)** → signs
 
 *Component Design*
 - **Frontend:** a static web page (HTML/JS) to pick files, show the list with AI labels, a content search box, and a box to ask a question about a document.
-- **API:** endpoints to request an upload URL, confirm upload (triggers AI analysis), list/search files, get a download URL, and ask a question about a document.
+- **API:** endpoints to request an upload URL, run the AI analysis, list/search files, get a download URL, ask a question about one document, and ask a question across the whole library.
 
 ### 4. Technical Implementation
 
@@ -100,8 +100,8 @@ At real scale the cost grows with usage, dominated by the AI services (the trade
 |---|---|---|---|
 | Misconfigured IAM/policy causing access errors | Medium | Medium | Least-privilege, careful testing before broadening permissions |
 | Unexpected cost (many AI calls) | Low | Low | Budget Alert, limit file size/type sent to AI, clean up after testing |
-| Large files causing Lambda/API Gateway timeouts | Medium | Low | Presigned URLs upload directly to S3; call AI asynchronously via S3 events |
-| AI services slow or results not yet accurate | Low | Medium | Asynchronous AI analysis, so files remain downloadable even before analysis completes |
+| Large files causing Lambda/API Gateway timeouts | Medium | Low | Presigned URLs upload directly to S3, so the file body never passes through Lambda or API Gateway |
+| AI services slow or unavailable | Low | Medium | Analysis is a separate call from upload and each AI call fails soft, so a file stays listed and downloadable even when analysis does not complete |
 
 *Contingency plan:* keep a scripted teardown (cleanup-aws.ps1) to remove all resources quickly.
 
@@ -113,5 +113,5 @@ At real scale the cost grows with usage, dominated by the AI services (the trade
 - Document Q&A implemented with Amazon Bedrock (Claude): the `ask` endpoint takes a document and a question, and is wired to the `bedrock:InvokeModel` call with the inference-profile model id and full request/response handling.
 
 *Long-term Value*
-- An extensible platform: add user sign-in (Cognito), orchestrate a multi-step AI pipeline (Step Functions), support more file types.
+- An extensible platform: orchestrate a multi-step AI pipeline (Step Functions), trigger analysis from S3 events instead of a client call, support more file types.
 - Detailed workshop documentation so others can follow and extend the project.

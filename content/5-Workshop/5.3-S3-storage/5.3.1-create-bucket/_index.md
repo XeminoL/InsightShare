@@ -49,7 +49,11 @@ aws s3api get-bucket-versioning --bucket insightshare-files-khang-2352464
 
 #### Step 4: Configure CORS
 
-The browser uploads and downloads files directly to S3 through presigned URLs, and those requests come from the web page origin, not from S3's own domain, so S3 rejects them unless CORS explicitly allows that origin. `AllowedMethods` lists `PUT` for uploads and `GET` for downloads, the only two verbs presigned URLs use here; `ExposeHeaders` returns `ETag` so the browser can read the upload's object hash; `MaxAgeSeconds` caches the CORS preflight for 3000 seconds to avoid an extra round trip per request. Apply this CORS configuration (demo scale allows any origin; in production restrict `AllowedOrigins` to your web domain):
+The browser transfers files directly to S3 through presigned URLs. Those requests come from the web page's origin, not from S3's own domain, so S3 rejects them unless CORS allows that origin.
+
+`AllowedMethods` lists only `PUT` and `GET`, the two verbs the presigned URLs use. `ExposeHeaders` returns `ETag` so the browser can read the uploaded object's hash. `MaxAgeSeconds` caches the preflight for 3000 seconds, so the browser skips it on the next request.
+
+Apply this configuration (demo scale allows any origin; in production restrict `AllowedOrigins` to the web domain):
 
 ```json
 {

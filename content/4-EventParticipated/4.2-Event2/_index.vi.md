@@ -19,7 +19,7 @@ Một buổi study tour tại AWS Việt Nam, những người đang làm trong 
 - **Anh Nguyễn Trần Minh Duy (Swinburne Việt Nam)** mở đầu về mối liên kết giữa Swinburne và AWS cùng tinh thần của cộng đồng FCAJ, nơi người đi trước quay lại hỗ trợ người đi sau.
 - **Anh Nguyễn Gia Hưng (Head of Solution Architect, AWS Việt Nam, founder FCAJ)** vẽ bức tranh thị trường. Điều em nhớ: xét cả ngành thì số việc không giảm, nhưng nhu cầu tuyển junior giảm, nên yêu cầu với sinh viên mới ra trường cao hơn nhiều vì AI. Anh khuyên nhắm vào một ngành (ngân hàng, bán lẻ, sản xuất) chứ không chỉ một vai trò, và xây visibility qua cộng đồng thay vì chờ tin tuyển, vì phần lớn vị trí tuyển qua giới thiệu.
 - **Anh Bành Cẩm Vĩnh (Data Engineer, Renova Cloud)** nói về khoảng cách giữa học ở trường và đi làm: ở trường data sạch và yêu cầu cố định, còn đi làm data đến từ nhiều nguồn và yêu cầu thay đổi liên tục. Lời khuyên em nhớ là học kiến trúc chứ không chỉ học tool, vì tool đổi theo từng công ty còn cấu trúc thì vẫn vậy.
-- **Chị Như Trần (Account Manager, AWS Việt Nam)** nói về nỗi sợ và giao tiếp, thiên về cá nhân hơn kỹ thuật. Chị kể mình apply Amazon mười một lần mới đậu, và phần lớn hiểu lầm không phải vì ai đó sai mà vì hai người diễn đạt cùng một ý theo hai cách khác nhau.
+- **Chị Như Trần (Account Manager, AWS Việt Nam)** nói về nỗi sợ và giao tiếp, thiên về cá nhân hơn kỹ thuật. Chị kể mình apply Amazon mười một lần mới đậu, và phần lớn hiểu lầm đến từ việc hai người diễn đạt cùng một ý theo hai cách khác nhau, hơn là vì ai đó sai.
 - **Anh Khang Nguyễn (Solution Architect, Cloud Kinetics, cựu sinh viên Swinburne)** khép lại về kỹ năng và tư duy khi làm việc trong thời AI, chia sẻ với tư cách người vừa ngồi ghế nhà trường không lâu trước đó.
 
 ### Điều em học được

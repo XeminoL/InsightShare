@@ -12,7 +12,7 @@ This section covers the core of InsightShare: the serverless back-end and the fr
 
 + **Lambda (Python)** handles the business logic: receive requests, generate presigned URLs, write metadata.
 + **API Gateway** exposes the APIs the frontend calls, with a JWT authorizer for Cognito tokens.
-+ **Amazon Cognito** signs users in through the Hosted UI, so each user sees only their own files.
++ **Amazon Cognito** signs users in, so each user sees only their own files.
 + **DynamoDB** stores the metadata of each file (name, timestamp, size, AI labels, extracted text, etc.).
 + The **AI layer** (Rekognition, Textract, Bedrock/Claude) labels images, extracts document text, and answers questions about a document.
 + The **frontend** (static web) is hosted on **S3 + CloudFront**.

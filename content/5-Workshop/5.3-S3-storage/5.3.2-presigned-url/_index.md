@@ -43,7 +43,7 @@ get_url = s3.generate_presigned_url(
 
 #### Step 2: Test upload through the presigned URL
 
-This is the two-call upload the browser performs: `POST /files` asks the Lambda for a signed URL, then a single `PUT` sends the bytes straight to S3. The `-w "HTTP %{http_code}"` prints the status so the 200 is visible.
+Getting the bytes into S3 takes two calls: `POST /files` asks the Lambda for a signed URL, then a single `PUT` sends the bytes straight to S3. The frontend makes one more call afterwards to start the AI analysis. The `-w "HTTP %{http_code}"` prints the status so the 200 is visible.
 
 ```bash
 curl -X POST "$API/files" -H "Content-Type: application/json" \

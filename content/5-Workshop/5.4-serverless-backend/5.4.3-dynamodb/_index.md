@@ -43,7 +43,7 @@ Each item stores one file's information:
 
 #### Step 3: Wire Lambda to DynamoDB
 
-The metadata row is written once on upload and updated once after analysis, so the table always reflects the file's current state. Lambda uses the `boto3` DynamoDB resource: `put_item` on upload (the empty row from 5.4.1), `update_item` after AI analysis to fill in labels and text, and `scan` for list/search:
+The metadata row is written once on upload and updated once after analysis, so the table always reflects the file's current state. Lambda uses the `boto3` DynamoDB resource: `put_item` on upload (the row starts empty), `update_item` after AI analysis to fill in labels and text, and `scan` for list/search:
 
 ```python
 ddb = boto3.resource("dynamodb", region_name="ap-southeast-1")

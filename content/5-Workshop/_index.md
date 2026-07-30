@@ -9,19 +9,19 @@ alwaysopen: false
 
 # InsightShare: Building a Serverless Image & Document Sharing Platform with AI on AWS
 
-#### Overview
+## Overview
 
-**InsightShare** is a web application for uploading, analyzing and sharing images and documents, built entirely on a **serverless** architecture on AWS. When a file is uploaded, the system uses AWS AI services to read its content, so files can be searched by what is inside them, not only by filename.
+**InsightShare** is a web application for uploading, analyzing and sharing images and documents, built entirely on a **serverless** architecture on AWS. After a file is uploaded, the system calls AWS AI services to read its content and stores what they find.
 
 The build covers:
 - **Amazon S3** for private file storage, shared through time-limited **presigned URLs**
 - A serverless back-end on **AWS Lambda** (Python) behind **Amazon API Gateway**
 - File metadata, AI labels and extracted text in **Amazon DynamoDB**, which back content-based search
-- A content-understanding layer with **Amazon Rekognition**, **Amazon Textract** and **Amazon Bedrock** (Claude), all ready-to-call with no model training
+- A content-understanding layer with **Amazon Rekognition**, **Amazon Textract** and **Amazon Bedrock** (Claude)
 - The static frontend served over **Amazon CloudFront** (HTTPS), with monitoring in **Amazon CloudWatch**
 - Least-privilege access through **AWS IAM** across every service
 
-#### Content
+## Content
 
 1. [Workshop overview](5.1-Workshop-overview/)
 2. [Prerequisite](5.2-Prerequiste/)
