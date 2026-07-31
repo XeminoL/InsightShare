@@ -8,7 +8,7 @@ pre: " <b> 5.4.1 </b> "
 
 #### Goal
 
-The Lambda is the only compute in InsightShare: API Gateway forwards every request to it, and it holds all business logic (presigning, metadata, AI calls). One **Python Lambda function** serves the whole back-end, dispatching by HTTP method and path: upload, list, search, analyze, ask about one document, ask across the library, get, delete. It is one deploy artifact, and the S3 and DynamoDB clients are created once at module level.
+The Lambda is the only compute in InsightShare: API Gateway forwards every request to it, and it holds all business logic. One **Python Lambda function** serves the whole back-end, dispatching by HTTP method and path: upload, list, search, analyze, ask about one document, ask across the library, get, delete. It is one deploy artifact, and the S3 and DynamoDB clients are created once at module level.
 
 #### Step 1: Create the function
 
@@ -39,7 +39,7 @@ The function overview shows the API Gateway trigger wired to the function:
 
 #### Step 2: The handler
 
-Because API Gateway is set up with a single `$default` route, the handler itself does the routing. It reads the HTTP method and path from the API Gateway event (payload format v2, where the method is under `requestContext.http` and the path under `rawPath`) and dispatches to the matching function. `boto3` ships with the Lambda runtime, so no extra packaging is needed.
+Because API Gateway is set up with a single `$default` route, the handler itself does the routing. It reads the HTTP method and path from the API Gateway event and dispatches to the matching function. `boto3` ships with the Lambda runtime, so no extra packaging is needed.
 
 ```python
 def handler(event, context):

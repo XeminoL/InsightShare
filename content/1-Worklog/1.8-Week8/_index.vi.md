@@ -16,9 +16,9 @@ pre: " <b> 1.8. </b> "
 | Thứ | Công việc | Bắt đầu | Hoàn thành | Nguồn tài liệu |
 | --- | --- | --- | --- | --- |
 | 2 | Tạo Cognito user pool và app client với USER_PASSWORD_AUTH; ghi lại pool id, client id và token endpoint. | 20/07/2026 | 20/07/2026 | [Cognito lab](https://000081.awsstudygroup.com) |
-| 3 | Thêm JWT authorizer vào route `$default` của API Gateway; thêm route OPTIONS không xác thực để CORS preflight không bị chặn bằng 401. | 21/07/2026 | 21/07/2026 |  |
-| 4 | Đọc claim `sub` từ JWT trong Lambda (hàm `current_user`) để biết user gọi và lọc file theo owner. | 22/07/2026 | 22/07/2026 |  |
-| 5 | Nối frontend gọi thẳng cognito-idp cho đăng ký, xác nhận và đăng nhập, không dùng thư viện ngoài. | 23/07/2026 | 23/07/2026 |  |
+| 3 | Thêm JWT authorizer vào route `$default` của API Gateway; thêm route OPTIONS không xác thực để CORS preflight không bị chặn bằng 401. | 21/07/2026 | 21/07/2026 | |
+| 4 | Đọc claim `sub` từ JWT trong Lambda để biết user gọi và lọc file theo owner. | 22/07/2026 | 22/07/2026 | |
+| 5 | Nối frontend gọi thẳng cognito-idp cho đăng ký, xác nhận và đăng nhập, không dùng thư viện ngoài. | 23/07/2026 | 23/07/2026 | |
 | 6 | Kiểm thử luồng: đăng ký → xác nhận → đăng nhập → gọi API kèm token (200), không token (401), và OPTIONS (200). | 24/07/2026 | 24/07/2026 | Postman |
 
 ### Kết quả đạt được

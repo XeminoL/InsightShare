@@ -25,14 +25,14 @@ Các ứng dụng như trợ lý lập trình AI, trình thông dịch code tư�
 ### Điểm đáng chú ý
 - Cách ly ở mức máy ảo, dùng Firecracker, chính công nghệ đứng sau hàng nghìn tỷ lượt gọi Lambda mỗi tháng. Không dùng chung kernel giữa các phiên.
 - Trạng thái được giữ tới 8 giờ mỗi phiên. Gói đã cài, mô hình đã nạp và file đang làm việc vẫn còn sau khi tạm dừng rồi phục hồi.
-- Mỗi MicroVM dùng tới 16 vCPU, 32 GB bộ nhớ và 32 GB ổ đĩa (ARM64). Ra mắt ở năm khu vực, trong đó có Asia Pacific (Tokyo).
+- Mỗi MicroVM dùng tới 16 vCPU, 32 GB bộ nhớ và 32 GB ổ đĩa. Ra mắt ở năm khu vực, trong đó có Asia Pacific.
 - Nó bổ trợ cho Lambda function chứ không thay thế: một function có thể gọi MicroVM khi cần chạy code cách ly và giữ trạng thái.
 
 ### Bài học rút ra
 MicroVMs lấp khoảng trống giữa Lambda và EC2: mức cách ly ngang máy ảo nhưng không phải chờ khởi động vài phút và không phải quản lý máy chủ. Với nhu cầu chạy an toàn code do AI sinh ra hoặc do người dùng gửi lên, việc gộp cách ly, phục hồi nhanh và giữ trạng thái vào một primitive quản lý sẵn là hướng đáng dùng.
 
 ## Nguồn tham khảo
-[Run isolated sandboxes with full lifecycle control: AWS Lambda introduces MicroVMs](https://aws.amazon.com/blogs/aws/run-isolated-sandboxes-with-full-lifecycle-control-aws-lambda-introduces-microvms/) (AWS News Blog)
+[Run isolated sandboxes with full lifecycle control: AWS Lambda introduces MicroVMs](https://aws.amazon.com/blogs/aws/run-isolated-sandboxes-with-full-lifecycle-control-aws-lambda-introduces-microvms/)
 
 ## Link bài đăng
 https://www.facebook.com/share/p/18fFbiYK9m/

@@ -32,7 +32,7 @@ The pool in the screenshot was created through the Console first, so it kept the
 
 #### Step 2: Add a JWT authorizer on API Gateway
 
-The authorizer moves token checking out of the Lambda and into the gateway, so an unauthenticated or expired token is rejected with 401 before any code runs. Attach a JWT authorizer to the HTTP API: its `Issuer` is the user pool (so only tokens minted by that pool are accepted) and its `Audience` is the app client (so only tokens issued for this app pass), and API Gateway verifies the token signature and expiry on every request.
+The authorizer moves token checking out of the Lambda and into the gateway, so an unauthenticated or expired token is rejected with 401 before any code runs. Attach a JWT authorizer to the HTTP API: its `Issuer` is the user pool and its `Audience` is the app client, and API Gateway verifies the token signature and expiry on every request.
 
 ```bash
 aws apigatewayv2 create-authorizer \

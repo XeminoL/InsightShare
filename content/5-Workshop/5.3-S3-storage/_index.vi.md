@@ -8,12 +8,12 @@ pre: " <b> 5.3. </b> "
 
 #### Tổng quan
 
-Tầng lưu trữ giữ file người dùng trong một **Amazon S3 bucket private** (không công khai). Việc tải lên/tải xuống đi qua **presigned URL** do back-end sinh ra, nên trình duyệt truyền file **trực tiếp** lên S3 mà không đi vòng qua Lambda, đồng thời bucket vẫn không public.
+Tầng lưu trữ giữ file người dùng trong một **Amazon S3 bucket private**. Việc tải lên/tải xuống đi qua **presigned URL** do back-end sinh ra, nên trình duyệt truyền file **trực tiếp** lên S3 mà không đi vòng qua Lambda, đồng thời bucket vẫn không public.
 
 Các bước chính của phần này:
 
-+ Tạo S3 bucket lưu file (region `ap-southeast-1`).
-+ Tắt public access; S3 tự áp mã hóa SSE-S3 (`AES256`) theo mặc định.
++ Tạo S3 bucket lưu file.
++ Tắt public access; S3 tự áp mã hóa SSE-S3 theo mặc định.
 + Bật versioning để object bị ghi đè vẫn lấy lại được.
 + Cấu hình **CORS** để trình duyệt gọi được tới bucket.
 + Sinh **presigned URL** bằng **boto3** và kiểm tra upload/download.

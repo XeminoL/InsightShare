@@ -1,5 +1,5 @@
 ---
-title: "Add AI: Rekognition, Textract, Bedrock (Claude)"
+title: "Add AI: Rekognition, Textract, Bedrock"
 date: 2026-07-29
 weight: 6
 chapter: false
@@ -10,15 +10,15 @@ pre: " <b> 5.4.6 </b> "
 
 Add the AI layer so InsightShare understands file content instead of just storing it:
 
-- **Amazon Rekognition**: label images (`DetectLabels`).
-- **Amazon Textract**: extract text from PDFs and scanned images (`DetectDocumentText`).
-- **Amazon Bedrock (Claude)**: ask questions about a document and get a summary, answered in the same language as the question (`InvokeModel`). This is the main AI feature.
+- **Amazon Rekognition**: label images.
+- **Amazon Textract**: extract text from PDFs and scanned images.
+- **Amazon Bedrock**: ask questions about a document and get a summary, answered in the same language as the question. This is the main AI feature.
 
 Rekognition and Textract are ready-to-call, no model training. Bedrock runs a hosted Claude model, so nothing is trained either.
 
 #### Step 1: Image → Rekognition labels
 
-`analyze` branches on file type: images go to Rekognition, documents to text extraction. For an image, Rekognition reads the object straight from S3 (no bytes pass through Lambda) and returns content labels. `MaxLabels=10` caps how many labels are kept, and `MinConfidence=55` drops any label whose confidence is below 55%:
+`analyze` branches on file type: images go to Rekognition, documents to text extraction. For an image, Rekognition reads the object straight from S3 and returns content labels. `MaxLabels=10` caps how many labels are kept, and `MinConfidence=55` drops any label whose confidence is below 55%:
 
 ```python
 if fname.endswith(IMAGE_EXTS):
@@ -34,7 +34,7 @@ if fname.endswith(IMAGE_EXTS):
         text = rec["filename"]
 ```
 
-On a photo taken inside a warehouse, Rekognition returned ten labels: `Architecture`, `Building`, `Warehouse`, `Box`, `Cardboard`, `Carton`, `Factory`, `Package Delivery`, `Person`, `Indoors`. They are stored in DynamoDB, so searching `warehouse` or `carton` returns this file even though neither word appears in its filename (`20260619_092010.jpg`).
+On a photo taken inside a warehouse, Rekognition returned ten labels: `Architecture`, `Building`, `Warehouse`, `Box`, `Cardboard`, `Carton`, `Factory`, `Package Delivery`, `Person`, `Indoors`. They are stored in DynamoDB, so searching `warehouse` or `carton` returns this file even though neither word appears in its filename.
 
 ![The uploaded image with its Rekognition labels, shown in the app](/images/5-Workshop/5.4-serverless-backend/rekognition-labels.png)
 
@@ -68,11 +68,11 @@ elif fname.endswith(DOC_EXTS):
 **Design note.** The Textract call is wrapped so text extraction fails soft: `.txt` files are read directly from S3, and for PDFs or scanned images the `DetectDocumentText` result is stored as the document text. If the call raises a `ClientError`, `analyze` falls back to the filename and keeps the rest of the flow working instead of returning a 500.
 {{% /notice %}}
 
-#### Step 3: Bedrock (Claude) answers questions about the document
+#### Step 3: Bedrock answers questions about the document
 
 This step uses the text the previous two steps stored in DynamoDB as the context for the model. The main feature is a document Q&A endpoint, `POST /files/{id}/ask`. It reads the extracted text from DynamoDB, wraps it with the question in a prompt that instructs the model to answer only from that document and in the same language as the question, and calls a Claude model on Amazon Bedrock. With no `question` in the body, the same handler summarizes the document instead.
 
-There is also a library-wide endpoint, `POST /ask`. It scans every file in DynamoDB, ranks them by keyword overlap with the question, joins the text of the relevant files (each numbered so it can be cited), and calls Bedrock. The response includes the numbered list of files the answer was drawn from.
+There is also a library-wide endpoint, `POST /ask`. It scans every file in DynamoDB, ranks them by keyword overlap with the question, joins the text of the relevant files, and calls Bedrock. The response includes the numbered list of files the answer was drawn from.
 
 ```python
 MODEL_ID = os.environ.get("BEDROCK_MODEL_ID",
@@ -98,7 +98,7 @@ out = bedrock.invoke_model(modelId=MODEL_ID, body=json.dumps(payload))
 answer = json.loads(out["body"].read())["content"][0]["text"]
 ```
 
-The model id lives in the `BEDROCK_MODEL_ID` environment variable (default `global.anthropic.claude-haiku-4-5-20251001-v1:0`), so the model can change without editing code. The document text is capped at 20,000 characters before it goes into the prompt, which bounds the token count and cost per call and keeps the request within the model's context window.
+The model id lives in the `BEDROCK_MODEL_ID` environment variable, so the model can change without editing code. The document text is capped at 20,000 characters before it goes into the prompt, which bounds the token count and cost per call and keeps the request within the model's context window.
 
 {{% notice note %}}
 **Design note.** The Bedrock integration uses the IAM `bedrock:InvokeModel` permission and an inference-profile model id. The `ask` handler wraps the `invoke_model` call: on success it returns the Claude answer, on error it returns HTTP 200 with a short English message instead of a 500, so a transient service error does not crash the demo.
@@ -106,7 +106,7 @@ The model id lives in the `BEDROCK_MODEL_ID` environment variable (default `glob
 
 #### Step 4: Store labels/text in DynamoDB
 
-The AI output is written back once, so search and Q&A later read DynamoDB instead of re-calling Rekognition, Textract or Bedrock. The results are written back to the metadata item; the `search_blob` attribute (labels + text, lowercased) powers content search, and the stored `text` is what the Bedrock Q&A reads. `size` also needs the `#sz` alias, because it is a DynamoDB reserved word just like `text`:
+The AI output is written back once, so search and Q&A later read DynamoDB instead of re-calling Rekognition, Textract or Bedrock. The results are written back to the metadata item; the `search_blob` attribute powers content search, and the stored `text` is what the Bedrock Q&A reads. `size` also needs the `#sz` alias, because it is a DynamoDB reserved word just like `text`:
 
 ```python
 table.update_item(
@@ -128,6 +128,6 @@ curl "$API/files/search?q=warehouse"
 curl -X POST "$API/files/<id>/ask" -d '{"question":"Tai lieu noi ve gi?"}'
 ```
 
-Search returned the image from the label `Warehouse`. On a `.txt` document, `ask` returned an answer taken from the document text, generated by Amazon Bedrock (Claude).
+Search returned the image from the label `Warehouse`. On a `.txt` document, `ask` returned an answer taken from the document text, generated by Amazon Bedrock.
 
-> Reference FCAJ lab on AI services (Rekognition/Textract): https://000056.awsstudygroup.com
+> Reference FCAJ lab on AI services: https://000056.awsstudygroup.com

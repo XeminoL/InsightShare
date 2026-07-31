@@ -8,11 +8,11 @@ pre: " <b> 5.4.4 </b> "
 
 #### Mục tiêu
 
-Phục vụ giao diện web tĩnh của InsightShare từ **Amazon S3** và phân phối qua **Amazon CloudFront** (HTTPS, CDN).
+Phục vụ giao diện web tĩnh của InsightShare từ **Amazon S3** và phân phối qua **Amazon CloudFront**.
 
 #### Bước 1: Frontend
 
-Frontend không có logic riêng ngoài việc gọi API và render JSON. Giao diện là một file `index.html` tĩnh (HTML/CSS/JS thuần): upload file, hiển thị danh sách kèm nhãn AI, có ô tìm kiếm theo nội dung, link tải cho từng file (một presigned GET URL), và ô đặt câu hỏi về một tài liệu. Trang chỉ gọi endpoint API Gateway, nên cùng một file chạy được ở local và trên CloudFront mà không cần build lại.
+Frontend không có logic riêng ngoài việc gọi API và render JSON. Giao diện là một file `index.html` tĩnh: upload file, hiển thị danh sách kèm nhãn AI, có ô tìm kiếm theo nội dung, link tải cho từng file, và ô đặt câu hỏi về một tài liệu. Trang chỉ gọi endpoint API Gateway, nên cùng một file chạy được ở local và trên CloudFront mà không cần build lại.
 
 Luồng upload trên trình duyệt là ba lời gọi: xin presigned URL từ API, PUT file thẳng lên S3, rồi kích hoạt `analyze` để lớp AI xử lý object vừa upload.
 
@@ -37,7 +37,7 @@ const res = await fetch(`${API}/files/search?q=` + encodeURIComponent(query));
 render(await res.json());
 ```
 
-Hỏi về một tài liệu là thêm một lời gọi tới route `ask` (Bedrock/Claude trả lời theo ngôn ngữ câu hỏi; câu hỏi rỗng thì trả về bản tóm tắt):
+Hỏi về một tài liệu là thêm một lời gọi tới route `ask`:
 
 ```javascript
 const res = await fetch(`${API}/files/${id}/ask`, {
@@ -86,8 +86,8 @@ Trang web đang chạy trên một tài khoản mới, trước khi upload gì: 
 
 Toàn bộ luồng được kiểm chứng từ trang web đã deploy qua API Gateway:
 
-- `POST /files` trả về presigned URL, và `PUT` lên URL đó trả về **HTTP 200** (file vào S3).
+- `POST /files` trả về presigned URL, và `PUT` lên URL đó trả về **HTTP 200**.
 - `POST /files/{id}/analyze` trả về nhãn Rekognition thật.
 - `GET /files/search?q=warehouse` trả về ảnh theo nhãn AI của nó, không phải theo tên file.
-- `POST /files/{id}/ask` trả về câu trả lời trên một tài liệu `.txt`, do Amazon Bedrock (Claude) sinh ra từ văn bản đã lưu.
+- `POST /files/{id}/ask` trả về câu trả lời trên một tài liệu `.txt`, do Amazon Bedrock sinh ra từ văn bản đã lưu.
 - Bốn bước trên sau đó được lặp lại từ trình duyệt trên trang web đang chạy.

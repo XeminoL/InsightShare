@@ -25,14 +25,14 @@ Applications such as AI coding assistants, interactive code interpreters and vul
 ### Notable points
 - Isolation is at the virtual machine level, powered by Firecracker, the same technology behind trillions of Lambda invocations each month. There is no shared kernel between sessions.
 - State is preserved for up to 8 hours per session. Installed packages, loaded models and working files survive suspend and resume.
-- Each MicroVM can use up to 16 vCPUs, 32 GB memory and 32 GB disk (ARM64). It is available in five regions at launch, including Asia Pacific (Tokyo).
+- Each MicroVM can use up to 16 vCPUs, 32 GB memory and 32 GB disk. It is available in five regions at launch, including Asia Pacific.
 - It complements Lambda functions rather than replacing them: a function can invoke a MicroVM when it needs isolated, stateful execution.
 
 ### Takeaways
 MicroVMs close the gap between Lambda and EC2: VM-level isolation without minute-long boots or managing servers. For running AI-generated or user-supplied code safely, isolation, fast resume and preserved state in one managed primitive is a usable building block.
 
 ## Reference
-[Run isolated sandboxes with full lifecycle control: AWS Lambda introduces MicroVMs](https://aws.amazon.com/blogs/aws/run-isolated-sandboxes-with-full-lifecycle-control-aws-lambda-introduces-microvms/) (AWS News Blog)
+[Run isolated sandboxes with full lifecycle control: AWS Lambda introduces MicroVMs](https://aws.amazon.com/blogs/aws/run-isolated-sandboxes-with-full-lifecycle-control-aws-lambda-introduces-microvms/)
 
 ## Post link
 https://www.facebook.com/share/p/18fFbiYK9m/

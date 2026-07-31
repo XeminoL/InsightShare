@@ -12,12 +12,12 @@ Store each file's **metadata** in **Amazon DynamoDB** so InsightShare can list, 
 
 #### Step 1: Create the DynamoDB table
 
-Open the DynamoDB console (region `ap-southeast-1`) and choose **Create table**:
+Open the DynamoDB console and choose **Create table**:
 
 - **Table name**: `insightshare-files`
-- **Partition key**: `id` (String), the same unique hex id used as the S3 key prefix, so one file maps to exactly one item and every read is a direct key lookup.
+- **Partition key**: `id`, the same unique hex id used as the S3 key prefix, so one file maps to exactly one item and every read is a direct key lookup.
 - No sort key, because each file is a single standalone item with no parent-child grouping.
-- Capacity mode: **On-demand** (`PAY_PER_REQUEST`), which bills per request and needs no provisioned throughput, fitting the unpredictable, low-volume access of a demo.
+- Capacity mode: **On-demand**, which bills per request and needs no provisioned throughput, fitting the unpredictable, low-volume access of a demo.
 
 ![DynamoDB table](/images/5-Workshop/5.4-serverless-backend/dynamodb-table.png)
 
@@ -34,16 +34,16 @@ aws dynamodb create-table --table-name insightshare-files \
 
 Each item stores one file's information:
 
-- `id` : primary key (a unique hex id)
-- `filename`, `content_type`, `s3_key` : original name, MIME type, key in S3
-- `labels` : list of AI labels (from Rekognition)
-- `text` : extracted text (from Textract, or the file content for `.txt`)
-- `search_blob` : lowercase labels + text, used for content search
-- `size`, `uploaded_at` : object size (from the S3 `head_object`) and upload timestamp
+- `id`: primary key
+- `filename`, `content_type`, `s3_key`: original name, MIME type, key in S3
+- `labels`: list of AI labels
+- `text`: extracted text
+- `search_blob`: lowercase labels + text, used for content search
+- `size`, `uploaded_at`: object size and upload timestamp
 
 #### Step 3: Wire Lambda to DynamoDB
 
-The metadata row is written once on upload and updated once after analysis, so the table always reflects the file's current state. Lambda uses the `boto3` DynamoDB resource: `put_item` on upload (the row starts empty), `update_item` after AI analysis to fill in labels and text, and `scan` for list/search:
+The metadata row is written once on upload and updated once after analysis, so the table always reflects the file's current state. Lambda uses the `boto3` DynamoDB resource: `put_item` on upload, `update_item` after AI analysis to fill in labels and text, and `scan` for list/search:
 
 ```python
 ddb = boto3.resource("dynamodb", region_name="ap-southeast-1")
@@ -73,5 +73,5 @@ aws dynamodb scan --table-name insightshare-files --select COUNT
 ![Console: item in the DynamoDB table](/images/5-Workshop/5.4-serverless-backend/dynamodb-item.png)
 
 {{% notice info %}}
-**Technical note.** The execution role initially granted `PutItem`/`GetItem`/`Query`/`Scan` but not `UpdateItem`, so `analyze` (which calls `update_item`) returned `AccessDeniedException ... not authorized to perform: dynamodb:UpdateItem`. Adding `dynamodb:UpdateItem` (and `s3:ListBucket`, needed elsewhere) to the role policy resolves it. The change did not take effect immediately: a warm Lambda execution environment caches the role credentials, so the new permission applied only after the function was updated and a fresh environment started. This is a caching effect, not a policy error.
+**Technical note.** The execution role initially granted `PutItem`/`GetItem`/`Query`/`Scan` but not `UpdateItem`, so `analyze` returned `AccessDeniedException ... not authorized to perform: dynamodb:UpdateItem`. Adding `dynamodb:UpdateItem` to the role policy resolves it. The change did not take effect immediately: a warm Lambda execution environment caches the role credentials, so the new permission applied only after the function was updated and a fresh environment started. This is a caching effect, not a policy error.
 {{% /notice %}}

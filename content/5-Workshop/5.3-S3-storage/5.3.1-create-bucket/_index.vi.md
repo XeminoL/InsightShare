@@ -8,10 +8,10 @@ pre: " <b> 5.3.1 </b> "
 
 #### Bước 1: Tạo S3 bucket
 
-Bucket này là nơi duy nhất lưu mọi file được upload; về sau Lambda đọc/ghi object ở đây và sinh presigned URL trỏ vào nó. Mở **S3 console** (region `ap-southeast-1`) và chọn **Create bucket**:
+Bucket này là nơi duy nhất lưu mọi file được upload; về sau Lambda đọc/ghi object ở đây và sinh presigned URL trỏ vào nó. Mở **S3 console** và chọn **Create bucket**:
 
-- **Bucket name**: `insightshare-files-khang-2352464` (tên S3 là duy nhất toàn cầu, nên thêm hậu tố cá nhân để tránh trùng).
-- **Region**: Asia Pacific (Singapore) `ap-southeast-1`, cùng region với Lambda, nên request không đi ra ngoài region và presigned URL ký theo endpoint của region đó.
+- **Bucket name**: `insightshare-files-khang-2352464`.
+- **Region**: Asia Pacific `ap-southeast-1`, cùng region với Lambda, nên request không đi ra ngoài region và presigned URL ký theo endpoint của region đó.
 
 Sau khi tạo, bucket mở ra ở trạng thái trống:
 
@@ -53,7 +53,7 @@ Trình duyệt truyền file trực tiếp với S3 qua presigned URL. Các requ
 
 `AllowedMethods` chỉ liệt kê `PUT` và `GET`, hai verb mà presigned URL dùng. `ExposeHeaders` trả `ETag` để trình duyệt đọc được hash của object vừa upload. `MaxAgeSeconds` cache preflight 3000 giây, nên request sau trình duyệt khỏi hỏi lại.
 
-Áp cấu hình sau (mức demo cho phép mọi origin; lên production nên giới hạn `AllowedOrigins` về đúng domain web):
+Áp cấu hình sau:
 
 ```json
 {

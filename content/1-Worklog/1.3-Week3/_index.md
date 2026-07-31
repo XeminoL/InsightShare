@@ -16,11 +16,11 @@ pre: " <b> 1.3. </b> "
 
 | Day | Task | Start | End | Reference |
 | --- | --- | --- | --- | --- |
-| Mon | Initialize the FastAPI project with a virtualenv and `uvicorn`; design the upload and list endpoints (POST /files, GET /files) and the request/response schemas. | 15/06/2026 | 15/06/2026 | [FastAPI](https://fastapi.tiangolo.com/) |
-| Tue | Write the upload and list APIs, storing files in a local folder for now and returning file id, name and size. | 16/06/2026 | 16/06/2026 |  |
-| Wed | Build the static frontend (HTML/JS, fetch API): file picker, file list and an upload progress bar. | 17/06/2026 | 17/06/2026 |  |
-| Thu | Extract storage and AI into Python interfaces (abstract base classes) so the cloud versions can drop in later; mock the AI results for now. | 18/06/2026 | 18/06/2026 |  |
-| Fri | Refactor into layers (API / service / storage) and write unit tests with pytest for the file-handling code. | 19/06/2026 | 19/06/2026 |  |
+| Mon | Initialize the FastAPI project with a virtualenv and `uvicorn`; design the upload and list endpoints and the request/response schemas. | 15/06/2026 | 15/06/2026 | [FastAPI](https://fastapi.tiangolo.com/) |
+| Tue | Write the upload and list APIs, storing files in a local folder for now and returning file id, name and size. | 16/06/2026 | 16/06/2026 | |
+| Wed | Build the static frontend: file picker, file list and an upload progress bar. | 17/06/2026 | 17/06/2026 | |
+| Thu | Extract storage and AI into Python interfaces so the cloud versions can drop in later; mock the AI results for now. | 18/06/2026 | 18/06/2026 | |
+| Fri | Refactor into layers and write unit tests with pytest for the file-handling code. | 19/06/2026 | 19/06/2026 | |
 
 ### Results achieved
 

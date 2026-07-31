@@ -15,11 +15,11 @@ pre: " <b> 1.6. </b> "
 
 | Day | Task | Start | End | Reference |
 | --- | --- | --- | --- | --- |
-| Mon | Create an HTTP API Gateway with Lambda proxy integration; define routes for each endpoint (POST /files, GET /files, GET /files/{id}). | 06/07/2026 | 06/07/2026 | [API Gateway lab](https://000079.awsstudygroup.com) |
-| Tue | Configure CORS at the API Gateway layer (allowed origins, methods, headers) and add the Lambda invoke permission for the gateway. | 07/07/2026 | 07/07/2026 |  |
-| Wed | Switch the frontend to call the API Gateway invoke URL instead of localhost. | 08/07/2026 | 08/07/2026 |  |
+| Mon | Create an HTTP API Gateway with Lambda proxy integration; define routes for each endpoint. | 06/07/2026 | 06/07/2026 | [API Gateway lab](https://000079.awsstudygroup.com) |
+| Tue | Configure CORS at the API Gateway layer and add the Lambda invoke permission for the gateway. | 07/07/2026 | 07/07/2026 | |
+| Wed | Switch the frontend to call the API Gateway invoke URL instead of localhost. | 08/07/2026 | 08/07/2026 | |
 | Thu | Test the API with Postman and the frontend; fix CORS preflight, IAM permission and proxy mapping errors. | 09/07/2026 | 09/07/2026 | Postman |
-| Fri | Review and finalize the full flow on the cloud: frontend → API Gateway → Lambda → presigned URL → direct upload to S3. | 10/07/2026 | 10/07/2026 |  |
+| Fri | Review and finalize the full flow on the cloud: frontend → API Gateway → Lambda → presigned URL → direct upload to S3. | 10/07/2026 | 10/07/2026 | |
 
 ### Results achieved
 

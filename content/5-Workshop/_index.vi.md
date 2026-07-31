@@ -7,7 +7,7 @@ pre: " <b> 5. </b> "
 alwaysopen: false
 ---
 
-# InsightShare: Xây dựng nền tảng chia sẻ ảnh & tài liệu tích hợp AI trên AWS (Serverless)
+# InsightShare: Xây dựng nền tảng chia sẻ ảnh & tài liệu tích hợp AI trên AWS
 
 ## Tổng quan
 
@@ -15,11 +15,11 @@ alwaysopen: false
 
 Phạm vi triển khai:
 - **Amazon S3** lưu file riêng tư, chia sẻ qua **presigned URL** có thời hạn
-- Back-end serverless trên **AWS Lambda** (Python) sau **Amazon API Gateway**
+- Back-end serverless trên **AWS Lambda** sau **Amazon API Gateway**
 - Metadata, nhãn AI và văn bản trích xuất trong **Amazon DynamoDB**, làm nền cho tìm kiếm theo nội dung
-- Lớp hiểu nội dung với **Amazon Rekognition**, **Amazon Textract** và **Amazon Bedrock** (Claude)
-- Frontend tĩnh phân phối qua **Amazon CloudFront** (HTTPS), giám sát bằng **Amazon CloudWatch**
-- Quyền truy cập tối thiểu (least-privilege) bằng **AWS IAM** trên mọi dịch vụ
+- Lớp hiểu nội dung với **Amazon Rekognition**, **Amazon Textract** và **Amazon Bedrock**
+- Frontend tĩnh phân phối qua **Amazon CloudFront**, giám sát bằng **Amazon CloudWatch**
+- Quyền truy cập tối thiểu bằng **AWS IAM** trên mọi dịch vụ
 
 ## Nội dung
 
@@ -27,5 +27,5 @@ Phạm vi triển khai:
 2. [Chuẩn bị](5.2-Prerequiste/)
 3. [Lưu trữ file với S3 + presigned URL](5.3-S3-storage/)
 4. [Back-end serverless: Lambda + API Gateway + DynamoDB](5.4-serverless-backend/)
-5. [Giám sát & Bảo mật (CloudWatch + IAM)](5.5-Policy/)
+5. [Giám sát & Bảo mật](5.5-Policy/)
 6. [Dọn dẹp tài nguyên](5.6-Cleanup/)

@@ -12,7 +12,7 @@ pre: " <b> 5.3.2 </b> "
 
 #### Bước 1: Sinh presigned URL bằng boto3
 
-Presigned URL mang sẵn chữ ký của Lambda role trong query string, nên trình duyệt gọi thẳng S3 cho đúng một object và một verb mà không cần bất kỳ credential AWS nào của mình. Hạn ngắn 15 phút (`PRESIGN_EXPIRY = 900`) giới hạn thời gian một link bị lộ còn dùng được. Client ép endpoint theo region và Signature V4 vì lý do ở ghi chú kỹ thuật bên dưới.
+Presigned URL mang sẵn chữ ký của Lambda role trong query string, nên trình duyệt gọi thẳng S3 cho đúng một object và một verb mà không cần bất kỳ credential AWS nào của mình. Hạn ngắn 15 phút giới hạn thời gian một link bị lộ còn dùng được. Client ép endpoint theo region và Signature V4 vì lý do ở ghi chú kỹ thuật bên dưới.
 
 ```python
 from botocore.config import Config
@@ -38,7 +38,7 @@ get_url = s3.generate_presigned_url(
 ```
 
 {{% notice info %}}
-**Ghi chú kỹ thuật.** S3 client mặc định ký theo endpoint toàn cầu (`s3.amazonaws.com`). Bucket ở `ap-southeast-1` đáp lại endpoint đó bằng **HTTP 307 Temporary Redirect** trỏ về host theo region, và trình duyệt bỏ các header đã ký khi redirect, nên lệnh `PUT` thất bại. Đặt `endpoint_url` thành `https://s3.ap-southeast-1.amazonaws.com` để S3 trả lời thẳng không redirect, và `signature_version="s3v4"` ký bằng SigV4 mà endpoint theo region yêu cầu. Kết hợp cả hai làm upload trả về HTTP 200 ngay lần request đầu.
+**Ghi chú kỹ thuật.** S3 client mặc định ký theo endpoint toàn cầu. Bucket ở `ap-southeast-1` đáp lại endpoint đó bằng **HTTP 307 Temporary Redirect** trỏ về host theo region, và trình duyệt bỏ các header đã ký khi redirect, nên lệnh `PUT` thất bại. Đặt `endpoint_url` thành `https://s3.ap-southeast-1.amazonaws.com` để S3 trả lời thẳng không redirect, và `signature_version="s3v4"` ký bằng SigV4 mà endpoint theo region yêu cầu. Kết hợp cả hai làm upload trả về HTTP 200 ngay lần request đầu.
 {{% /notice %}}
 
 #### Bước 2: Test upload qua presigned URL
@@ -62,4 +62,3 @@ aws s3 ls s3://insightshare-files-khang-2352464/ --recursive
 ```
 
 ![Console: object đã upload trong S3 bucket](/images/5-Workshop/5.3-S3-storage/s3-object-uploaded.png)
-

@@ -8,7 +8,7 @@ pre: " <b> 3. </b> "
 
 Three posts published to the [AWS Study Group](https://www.facebook.com/groups/awsstudygroupfcj) during the internship, each summarizing a recent article from the official AWS blogs with a short takeaway.
 
-### [Blog 1 - An AI meeting summarization system (Amazon Bedrock and Amazon Transcribe)](3.1-Blog1/)
+### [Blog 1 - An AI meeting summarization system](3.1-Blog1/)
 Shares how to build a serverless system that turns meeting recordings into structured summaries, using Transcribe for speech-to-text and Bedrock for summarization.
 
 ### [Blog 2 - Building multi-step applications with AWS Lambda Durable Functions](3.2-Blog2/)

@@ -38,7 +38,7 @@ The Cognito user pool holds the registered accounts, so deleting it removes that
 Versioning is on for the file bucket, so `aws s3 rm --recursive` leaves the older object versions and the delete markers behind and `delete-bucket` then fails with `BucketNotEmpty`. `cleanup-aws.ps1` deletes every version and delete marker first, which is why the script is the easier path here.
 
 {{% notice warning %}}
-**CloudFront takes two steps.** A distribution cannot be deleted while it is enabled: set `Enabled` to `false`, wait for the status to return to `Deployed` (around 15 minutes), then delete it with the current ETag. This is the one resource the script reports instead of removing.
+**CloudFront takes two steps.** A distribution cannot be deleted while it is enabled: set `Enabled` to `false`, wait for the status to return to `Deployed`, then delete it with the current ETag. This is the one resource the script reports instead of removing.
 {{% /notice %}}
 
 ```bash

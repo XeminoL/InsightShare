@@ -8,7 +8,7 @@ pre: " <b> 5.4.1 </b> "
 
 #### Mục tiêu
 
-Lambda là phần compute duy nhất của InsightShare: API Gateway chuyển mọi request tới nó, và nó giữ toàn bộ nghiệp vụ (presign, metadata, gọi AI). Một **Lambda function Python** phục vụ cả back-end, điều hướng theo HTTP method và path: upload, list, search, analyze, hỏi một tài liệu, hỏi toàn thư viện, get, delete. Chỉ có một artifact deploy, và client S3 với DynamoDB khởi tạo một lần ở mức module.
+Lambda là phần compute duy nhất của InsightShare: API Gateway chuyển mọi request tới nó, và nó giữ toàn bộ nghiệp vụ. Một **Lambda function Python** phục vụ cả back-end, điều hướng theo HTTP method và path: upload, list, search, analyze, hỏi một tài liệu, hỏi toàn thư viện, get, delete. Chỉ có một artifact deploy, và client S3 với DynamoDB khởi tạo một lần ở mức module.
 
 #### Bước 1: Tạo function
 
@@ -39,7 +39,7 @@ Màn Function overview cho thấy trigger API Gateway đã nối vào function:
 
 #### Bước 2: Handler
 
-Vì API Gateway được cấu hình với một route `$default` duy nhất, chính handler làm việc điều hướng. Nó đọc HTTP method và path từ sự kiện API Gateway (payload format v2, method nằm dưới `requestContext.http` và path dưới `rawPath`) rồi dispatch tới đúng hàm. `boto3` có sẵn trong runtime Lambda nên không cần đóng gói thêm.
+Vì API Gateway được cấu hình với một route `$default` duy nhất, chính handler làm việc điều hướng. Nó đọc HTTP method và path từ sự kiện API Gateway rồi dispatch tới đúng hàm. `boto3` có sẵn trong runtime Lambda nên không cần đóng gói thêm.
 
 ```python
 def handler(event, context):

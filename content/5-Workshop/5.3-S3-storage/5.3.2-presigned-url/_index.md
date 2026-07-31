@@ -12,7 +12,7 @@ A **presigned URL** is a signed link to one S3 object, valid for a limited time,
 
 #### Step 1: Generate a presigned URL with boto3
 
-The presigned URL carries the Lambda role's signature in its query string, so the browser can call S3 directly for one specific object and verb without any AWS credentials of its own. A short 15-minute expiry (`PRESIGN_EXPIRY = 900`) limits how long a leaked link stays usable. The client pins the regional endpoint and Signature V4 for the reason in the technical note below.
+The presigned URL carries the Lambda role's signature in its query string, so the browser can call S3 directly for one specific object and verb without any AWS credentials of its own. A short 15-minute expiry limits how long a leaked link stays usable. The client pins the regional endpoint and Signature V4 for the reason in the technical note below.
 
 ```python
 from botocore.config import Config
@@ -38,7 +38,7 @@ get_url = s3.generate_presigned_url(
 ```
 
 {{% notice info %}}
-**Technical note.** The default S3 client signs against the global endpoint (`s3.amazonaws.com`). A bucket in `ap-southeast-1` answers that endpoint with an **HTTP 307 Temporary Redirect** to its regional host, and the browser drops the signed headers on the redirect, so the `PUT` fails. Setting `endpoint_url` to `https://s3.ap-southeast-1.amazonaws.com` makes S3 answer directly with no redirect, and `signature_version="s3v4"` signs with SigV4, which the regional endpoint requires. Together they make the upload return HTTP 200 on the first request.
+**Technical note.** The default S3 client signs against the global endpoint. A bucket in `ap-southeast-1` answers that endpoint with an **HTTP 307 Temporary Redirect** to its regional host, and the browser drops the signed headers on the redirect, so the `PUT` fails. Setting `endpoint_url` to `https://s3.ap-southeast-1.amazonaws.com` makes S3 answer directly with no redirect, and `signature_version="s3v4"` signs with SigV4, which the regional endpoint requires. Together they make the upload return HTTP 200 on the first request.
 {{% /notice %}}
 
 #### Step 2: Test upload through the presigned URL
@@ -62,4 +62,3 @@ aws s3 ls s3://insightshare-files-khang-2352464/ --recursive
 ```
 
 ![Console: uploaded object in the S3 bucket](/images/5-Workshop/5.3-S3-storage/s3-object-uploaded.png)
-

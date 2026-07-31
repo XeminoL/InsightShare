@@ -1,5 +1,5 @@
 ---
-title: "Monitoring & Security (CloudWatch + IAM)"
+title: "Monitoring & Security"
 date: 2026-07-29
 weight: 5
 chapter: false
@@ -8,11 +8,11 @@ pre: " <b> 5.5. </b> "
 
 #### Overview
 
-Two final pieces: **monitoring** (CloudWatch) and **security** (IAM least-privilege).
+Two final pieces: **monitoring** and **security**.
 
 #### Step 1: Monitoring with CloudWatch
 
-- **CloudWatch Logs**: the Lambda automatically writes to the log group `/aws/lambda/insightshare-api`. This is where the runtime errors during development showed up (the `Decimal`, presigned-URL and IAM issues were all diagnosed from these logs).
+- **CloudWatch Logs**: the Lambda automatically writes to the log group `/aws/lambda/insightshare-api`. This is where the runtime errors during development showed up.
 - **CloudWatch Metrics**: Lambda emits Invocations, Errors and Duration; API Gateway emits request count and 4xx/5xx counts.
 - **CloudWatch Alarms**: two alarms watch the `insightshare-api` function so a fault is noticed without reading logs. `insightshare-lambda-errors` fires when the `Errors` metric reaches the threshold: `--threshold 1` over `--period 300` means one failed invocation in five minutes trips it. It catches code and permission faults. `insightshare-lambda-throttles` fires on the `Throttles` metric, catching concurrency-limit hits under load.
 
@@ -44,13 +44,13 @@ aws cloudwatch put-dashboard \
 
 ![Console: the CloudWatch dashboard, showing the first two of its three widgets](/images/5-Workshop/5.5-Policy/cloudwatch-dashboard.png)
 
-#### Step 2: Security with IAM (least-privilege)
+#### Step 2: Security with IAM
 
 The Lambda uses a dedicated least-privilege execution role, `insightshare-lambda-role`. Its "Last activity" updates whenever the function runs:
 
 ![IAM execution role](/images/5-Workshop/5.5-Policy/iam-role.png)
 
-The attached policy grants only what each service needs. S3 and DynamoDB are scoped to the specific bucket and table ARNs (not `"Resource": "*"`); the AI actions use `"*"` because Rekognition, Textract and Bedrock do not support resource-level permissions (Bedrock can optionally be scoped to the Claude foundation-model ARN):
+The attached policy grants only what each service needs. S3 and DynamoDB are scoped to the specific bucket and table ARNs; the AI actions use `"*"` because Rekognition, Textract and Bedrock do not support resource-level permissions:
 
 ```json
 {

@@ -8,7 +8,7 @@ pre: " <b> 3. </b> "
 
 Ba bài đăng lên nhóm [AWS Study Group](https://www.facebook.com/groups/awsstudygroupfcj) trong kỳ thực tập, mỗi bài tóm tắt một bài viết gần đây từ blog chính thức của AWS kèm một bài học ngắn.
 
-### [Blog 1 - Hệ thống tóm tắt cuộc họp bằng AI (Amazon Bedrock và Amazon Transcribe)](3.1-Blog1/)
+### [Blog 1 - Hệ thống tóm tắt cuộc họp bằng AI](3.1-Blog1/)
 Chia sẻ cách xây một hệ thống serverless tự động chuyển file ghi âm cuộc họp thành bản tóm tắt có cấu trúc, dùng Transcribe để chuyển giọng nói thành văn bản và Bedrock để tóm tắt.
 
 ### [Blog 2 - Xây ứng dụng nhiều bước với AWS Lambda Durable Functions](3.2-Blog2/)

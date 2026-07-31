@@ -15,10 +15,10 @@ alwaysopen: false
 
 The build covers:
 - **Amazon S3** for private file storage, shared through time-limited **presigned URLs**
-- A serverless back-end on **AWS Lambda** (Python) behind **Amazon API Gateway**
+- A serverless back-end on **AWS Lambda** behind **Amazon API Gateway**
 - File metadata, AI labels and extracted text in **Amazon DynamoDB**, which back content-based search
-- A content-understanding layer with **Amazon Rekognition**, **Amazon Textract** and **Amazon Bedrock** (Claude)
-- The static frontend served over **Amazon CloudFront** (HTTPS), with monitoring in **Amazon CloudWatch**
+- A content-understanding layer with **Amazon Rekognition**, **Amazon Textract** and **Amazon Bedrock**
+- The static frontend served over **Amazon CloudFront**, with monitoring in **Amazon CloudWatch**
 - Least-privilege access through **AWS IAM** across every service
 
 ## Content
@@ -27,5 +27,5 @@ The build covers:
 2. [Prerequisite](5.2-Prerequiste/)
 3. [File storage with S3 + presigned URL](5.3-S3-storage/)
 4. [Serverless back-end: Lambda + API Gateway + DynamoDB](5.4-serverless-backend/)
-5. [Monitoring & Security (CloudWatch + IAM)](5.5-Policy/)
+5. [Monitoring & Security](5.5-Policy/)
 6. [Clean up](5.6-Cleanup/)

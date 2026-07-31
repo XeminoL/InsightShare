@@ -15,11 +15,11 @@ pre: " <b> 1.7. </b> "
 
 | Thứ | Công việc | Bắt đầu | Hoàn thành | Nguồn tài liệu |
 | --- | --- | --- | --- | --- |
-| 2 | Tạo bảng DynamoDB on-demand với partition key là `id`, thiết kế item theo cách truy cập (tra cứu theo id, liệt kê và lọc theo owner). | 13/07/2026 | 13/07/2026 | [Serverless lab](https://000078.awsstudygroup.com) |
-| 3 | Cho Lambda ghi metadata bằng `put_item` khi upload, đọc một item bằng `get_item`, liệt kê bằng `scan`. | 14/07/2026 | 14/07/2026 |  |
-| 4 | Xử lý nhất quán S3 và DynamoDB: ghi item metadata trước để mọi lượt upload đều được theo dõi, chỉ đánh dấu đã phân tích sau khi object nằm trên S3. | 15/07/2026 | 15/07/2026 |  |
-| 5 | Bổ sung quyền dynamodb PutItem/GetItem/UpdateItem/DeleteItem/Query/Scan giới hạn cho bảng vào IAM Role của Lambda. | 16/07/2026 | 16/07/2026 |  |
-| 6 | Cho `get_file` trả về presigned GET URL có thời hạn ngắn để frontend xem/tải file; kiểm thử end-to-end. | 17/07/2026 | 17/07/2026 |  |
+| 2 | Tạo bảng DynamoDB on-demand với partition key là `id`, thiết kế item theo cách truy cập. | 13/07/2026 | 13/07/2026 | [Serverless lab](https://000078.awsstudygroup.com) |
+| 3 | Cho Lambda ghi metadata bằng `put_item` khi upload, đọc một item bằng `get_item`, liệt kê bằng `scan`. | 14/07/2026 | 14/07/2026 | |
+| 4 | Xử lý nhất quán S3 và DynamoDB: ghi item metadata trước để mọi lượt upload đều được theo dõi, chỉ đánh dấu đã phân tích sau khi object nằm trên S3. | 15/07/2026 | 15/07/2026 | |
+| 5 | Bổ sung quyền dynamodb PutItem/GetItem/UpdateItem/DeleteItem/Query/Scan giới hạn cho bảng vào IAM Role của Lambda. | 16/07/2026 | 16/07/2026 | |
+| 6 | Cho `get_file` trả về presigned GET URL có thời hạn ngắn để frontend xem/tải file; kiểm thử end-to-end. | 17/07/2026 | 17/07/2026 | |
 
 ### Kết quả đạt được
 

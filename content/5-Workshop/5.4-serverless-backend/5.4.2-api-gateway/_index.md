@@ -12,7 +12,7 @@ Create an **API Gateway (HTTP API)** as the public entry point through which the
 
 #### Step 1: Create the API
 
-API Gateway is the public HTTPS front door: it terminates TLS, applies CORS, and (once the authorizer is added) checks the Cognito token before any request reaches Lambda. Because the Lambda already dispatches by method and path internally, a single **`$default`** route forwarding everything to Lambda is all that is needed, so routes do not have to be declared twice. The `--cors-configuration` here lets the browser call the API cross-origin, mirroring the CORS set on the S3 bucket:
+API Gateway is the public HTTPS front door: it terminates TLS, applies CORS, and checks the Cognito token before any request reaches Lambda. Because the Lambda already dispatches by method and path internally, a single **`$default`** route forwarding everything to Lambda is all that is needed, so routes do not have to be declared twice. The `--cors-configuration` here lets the browser call the API cross-origin, mirroring the CORS set on the S3 bucket:
 
 ```bash
 aws apigatewayv2 create-api \
@@ -22,7 +22,7 @@ aws apigatewayv2 create-api \
   --cors-configuration "AllowOrigins=*,AllowMethods=GET,POST,DELETE,OPTIONS,AllowHeaders=*"
 ```
 
-Using `--target` auto-creates the Lambda integration, the `$default` route and the `$default` stage (auto-deploy). API Gateway still needs an explicit resource-based permission on the function before it may invoke it; the `--source-arn` scopes that permission to this one API so no other API can call the function:
+Using `--target` auto-creates the Lambda integration, the `$default` route and the `$default` stage. API Gateway still needs an explicit resource-based permission on the function before it may invoke it; the `--source-arn` scopes that permission to this one API so no other API can call the function:
 
 ```bash
 aws lambda add-permission \
@@ -45,8 +45,8 @@ These are the logical endpoints the frontend uses; all arrive through the single
 |---|---|---|
 | POST | `/files` | Request a presigned upload URL + create metadata |
 | POST | `/files/{id}/analyze` | Run Rekognition/Textract on the uploaded object |
-| POST | `/files/{id}/ask` | Ask a question about the document (Bedrock/Claude, answered in the question's language) |
-| POST | `/ask` | Ask across the whole library (Bedrock/Claude, with source files) |
+| POST | `/files/{id}/ask` | Ask a question about the document |
+| POST | `/ask` | Ask across the whole library |
 | GET | `/files` | List all files |
 | GET | `/files/search?q=` | Content search over labels + extracted text |
 | GET | `/files/{id}` | One file's metadata + presigned download URL |
@@ -64,7 +64,7 @@ curl "$API/files"
 ```
 
 {{% notice info %}}
-**Technical note.** The `boto3` DynamoDB resource returns every stored number (such as `uploaded_at` and `size`) as a Python `Decimal` to preserve precision. `json.dumps` has no rule for `Decimal`, so the first `GET /files` failed with `Object of type Decimal is not JSON serializable`. A custom JSON encoder converts `Decimal` to `int` (or `float` when it has a fractional part) and is passed to `json.dumps` in every response, so the API always returns valid JSON numbers.
+**Technical note.** The `boto3` DynamoDB resource returns every stored number as a Python `Decimal` to preserve precision. `json.dumps` has no rule for `Decimal`, so the first `GET /files` failed with `Object of type Decimal is not JSON serializable`. A custom JSON encoder converts `Decimal` to `int` and is passed to `json.dumps` in every response, so the API always returns valid JSON numbers.
 
 ```python
 class _DecimalEncoder(json.JSONEncoder):

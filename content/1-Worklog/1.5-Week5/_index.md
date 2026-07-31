@@ -16,10 +16,10 @@ pre: " <b> 1.5. </b> "
 | Day | Task | Start | End | Reference |
 | --- | --- | --- | --- | --- |
 | Mon | Write a plain Lambda handler that routes API Gateway HTTP API events by method and path, and package it into a deployment zip for the Python runtime. | 29/06/2026 | 29/06/2026 | [Serverless lab](https://000078.awsstudygroup.com) |
-| Tue | Tune the function: set memory to 256 MB and the timeout to 30s so an AI call has room to finish, and read config from environment variables. | 30/06/2026 | 30/06/2026 |  |
+| Tue | Tune the function: set memory to 256 MB and the timeout to 30s so an AI call has room to finish, and read config from environment variables. | 30/06/2026 | 30/06/2026 | |
 | Wed | Create an execution IAM Role for Lambda with AWSLambdaBasicExecutionRole plus a least-privilege inline policy scoped to the needed bucket. | 01/07/2026 | 01/07/2026 | [IAM Role](https://000048.awsstudygroup.com) |
-| Thu | Separate environment variables for local and cloud (bucket name, region, table name) so the same code runs in both. | 02/07/2026 | 02/07/2026 |  |
-| Fri | Test the Lambda via direct `invoke` with sample event payloads and read the CloudWatch logs before wiring the API. | 03/07/2026 | 03/07/2026 |  |
+| Thu | Separate environment variables for local and cloud so the same code runs in both. | 02/07/2026 | 02/07/2026 | |
+| Fri | Test the Lambda via direct `invoke` with sample event payloads and read the CloudWatch logs before wiring the API. | 03/07/2026 | 03/07/2026 | |
 
 ### Results achieved
 

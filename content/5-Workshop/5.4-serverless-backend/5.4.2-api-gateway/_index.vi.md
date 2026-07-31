@@ -12,7 +12,7 @@ Tạo một **API Gateway (HTTP API)** làm cổng công khai để frontend g�
 
 #### Bước 1: Tạo API
 
-API Gateway là cửa HTTPS công khai: nó kết thúc TLS, áp CORS, và (khi thêm authorizer) kiểm tra token Cognito trước khi bất kỳ request nào tới Lambda. Vì Lambda đã tự điều hướng theo method và path bên trong, chỉ cần một route **`$default`** chuyển mọi thứ tới Lambda là đủ, nên không phải khai báo route hai lần. `--cors-configuration` ở đây cho trình duyệt gọi API cross-origin, tương ứng với CORS đã đặt trên bucket S3:
+API Gateway là cửa HTTPS công khai: nó kết thúc TLS, áp CORS, và kiểm tra token Cognito trước khi bất kỳ request nào tới Lambda. Vì Lambda đã tự điều hướng theo method và path bên trong, chỉ cần một route **`$default`** chuyển mọi thứ tới Lambda là đủ, nên không phải khai báo route hai lần. `--cors-configuration` ở đây cho trình duyệt gọi API cross-origin, tương ứng với CORS đã đặt trên bucket S3:
 
 ```bash
 aws apigatewayv2 create-api \
@@ -22,7 +22,7 @@ aws apigatewayv2 create-api \
   --cors-configuration "AllowOrigins=*,AllowMethods=GET,POST,DELETE,OPTIONS,AllowHeaders=*"
 ```
 
-Dùng `--target` sẽ tự tạo integration Lambda, route `$default` và stage `$default` (auto-deploy). Function vẫn cần một resource-based permission khai báo rõ để API Gateway gọi được nó; `--source-arn` giới hạn quyền đó về đúng API này nên không API nào khác gọi được function:
+Dùng `--target` sẽ tự tạo integration Lambda, route `$default` và stage `$default`. Function vẫn cần một resource-based permission khai báo rõ để API Gateway gọi được nó; `--source-arn` giới hạn quyền đó về đúng API này nên không API nào khác gọi được function:
 
 ```bash
 aws lambda add-permission \
@@ -45,10 +45,10 @@ Màn Routes cho thấy route `$default` duy nhất do API Gateway quản lý, đ
 |---|---|---|
 | POST | `/files` | Xin presigned upload URL + tạo metadata |
 | POST | `/files/{id}/analyze` | Chạy Rekognition/Textract trên object đã upload |
-| POST | `/files/{id}/ask` | Hỏi đáp về tài liệu (Bedrock/Claude, trả lời theo ngôn ngữ câu hỏi) |
-| POST | `/ask` | Hỏi đáp trên toàn thư viện (Bedrock/Claude, kèm tệp nguồn) |
+| POST | `/files/{id}/ask` | Hỏi đáp về tài liệu |
+| POST | `/ask` | Hỏi đáp trên toàn thư viện |
 | GET | `/files` | Liệt kê tất cả file |
-| GET | `/files/search?q=` | Tìm kiếm theo nội dung (nhãn + văn bản trích xuất) |
+| GET | `/files/search?q=` | Tìm kiếm theo nội dung |
 | GET | `/files/{id}` | Metadata của một file + presigned download URL |
 | DELETE | `/files/{id}` | Xóa object + metadata |
 
@@ -64,7 +64,7 @@ curl "$API/files"
 ```
 
 {{% notice info %}}
-**Ghi chú kỹ thuật.** DynamoDB resource của `boto3` trả mọi số đã lưu (như `uploaded_at` và `size`) dưới dạng `Decimal` của Python để giữ độ chính xác. `json.dumps` không có quy tắc cho `Decimal`, nên lần `GET /files` đầu tiên lỗi `Object of type Decimal is not JSON serializable`. Một JSON encoder tùy chỉnh chuyển `Decimal` sang `int` (hoặc `float` khi có phần thập phân) và được truyền vào `json.dumps` trong mọi response, nên API luôn trả số JSON hợp lệ.
+**Ghi chú kỹ thuật.** DynamoDB resource của `boto3` trả mọi số đã lưu dưới dạng `Decimal` của Python để giữ độ chính xác. `json.dumps` không có quy tắc cho `Decimal`, nên lần `GET /files` đầu tiên lỗi `Object of type Decimal is not JSON serializable`. Một JSON encoder tùy chỉnh chuyển `Decimal` sang `int` và được truyền vào `json.dumps` trong mọi response, nên API luôn trả số JSON hợp lệ.
 
 ```python
 class _DecimalEncoder(json.JSONEncoder):

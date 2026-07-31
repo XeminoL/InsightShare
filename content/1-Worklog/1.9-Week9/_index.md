@@ -16,13 +16,13 @@ pre: " <b> 1.9. </b> "
 | Day | Task | Start | End | Reference |
 | --- | --- | --- | --- | --- |
 | Mon | Study the FCAJ AI services workshop; settle how to call Rekognition and Textract from boto3 and where to trigger them in the upload flow. | 27/07/2026 | 27/07/2026 | [AI services](https://000056.awsstudygroup.com) |
-| Tue | Call Rekognition `detect_labels` (MaxLabels=10, MinConfidence=55) to tag images on upload; store the labels for search. | 28/07/2026 | 28/07/2026 |  |
-| Wed | Call Textract `detect_document_text` to extract text from PDFs and scanned images; read `.txt` files straight from the S3 object. | 29/07/2026 | 29/07/2026 |  |
-| Thu | Add the `POST /files/{id}/ask` endpoint: send the extracted text plus a question to a Claude model on Amazon Bedrock (`invoke_model`) and return the answer in the same language as the question; with no question, summarize instead. | 30/07/2026 | 30/07/2026 | [Bedrock](https://docs.aws.amazon.com/bedrock/) |
-| Fri | Extend the IAM Role with least-privilege rekognition/textract/bedrock permissions; save the labels and extracted text to DynamoDB under the owner; test the whole pipeline. | 31/07/2026 | 31/07/2026 |  |
+| Tue | Call Rekognition `detect_labels` (MaxLabels=10, MinConfidence=55) to tag images on upload; store the labels for search. | 28/07/2026 | 28/07/2026 | |
+| Wed | Call Textract `detect_document_text` to extract text from PDFs and scanned images; read `.txt` files straight from the S3 object. | 29/07/2026 | 29/07/2026 | |
+| Thu | Add the `POST /files/{id}/ask` endpoint: send the extracted text plus a question to a Claude model on Amazon Bedrock and return the answer in the same language as the question; with no question, summarize instead. | 30/07/2026 | 30/07/2026 | [Bedrock](https://docs.aws.amazon.com/bedrock/) |
+| Fri | Extend the IAM Role with least-privilege rekognition/textract/bedrock permissions; save the labels and extracted text to DynamoDB under the owner; test the whole pipeline. | 31/07/2026 | 31/07/2026 | |
 
 ### Results achieved
 
-1. Uploaded images are auto-labeled with Rekognition, and document text goes through the Textract path (`.txt` files are read straight from S3), stored under the file owner either way.
+1. Uploaded images are auto-labeled with Rekognition, and document text goes through the Textract path, stored under the file owner either way.
 2. A document Q&A endpoint answers questions and summarizes in the same language as the question via Bedrock/Claude. Textract and Bedrock are wired in with fail-soft handling, so an unavailable AI service does not break the analysis flow.
 3. Labels and text are saved to DynamoDB for later search; the AI permissions are least-privilege.

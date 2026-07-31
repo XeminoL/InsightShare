@@ -18,7 +18,7 @@ Mentor Nguyen Gia Hung and the admin team stayed close through the internship. O
 The InsightShare project maps onto Computer Engineering: it used programming, networking and database knowledge, and extended into cloud and serverless architecture, which the university course did not cover in depth.
 
 **4. Learning & Skill Development**
-The internship covered serverless architecture on AWS (S3, Lambda, API Gateway, DynamoDB, Cognito, CloudFront, IAM, CloudWatch), the managed AI services Rekognition, Textract and Bedrock, more Python (boto3), and bilingual technical documentation. The application ran end-to-end on the cloud.
+The internship covered serverless architecture on AWS, the managed AI services Rekognition, Textract and Bedrock, more Python, and bilingual technical documentation. The application ran end-to-end on the cloud.
 
 **5. Company Culture & Team Spirit**
 Knowledge is shared openly during meet-ups and in the group, which made asking questions straightforward.

@@ -15,14 +15,14 @@ Lambda Durable Functions của AWS cho phép xây các ứng dụng nhiều bư�
 ![Sơ đồ Lambda Durable Functions](/images/3-Blog/blog2_architecture.png)
 
 ### Vấn đề
-Làm một luồng xử lý dài hạn (chuỗi phê duyệt, pipeline AI nhiều bước) buộc lập trình viên tự viết nhiều thứ để lưu trạng thái, xử lý lỗi và nối các dịch vụ lại, tốn công và dễ sinh lỗi.
+Làm một luồng xử lý dài hạn buộc lập trình viên tự viết nhiều thứ để lưu trạng thái, xử lý lỗi và nối các dịch vụ lại, tốn công và dễ sinh lỗi.
 
 ### Giải pháp
 Durable Functions đưa khả năng đó vào ngay trong Lambda với hai thành phần chính:
 1. **Steps:** mỗi bước được tự động lưu tiến trình (checkpoint) và tự retry khi lỗi, theo cơ chế "checkpoint và replay".
 2. **Waits:** cho phép tạm dừng thực thi tới một năm mà không tính phí compute trong lúc chờ, rất hợp để chờ phê duyệt của con người hoặc phản hồi từ API bên ngoài.
 
-Ngoài ra tính năng có idempotency tích hợp (gọi trùng tên execution sẽ trả kết quả đã có, tránh chạy lại), và tích hợp EventBridge để phát trạng thái thực thi.
+Ngoài ra tính năng có idempotency tích hợp, và tích hợp EventBridge để phát trạng thái thực thi.
 
 ### Điểm đáng chú ý
 - Không cần tự dựng hạ tầng lưu trạng thái hay xử lý retry.
@@ -33,7 +33,7 @@ Ngoài ra tính năng có idempotency tích hợp (gọi trùng tên execution s
 Với các luồng nghiệp vụ dài hoặc AI workflow cần chờ, Durable Functions tự lo trạng thái và retry thay cho một kho trạng thái riêng, và bước chờ phê duyệt của con người không tốn compute nhàn rỗi.
 
 ## Nguồn tham khảo
-[Build multi-step applications and AI workflows with AWS Lambda durable functions](https://aws.amazon.com/blogs/aws/build-multi-step-applications-and-ai-workflows-with-aws-lambda-durable-functions/) (AWS News Blog)
+[Build multi-step applications and AI workflows with AWS Lambda durable functions](https://aws.amazon.com/blogs/aws/build-multi-step-applications-and-ai-workflows-with-aws-lambda-durable-functions/)
 
 ## Link bài đăng
 https://www.facebook.com/share/p/1D53oYGQmP/

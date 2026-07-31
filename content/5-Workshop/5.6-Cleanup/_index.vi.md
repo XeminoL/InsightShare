@@ -38,7 +38,7 @@ Cognito user pool giữ các tài khoản đã đăng ký, nên xóa nó là xó
 Bucket file bật versioning, nên `aws s3 rm --recursive` vẫn để lại các version cũ và delete marker, rồi `delete-bucket` báo `BucketNotEmpty`. `cleanup-aws.ps1` xóa hết version và delete marker trước, nên dùng script đỡ việc hơn ở chỗ này.
 
 {{% notice warning %}}
-**CloudFront cần hai bước.** Không xóa được distribution khi nó còn enabled: đặt `Enabled` thành `false`, đợi trạng thái quay lại `Deployed` (khoảng 15 phút), rồi xóa bằng ETag hiện tại. Đây là tài nguyên duy nhất script chỉ báo chứ không tự xóa.
+**CloudFront cần hai bước.** Không xóa được distribution khi nó còn enabled: đặt `Enabled` thành `false`, đợi trạng thái quay lại `Deployed`, rồi xóa bằng ETag hiện tại. Đây là tài nguyên duy nhất script chỉ báo chứ không tự xóa.
 {{% /notice %}}
 
 ```bash

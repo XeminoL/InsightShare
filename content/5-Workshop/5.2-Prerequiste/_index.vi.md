@@ -12,7 +12,7 @@ Việc xây dựng và triển khai InsightShare cần các công cụ, tài kho
 
 #### Bước 1. Tài khoản AWS và credentials
 
-Mọi lệnh và lần deploy trong workshop chạy trên một tài khoản AWS ở một region, nên identity và region được cố định trước tiên. Làm việc bằng một IAM user riêng có bật MFA, không dùng tài khoản root, để một key bị lộ cũng không đụng được billing hay xóa tài khoản. Cấu hình CLI về `ap-southeast-1`, region chứa toàn bộ tài nguyên InsightShare, và giữ access key ngoài repository (dự án này gitignore chúng trong `_private-keys/`).
+Mọi lệnh và lần deploy trong workshop chạy trên một tài khoản AWS ở một region, nên identity và region được cố định trước tiên. Làm việc bằng một IAM user riêng có bật MFA, không dùng tài khoản root, để một key bị lộ cũng không đụng được billing hay xóa tài khoản. Cấu hình CLI về `ap-southeast-1`, region chứa toàn bộ tài nguyên InsightShare, và giữ access key ngoài repository.
 
 ![Console: IAM user đã bật MFA](/images/5-Workshop/5.2-Prerequiste/iam-user-mfa.png)
 
@@ -25,21 +25,21 @@ aws sts get-caller-identity
 ```
 
 #### Bước 2. Môi trường phát triển
-- **Python 3** (3.10 trở lên): ngôn ngữ dùng cho app FastAPI chạy local và cho Lambda function.
-- **boto3**: thư viện AWS SDK cho Python (`pip install boto3`), dùng để sinh presigned URL và gọi S3, DynamoDB, Rekognition, Textract, Bedrock.
-- **AWS CLI**: đã cấu hình bằng `aws configure` (access key, region `ap-southeast-1`) để thao tác tài nguyên từ dòng lệnh.
-- **Node.js (v18 trở lên)**: tùy chọn, để build frontend tĩnh nếu dùng bundler.
+- **Python 3**: ngôn ngữ dùng cho app FastAPI chạy local và cho Lambda function.
+- **boto3**: thư viện AWS SDK cho Python, dùng để sinh presigned URL và gọi S3, DynamoDB, Rekognition, Textract, Bedrock.
+- **AWS CLI**: đã cấu hình bằng `aws configure` để thao tác tài nguyên từ dòng lệnh.
+- **Node.js**: tùy chọn, để build frontend tĩnh nếu dùng bundler.
 - **Git**: để clone và quản lý mã nguồn.
-- **Visual Studio Code** (hoặc trình soạn thảo bất kỳ): để phát triển back-end và frontend.
+- **Visual Studio Code**: để phát triển back-end và frontend.
 
 #### Bước 3. Tài khoản Cloud & Region
 - **Một tài khoản AWS** có quyền tạo và xóa các tài nguyên dùng trong workshop.
-- Region triển khai: **Asia Pacific (Singapore), `ap-southeast-1`**.
+- Region triển khai: **Asia Pacific, `ap-southeast-1`**.
 - Hai **S3 bucket**: một cho file người dùng tải lên, một để host frontend tĩnh.
-- Đã cấu hình AWS CLI, kiểm tra bằng `aws sts get-caller-identity` trỏ đúng IAM user (không dùng tài khoản root).
+- Đã cấu hình AWS CLI, kiểm tra bằng `aws sts get-caller-identity` trỏ đúng IAM user.
 
 #### Bước 4. Quyền IAM cần thiết
-Tài khoản dùng để triển khai cần quyền tạo và xóa các dịch vụ sau. Tuân theo nguyên tắc tối thiểu quyền (least-privilege), không cấp quyền rộng hơn mức cần:
+Tài khoản dùng để triển khai cần quyền tạo và xóa các dịch vụ sau. Tuân theo nguyên tắc tối thiểu quyền, không cấp quyền rộng hơn mức cần:
 
 - **Amazon S3**: tạo bucket, cấu hình, đọc/ghi object
 - **AWS Lambda**: tạo, cập nhật, gọi function
@@ -47,7 +47,7 @@ Tài khoản dùng để triển khai cần quyền tạo và xóa các dịch v
 - **Amazon DynamoDB**: tạo bảng, đọc/ghi item
 - **Amazon Rekognition**: `DetectLabels`
 - **Amazon Textract**: `DetectDocumentText`
-- **Amazon Bedrock**: `InvokeModel` (một model Claude)
+- **Amazon Bedrock**: `InvokeModel`
 - **Amazon CloudFront**: tạo distribution
 - **Amazon CloudWatch và CloudWatch Logs**: xem log, tạo alarm
 - **AWS IAM**: tạo execution role cho Lambda

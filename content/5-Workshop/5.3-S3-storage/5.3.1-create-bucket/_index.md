@@ -8,10 +8,10 @@ pre: " <b> 5.3.1 </b> "
 
 #### Step 1: Create the S3 bucket
 
-This bucket is the single place every uploaded file is stored; the Lambda later reads and writes objects here and issues presigned URLs against it. Open the **S3 console** (region `ap-southeast-1`) and choose **Create bucket**:
+This bucket is the single place every uploaded file is stored; the Lambda later reads and writes objects here and issues presigned URLs against it. Open the **S3 console** and choose **Create bucket**:
 
-- **Bucket name**: `insightshare-files-khang-2352464` (S3 names are globally unique, so a personal suffix avoids collisions).
-- **Region**: Asia Pacific (Singapore) `ap-southeast-1`, the same region as the Lambda so requests stay in-region and presigning uses the regional endpoint.
+- **Bucket name**: `insightshare-files-khang-2352464`.
+- **Region**: Asia Pacific `ap-southeast-1`, the same region as the Lambda so requests stay in-region and presigning uses the regional endpoint.
 
 After creating it, the bucket opens empty:
 
@@ -53,7 +53,7 @@ The browser transfers files directly to S3 through presigned URLs. Those request
 
 `AllowedMethods` lists only `PUT` and `GET`, the two verbs the presigned URLs use. `ExposeHeaders` returns `ETag` so the browser can read the uploaded object's hash. `MaxAgeSeconds` caches the preflight for 3000 seconds, so the browser skips it on the next request.
 
-Apply this configuration (demo scale allows any origin; in production restrict `AllowedOrigins` to the web domain):
+Apply this configuration:
 
 ```json
 {
