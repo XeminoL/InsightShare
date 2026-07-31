@@ -88,6 +88,6 @@ Toàn bộ luồng được kiểm chứng từ trang web đã deploy qua API Ga
 
 - `POST /files` trả về presigned URL, và `PUT` lên URL đó trả về **HTTP 200** (file vào S3).
 - `POST /files/{id}/analyze` trả về nhãn Rekognition thật.
-- `GET /files/search?q=diagram` trả về ảnh theo nhãn AI của nó, không phải theo tên file.
+- `GET /files/search?q=warehouse` trả về ảnh theo nhãn AI của nó, không phải theo tên file.
 - `POST /files/{id}/ask` trả về câu trả lời trên một tài liệu `.txt`, do Amazon Bedrock (Claude) sinh ra từ văn bản đã lưu.
 - Bốn bước trên sau đó được lặp lại từ trình duyệt trên trang web đang chạy.
