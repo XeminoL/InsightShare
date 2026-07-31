@@ -17,7 +17,7 @@ pre: " <b> 1.10. </b> "
 | --- | --- | --- | --- | --- |
 | 2 | Xây tìm kiếm file theo nhãn Rekognition và text Textract trong DynamoDB, khớp từ khóa với thuộc tính nhãn và text đã lưu của owner. | 03/08/2026 | 03/08/2026 |  |
 | 3 | Thêm endpoint `/ask` trả lời trên toàn thư viện và trích nguồn từng câu trả lời lấy từ file nào. | 04/08/2026 | 04/08/2026 |  |
-| 4 | Host frontend trên một bucket web riêng và đặt CloudFront đứng trước để có HTTPS, giữ bucket file private và chỉ vào được qua presigned URL. | 05/08/2026 | 05/08/2026 | [CloudFront](https://cloudjourney.awsstudygroup.com/1-explore/) |
+| 4 | Host frontend trên một bucket web riêng và đặt CloudFront đứng trước để có HTTPS, giữ bucket file private và chỉ vào được qua presigned URL. | 05/08/2026 | 05/08/2026 | [Explore AWS Services](https://cloudjourney.awsstudygroup.com/1-explore/) |
 | 5 | Cho Lambda ghi log sang CloudWatch và tạo metric alarm trên metric Errors của hàm. | 06/08/2026 | 06/08/2026 |  |
 | 6 | Tối ưu chi phí (lifecycle rule xóa object cũ trên S3, TTL cache CloudFront) và rà soát least-privilege toàn hệ thống. | 07/08/2026 | 07/08/2026 |  |
 

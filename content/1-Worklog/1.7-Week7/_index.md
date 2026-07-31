@@ -15,7 +15,7 @@ pre: " <b> 1.7. </b> "
 
 | Day | Task | Start | End | Reference |
 | --- | --- | --- | --- | --- |
-| Mon | Create an on-demand DynamoDB table with `id` as the partition key; design the item around the access patterns (look up by id, list and filter by owner). | 13/07/2026 | 13/07/2026 | [DynamoDB lab](https://000078.awsstudygroup.com) |
+| Mon | Create an on-demand DynamoDB table with `id` as the partition key; design the item around the access patterns (look up by id, list and filter by owner). | 13/07/2026 | 13/07/2026 | [Serverless lab](https://000078.awsstudygroup.com) |
 | Tue | Have Lambda write metadata with `put_item` on upload, read one item back with `get_item`, and list with `scan`. | 14/07/2026 | 14/07/2026 |  |
 | Wed | Handle S3-DynamoDB consistency: write the metadata item first so an upload is always tracked, and mark it analyzed only after the object is in S3. | 15/07/2026 | 15/07/2026 |  |
 | Thu | Add scoped dynamodb PutItem/GetItem/UpdateItem/DeleteItem/Query/Scan permissions for the table to the Lambda IAM Role. | 16/07/2026 | 16/07/2026 |  |
