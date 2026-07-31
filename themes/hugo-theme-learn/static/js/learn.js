@@ -149,12 +149,15 @@ jQuery(document).ready(function () {
       .highlight(value, { element: "mark" });
 
     if (ajax && ajax.abort) ajax.abort();
+  });
 
-    jQuery("[data-search-clear]").on("click", function () {
-      jQuery("[data-search-input]").val("").trigger("input");
-      sessionStorage.removeItem("search-input");
-      $(".highlightable").unhighlight({ element: "mark" });
-    });
+  // Bound once, outside the input handler: binding it in there added a fresh
+  // click handler on every keystroke, so a 9-character search left 9 handlers
+  // that all ran on a single click. Clearing the input triggers "input" with an
+  // empty value, which is what removes "search-value" from sessionStorage.
+  jQuery("[data-search-clear]").on("click", function () {
+    jQuery("[data-search-input]").val("").trigger("input");
+    $(".highlightable").unhighlight({ element: "mark" });
   });
 
   $.expr[":"].contains = $.expr.createPseudo(function (arg) {
@@ -168,8 +171,22 @@ jQuery(document).ready(function () {
     $(document.body).removeClass("searchbox-hidden");
     $("[data-search-input]").val(searchValue);
     $("[data-search-input]").trigger("input");
+    // A stored value like "a)b" closes the :contains() argument early and makes
+    // Sizzle throw, which aborts the rest of this ready() handler -- clipboard
+    // buttons, arrow-key nav and the anchor-scroll fix would all stop loading,
+    // on every page, until the tab is closed. Match on text instead.
+    var needle = searchValue.toUpperCase();
     var searchedElem = $("#body-inner")
-      .find(":contains(" + searchValue + ")")
+      .find("*")
+      .filter(function () {
+        return (
+          $(this).text().toUpperCase().indexOf(needle) >= 0 &&
+          !$(this).children().filter(function () {
+            return $(this).text().toUpperCase().indexOf(needle) >= 0;
+          }).length
+        );
+      })
+      .first()
       .get(0);
     if (searchedElem) {
       searchedElem.scrollIntoView(true);
