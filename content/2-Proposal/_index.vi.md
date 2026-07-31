@@ -36,6 +36,7 @@ InsightShare tập trung dữ liệu và xử lý trên một stack serverless t
 ### 3. Kiến trúc giải pháp
 
 *Tổng quan*
+
 Trình duyệt tải giao diện tĩnh từ **S3 + CloudFront** qua HTTPS, đăng nhập qua **Cognito**, rồi gọi **API Gateway**, cổng này chuyển tới **Lambda**. API Gateway chạy một JWT authorizer kiểm tra token Cognito, và Lambda đọc claim `sub` để gán mỗi file cho đúng chủ sở hữu. Lambda sinh presigned URL để trình duyệt truyền file trực tiếp với S3. Sau khi upload, Lambda gọi Rekognition, Textract hoặc Bedrock và lưu kết quả vào DynamoDB phục vụ tìm kiếm. CloudWatch thu log và metric; IAM kiểm soát quyền theo least-privilege.
 
 ![Kiến trúc InsightShare](/images/2-Proposal/insightshare_architecture-v6.png)

@@ -36,6 +36,7 @@ InsightShare centralizes data and processing on a unified serverless stack:
 ### 3. Solution Architecture
 
 *Overview*
+
 The browser loads the static frontend from **S3 + CloudFront** over HTTPS, signs in through **Cognito**, then calls **API Gateway**, which forwards to **Lambda**. API Gateway runs a JWT authorizer that validates the Cognito token, and Lambda reads the `sub` claim to scope every file to its owner. Lambda generates presigned URLs so the browser transfers files directly with S3. After upload, Lambda calls Rekognition, Textract or Bedrock and stores the results in DynamoDB for search. CloudWatch collects logs and metrics; IAM enforces least-privilege access.
 
 ![InsightShare Architecture](/images/2-Proposal/insightshare_architecture-v6.png)
