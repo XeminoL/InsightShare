@@ -12,7 +12,6 @@ pre: " <b> 8. </b> "
 | --- | --- |
 | Mã nguồn | [github.com/XeminoL/InsightShare](https://github.com/XeminoL/InsightShare) |
 | Ứng dụng chạy thật | [insightshare.dangthaikhang34.workers.dev](https://insightshare.dangthaikhang34.workers.dev) |
-| Video demo | [insightshare-demo.mp4](/videos/insightshare-demo.mp4) |
 
 ### Video demo
 
