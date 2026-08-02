@@ -12,6 +12,16 @@ pre: " <b> 8. </b> "
 | --- | --- |
 | Source code | [github.com/XeminoL/InsightShare](https://github.com/XeminoL/InsightShare) |
 | Live application | [insightshare.dangthaikhang34.workers.dev](https://insightshare.dangthaikhang34.workers.dev) |
+| Demo video | [insightshare-demo.mp4](/videos/insightshare-demo.mp4) |
+
+### Demo video
+
+The recording walks through the deployed application: signing in with Cognito, uploading a file, the AI layer labelling it and extracting its text, and finding the file by its content rather than by its filename.
+
+<video controls preload="metadata" style="width:100%;max-width:900px;border:1px solid #999">
+  <source src="/videos/insightshare-demo.mp4" type="video/mp4">
+  This browser cannot play the video. <a href="/videos/insightshare-demo.mp4">Download it instead</a>.
+</video>
 
 ### Documentation
 

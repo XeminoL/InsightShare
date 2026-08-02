@@ -12,6 +12,16 @@ pre: " <b> 8. </b> "
 | --- | --- |
 | Mã nguồn | [github.com/XeminoL/InsightShare](https://github.com/XeminoL/InsightShare) |
 | Ứng dụng chạy thật | [insightshare.dangthaikhang34.workers.dev](https://insightshare.dangthaikhang34.workers.dev) |
+| Video demo | [insightshare-demo.mp4](/videos/insightshare-demo.mp4) |
+
+### Video demo
+
+Video đi qua ứng dụng đã deploy: đăng nhập bằng Cognito, upload file, lớp AI gán nhãn và trích text, rồi tìm ra file theo nội dung bên trong chứ không theo tên file.
+
+<video controls preload="metadata" style="width:100%;max-width:900px;border:1px solid #999">
+  <source src="/videos/insightshare-demo.mp4" type="video/mp4">
+  Trình duyệt không phát được video. <a href="/videos/insightshare-demo.mp4">Tải về để xem</a>.
+</video>
 
 ### Tài liệu
 
