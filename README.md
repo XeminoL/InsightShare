@@ -22,7 +22,7 @@ The browser loads a static page from S3 through CloudFront, signs in with Cognit
 
 ![Upload screen with a file selected and the progress bar running](static/images/readme/app-01-upload.png)
 
-### 2. AI reads it, using Rekognition
+### 2. Using AI Rekognition
 
 ![Library showing Rekognition labels and text extracted from a file](static/images/readme/app-02-ai-labels.png)
 
