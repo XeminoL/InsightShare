@@ -1,5 +1,3 @@
-# InsightShare
-
 A serverless document assistant on AWS, built as the capstone for the First Cloud AI Journey (FCAJ) internship at AWS Vietnam.
 
 ## What it does
