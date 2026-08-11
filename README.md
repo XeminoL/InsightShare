@@ -12,11 +12,9 @@ Upload an image or a PDF and InsightShare reads it for you: it labels images, pu
 
 ![InsightShare architecture on AWS](static/images/readme/architecture.png)
 
-The browser loads a static page from S3 through CloudFront, signs in with Cognito, and calls API Gateway with the JWT. A single Python Lambda handles every route.
-
 ---
 
-## The app, running
+## Running stages
 
 ### 1. Pick a file and upload
 
