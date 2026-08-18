@@ -2,7 +2,7 @@ A serverless document assistant on AWS, built as the capstone for the First Clou
 
 Upload an image or a PDF and InsightShare reads it for you: it labels images, pulls text out of documents, and lets you find a file by a word that appears **inside** it rather than in its name. You can also ask a question in plain language and get an answer traced back to the file it came from.
 
-**[Full report](https://xeminol.github.io/InsightShare/)** · **[Demo video](https://xeminol.github.io/InsightShare/videos/insightshare-demo.mp4)**
+**[Demo video](https://xeminol.github.io/InsightShare/videos/insightshare-demo.mp4)**
 
 > The AWS resources were torn down after recording the demo, so the hosted page now shows the interface only. 
 
