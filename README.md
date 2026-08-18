@@ -47,4 +47,4 @@ Upload an image or a PDF and InsightShare reads it for you: it labels images, pu
 - **IAM:** one least-privilege execution role. S3 and DynamoDB are scoped to the exact bucket and table ARNs; the AI actions use `*` because Rekognition, Textract and Bedrock have no resource-level permissions.
 - **Fail-soft:** every AI call is wrapped, so a service being unavailable returns a short message instead of a 500 — upload, listing and search keep working.
 - **Monitoring:** CloudWatch logs and metrics, two alarms on the function, and a three-widget dashboard.
-- **Infrastructure as code:** `insightshare-aws/infrastructure.yaml` defines all 17 resources, so the stack is reproducible instead of clicked together.
+- **Infrastructure as code:** a CloudFormation template defines all 17 resources, so the stack is reproducible instead of clicked together. It is kept outside this repository, which holds the report.
