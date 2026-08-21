@@ -35,7 +35,7 @@ Upload an image or a PDF and InsightShare reads it for you: it labels images, pu
 1. The static frontend signs in through Cognito and calls API Gateway with the JWT.
 2. API Gateway validates the token with a JWT authorizer on the `$default` route, then routes to one Lambda. `OPTIONS` is left unauthenticated so the CORS preflight is not blocked.
 3. **Upload:** Lambda returns a presigned S3 URL; the browser puts the file straight into the private bucket.
-4. **Analyze:** triggered two ways — an `s3:ObjectCreated` event fires it automatically, and the browser can also call the analyze endpoint directly when it wants the result immediately. Both run the same code.
+4. **Analyze:** triggered two ways: an `s3:ObjectCreated` event fires it automatically, and the browser can also call the analyze endpoint directly when it wants the result immediately. 
 5. **Search:** Lambda matches the keyword against the stored labels and text in DynamoDB.
 6. **Ask:** Lambda sends the question plus the stored text to Bedrock (Claude) and returns the answer with its source.
 
